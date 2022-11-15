@@ -1,0 +1,143 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Persona;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+
+class PersonaController extends Controller
+{
+    public function index(Request $request)
+    {
+        $apellido=$request->get('apellido');
+        $nombre=$request->get('nombre');
+        $dni=$request->get('dni');
+        $cuit=$request->get('cuit');
+        $soloActivos=$request->get('ckactivos');
+
+
+        $personas = Persona::apellido($apellido)
+            ->nombre($nombre)
+            ->dni($dni)
+            ->cuit($cuit)
+            ->soloactivos($soloActivos)
+            ->orderby('apellido')->orderby('nombre')->paginate();
+
+        return view('personas.index', compact('personas'))
+            ->with('apellido', $apellido)
+            ->with('nombre', $nombre)
+            ->with('dni', $dni)
+            ->with('cuit', $cuit)
+            ->with('soloactivos', $soloActivos)
+            ->with('i', (request()->input('page', 1) - 1) * $personas->perPage());
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $persona = new Persona();
+
+        return view('personas.create', compact('persona'));
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        request()->validate(Persona::$rules);
+
+        $data=$request->all();
+
+        $persona = Persona::create($data);
+
+        /*Y tengo que crear un usuario para esa persona*/
+
+        User::create([
+            'email'=>$data["dni"],
+            'name'=>$data["apellido"]." ".$data["nombre"],
+            'password'=>Hash::make($data["dni"]),//Hash::make(substr( $datos[0], strlen($datos[0])-4, 4)),
+            'perfil_id'=>"3",
+        ]);
+
+        session()->flash('message' , 'Persona creada exitosamente. Se creó también el usuario correspondiente.');
+
+        return redirect()->route('personas.index');
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $persona = Persona::find($id);
+
+        return view('personas.show', compact('persona'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $persona = Persona::find($id);
+
+        return view('personas.edit', compact('persona'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        Persona::$rules['dni'] = Persona::$rules['dni'] .','. $id;
+
+        $validateddata=request()->validate(Persona::$rules);
+
+        $persona=Persona::findOrFail($id);
+
+        $data=$request->all();
+
+        $persona->update($data);
+        session()->flash('message' , 'Persona modificada exitosamente');
+
+        return redirect()->route('personas.index');
+    }
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function destroy($id)
+    {
+        $persona = Persona::find($id)->delete();
+
+        $persona->update(['fechabaja'=>Carbon::now(),
+            'activo'=>false]);
+
+        session()->flash('message' , 'Persona inactivada exitosamente');
+        return redirect()->route('personas.index');
+    }
+}
