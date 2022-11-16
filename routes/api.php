@@ -24,9 +24,9 @@ Route::apiResource('comercios', ComercioController::class)
 
 Route::post('login', [App\Http\Controllers\Api\LoginController::class, 'login']);
 
-Route::get('helloWorld', [App\Http\Controllers\Api\TestController::class, 'helloWorld']);
+Route::post('helloWorld', [App\Http\Controllers\Api\TestController::class, 'helloWorld']);
 
-Route::get('helloWorldConAuth',  [App\Http\Controllers\Api\TestController::class, 'helloWorldConAuth'])
+Route::post('helloWorldConAuth',  [App\Http\Controllers\Api\TestController::class, 'helloWorldConAuth'])
     ->middleware('auth:sanctum') ;
 
 Route::post('comercios/consumir', [App\Http\Controllers\Api\ComercioController::class, 'consumir']);
