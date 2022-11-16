@@ -27,6 +27,7 @@ class LoginController extends Controller
         {
             return response()->json([
                 'token'=>$user->createtoken($user->email)->plainTextToken,
+                'perfil'=>$user->perfil_id,
                 'message'=>'OK'
             ]);
         }
