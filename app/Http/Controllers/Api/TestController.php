@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Articulo;
@@ -17,12 +17,12 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function helloworld()
+    public function helloWorld()
     {
         return "Hello World!!! - ViandApp";
     }
 
-    public function helloworldconAuth(Request $request)
+    public function helloWorldConAuth(Request $request)
     {
 
        $usuario= auth('sanctum')->user() ;

@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\ComercioController;
+use App\Http\Controllers\Api\ComercioController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,16 +18,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('v1/comercios', ComercioController::class)
+Route::apiResource('comercios', ComercioController::class)
     ->middleware('auth:sanctum')
     ->only(['index','show']);
 
 Route::post('login', [App\Http\Controllers\Api\LoginController::class, 'login']);
 
-Route::get('v1/helloworld', [App\Http\Controllers\Api\V1\TestController::class, 'helloworld']);
+Route::get('helloWorld', [App\Http\Controllers\Api\TestController::class, 'helloWorld']);
 
-Route::get('v1/helloworldconauth',  [App\Http\Controllers\Api\V1\TestController::class, 'helloworldconAuth'])
+Route::get('helloWorldConAuth',  [App\Http\Controllers\Api\TestController::class, 'helloWorldConAuth'])
     ->middleware('auth:sanctum') ;
 
-Route::post('v1/comercios/consumir', [App\Http\Controllers\Api\V1\ComercioController::class, 'consumir']);
+Route::post('comercios/consumir', [App\Http\Controllers\Api\ComercioController::class, 'consumir']);
 
