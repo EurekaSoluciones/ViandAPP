@@ -12,9 +12,7 @@ class LoginController extends Controller
 {
     public function login (Request $request)
     {
-        $content = $request->getContent();
 
-       $data= json_decode($content);
         $credentials=$this->validate(request(),
             [
                 'login'=> 'required|string',
