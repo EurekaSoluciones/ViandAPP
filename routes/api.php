@@ -26,5 +26,8 @@ Route::post('login', [App\Http\Controllers\Api\LoginController::class, 'login'])
 
 Route::get('v1/helloworld', [App\Http\Controllers\Api\V1\TestController::class, 'helloworld']);
 
+Route::get('v1/helloworldconauth',  [App\Http\Controllers\Api\V1\TestController::class, 'helloworldconAuth'])
+    ->middleware('auth:sanctum') ;
+
 Route::post('v1/comercios/consumir', [App\Http\Controllers\Api\V1\ComercioController::class, 'consumir']);
 

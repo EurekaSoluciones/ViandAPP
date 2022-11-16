@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Articulo;
+use App\Models\Comercio;
+use App\Models\Persona;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class TestController extends Controller
 {
@@ -17,6 +22,24 @@ class TestController extends Controller
         return "Hello World!!! - ViandApp";
     }
 
+    public function helloworldconAuth(Request $request)
+    {
+
+       $usuario= auth('sanctum')->user() ;
+        $data=$request->all();
+
+
+        if ($usuario!=null)
+        {
+            return "Hello World!!! - ViandApp -> Usuario: ". $usuario->name;
+        }
+        else
+        {
+            return response()->json([
+                'message'=>'Usuario no encontrado o clave no válida'
+            ], 401);
+        }
+    }
     /**
      * Store a newly created resource in storage.
      *

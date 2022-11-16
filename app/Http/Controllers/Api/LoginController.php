@@ -12,6 +12,9 @@ class LoginController extends Controller
 {
     public function login (Request $request)
     {
+        $content = $request->getContent();
+
+       $data= json_decode($content);
         $credentials=$this->validate(request(),
             [
                 'login'=> 'required|string',
@@ -19,8 +22,8 @@ class LoginController extends Controller
             ]);
 
         $password=Hash::make($credentials['password']);
-        $user=User:: where('email',$credentials['login'])
-           // ->where('password',$credentials['password'])
+               $user=User:: where('email',$credentials['login'])
+            // ->where('password',$credentials['password'])
             ->first();
 
         if ($user!=null)
@@ -29,7 +32,7 @@ class LoginController extends Controller
                 'token'=>$user->createtoken($user->email)->plainTextToken,
                 'perfil'=>$user->perfil_id,
                 'message'=>'OK'
-            ]);
+            ], 200);
         }
 
         return response()->json([
