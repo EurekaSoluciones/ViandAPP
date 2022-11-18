@@ -36,5 +36,5 @@ Route::post('helloWorldConAuth',  [App\Http\Controllers\Api\TestController::clas
 
 
 
-Route::post('comercios/consumir', [App\Http\Controllers\Api\ComercioController::class, 'consumir']);
-
+Route::post('comercios/consumir', [App\Http\Controllers\Api\ComercioController::class, 'consumir'])
+    ->middleware('App\Http\Middleware\EureAuthApis');

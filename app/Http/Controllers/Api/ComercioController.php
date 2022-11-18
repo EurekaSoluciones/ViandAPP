@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\AdminGeneralController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\StockController;
 use App\Http\Resources\V1\ComercioResource;
@@ -45,15 +46,15 @@ class ComercioController extends Controller
 
     public function consumir(Request $request)
     {
-        $data=$request->all();
+        $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
 
-        $fecha= Carbon::parse(strtotime(str_replace('/', '-', $data['fecha'])));
+        $fecha= Carbon::now();
         $persona=Persona::devolverPersonaxId($data["personaId"]);
-
         $articulo=Articulo::devolverArticuloxId($data["articuloId"]);
-        $comercio=Comercio::devolverComercioxId($data["comercioId"]);
 
         $usuario= auth('sanctum')->user() ;
+        $comercio=Comercio::devolverComercioxCuit($usuario->email);
+
         $stock=Stock::devolverStock( $data["personaId"], $fecha, $data["articuloId"]);
 
         $cantidad=(int) $data["cantidad"];

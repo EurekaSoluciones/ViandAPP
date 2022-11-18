@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\AdminGeneralController;
 use App\Http\Controllers\Controller;
 use App\Models\Comercio;
 use App\Models\Persona;
@@ -43,9 +44,7 @@ class LoginController extends Controller
 
     public function loginComercio (Request $request)
     {
-        $content = $request->getContent();
-
-        $data =get_object_vars(json_decode($content));
+        $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
 
         $validator = Validator::make($data, [
             'users.*.login' => 'required|string',
@@ -85,9 +84,11 @@ class LoginController extends Controller
     }
     public function loginPersona (Request $request)
     {
-        $content = $request->getContent();
+//        $content = $request->getContent();
+//
+//        $data =get_object_vars(json_decode($content));
 
-        $data =get_object_vars(json_decode($content));
+        $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
 
         $validator = Validator::make($data, [
             'users.*.login' => 'required|string',

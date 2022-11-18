@@ -19,4 +19,14 @@ class AdminGeneralController extends Controller
         $arrDatos=["stock"=>$stock];
         return response($arrDatos);
     }
+
+    public function devolverArrayDeRequestRawData(Request  $request)
+    {
+        $content = $request->getContent();
+
+        $data =get_object_vars(json_decode($content));
+
+        return $data;
+    }
+
 }
