@@ -24,6 +24,8 @@ Route::apiResource('comercios', ComercioController::class)
 
 Route::post('login', [App\Http\Controllers\Api\LoginController::class, 'login']);
 
+Route::post('loginComercio', [App\Http\Controllers\Api\LoginController::class, 'loginComercio']);
+
 Route::post('helloWorld', [App\Http\Controllers\Api\TestController::class, 'helloWorld']);
 
 Route::post('helloWorldConAuth',  [App\Http\Controllers\Api\TestController::class, 'helloWorldConAuth'])

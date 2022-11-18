@@ -25,7 +25,9 @@ class TestController extends Controller
     public function helloWorldConAuth(Request $request)
     {
 
-       $usuario= auth('sanctum')->user() ;
+        $ok= auth('sanctum')->check();
+
+        $usuario= auth('sanctum')->user() ;
         $data=$request->all();
 
 

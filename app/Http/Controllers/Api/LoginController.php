@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comercio;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -38,6 +40,48 @@ class LoginController extends Controller
         ], 401);
     }
 
+    public function loginComercio (Request $request)
+    {
+        $content = $request->getContent();
+
+        $data =get_object_vars(json_decode($content));
+
+        $validator = Validator::make($data, [
+            'users.*.login' => 'required|string',
+            'users.*.password' => 'required|string'
+        ]);
+
+
+        $password=Hash::make($data['password']);
+        $user=User:: where('email',$data['login'])
+            ->where('perfil_id', config('global.PERFIL_Comercio'))
+            ->first();
+
+        if ($user!=null)
+        {
+
+            if (Hash::check($password, $user->password)) {
+                $comercio = Comercio::devolverComercioxCuit($data['login']);
+
+                return response()->json([
+                    'token' => $user->createtoken($user->email)->plainTextToken,
+                    'perfil' => $user->perfil_id,
+                    'comercio' => $comercio,
+                    'message' => 'OK'
+                ], 200);
+            }
+            else
+            {
+                return response()->json([
+                    'message' => 'Clave no válida'
+                ], 401);
+            }
+        }
+
+        return response()->json([
+            'message'=>'Comercio no encontrado'
+        ], 401);
+    }
     public function validateLogin(Request $request)
     {
 
