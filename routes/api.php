@@ -23,13 +23,18 @@ Route::apiResource('comercios', ComercioController::class)
     ->only(['index','show']);
 
 Route::post('login', [App\Http\Controllers\Api\LoginController::class, 'login']);
-
 Route::post('loginComercio', [App\Http\Controllers\Api\LoginController::class, 'loginComercio']);
+Route::post('loginPersona', [App\Http\Controllers\Api\LoginController::class, 'loginPersona']);
 
 Route::post('helloWorld', [App\Http\Controllers\Api\TestController::class, 'helloWorld']);
 
+//Route::post('helloWorldConAuth',  [App\Http\Controllers\Api\TestController::class, 'helloWorldConAuth'])
+//    ->middleware('auth:sanctum') ;
+
 Route::post('helloWorldConAuth',  [App\Http\Controllers\Api\TestController::class, 'helloWorldConAuth'])
-    ->middleware('auth:sanctum') ;
+    ->middleware('App\Http\Middleware\EureAuthApis');
+
+
 
 Route::post('comercios/consumir', [App\Http\Controllers\Api\ComercioController::class, 'consumir']);
 

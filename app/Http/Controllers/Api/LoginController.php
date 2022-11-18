@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Comercio;
+use App\Models\Persona;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,7 +61,7 @@ class LoginController extends Controller
         if ($user!=null)
         {
 
-            if (Hash::check($password, $user->password)) {
+            if (Hash::check($data['password'], $user->password)) {
                 $comercio = Comercio::devolverComercioxCuit($data['login']);
 
                 return response()->json([
@@ -80,6 +81,48 @@ class LoginController extends Controller
 
         return response()->json([
             'message'=>'Comercio no encontrado'
+        ], 401);
+    }
+    public function loginPersona (Request $request)
+    {
+        $content = $request->getContent();
+
+        $data =get_object_vars(json_decode($content));
+
+        $validator = Validator::make($data, [
+            'users.*.login' => 'required|string',
+            'users.*.password' => 'required|string'
+        ]);
+
+
+        $password=Hash::make($data['password']);
+        $user=User:: where('email',$data['login'])
+            ->where('perfil_id', config('global.PERFIL_Persona'))
+            ->first();
+
+        if ($user!=null)
+        {
+
+            if (Hash::check($data['password'], $user->password)) {
+                $persona = Persona::devolverPersonaxDni($data['login']);
+
+                return response()->json([
+                    'token' => $user->createtoken($user->email)->plainTextToken,
+                    'perfil' => $user->perfil_id,
+                    'persona' => $persona,
+                    'message' => 'OK'
+                ], 200);
+            }
+            else
+            {
+                return response()->json([
+                    'message' => 'Clave no válida'
+                ], 401);
+            }
+        }
+
+        return response()->json([
+            'message'=>'Persona no encontrada'
         ], 401);
     }
     public function validateLogin(Request $request)
