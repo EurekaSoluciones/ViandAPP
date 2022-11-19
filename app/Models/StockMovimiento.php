@@ -22,7 +22,7 @@ class StockMovimiento extends Model
      */
     protected $fillable = ['articulo_id','persona_id', 'fecha', 'tipomovimiento_id',
         'comercio_id', 'cc','cantidad', 'operacion', 'cantidadconsigno', 'usuario_id',
-        'observaciones'];
+        'observaciones', 'cierrelote_id'];
 
     public function articulo()
     {
@@ -31,7 +31,7 @@ class StockMovimiento extends Model
 
     public function persona()
     {
-        return $this->belongsTo('App\Models\Personas');
+        return $this->belongsTo('App\Models\Persona');
     }
 
     public function tipomovimiento()
@@ -48,6 +48,32 @@ class StockMovimiento extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function scopeAFecha($query, $fecha)
+    {
+        $fechaTope= Carbon::parse(strtotime(str_replace('/', '-', $fecha)));
+
+        if ($fechaTope !=null)
+           $query= $query->whereDate( 'fecha', '>=', $fechaTope);
+    }
+
+    public function scopeDeComercio($query, $idComercio)
+    {
+        if ($idComercio !=null)
+            $query= $query->where( 'comercio_id', '=', $idComercio);
+    }
+
+    public function scopePendientesDeLiquidacion($query)
+    {
+        $query= $query->whereNull('cierrelote_id')
+        ->where('estado', 'PENDIENTE');
+    }
+
+    public function scopeConsumos($query)
+    {
+        $query= $query->where('tipomovimiento_id',config('global.TM_Consumo'));
+    }
+
 
     public function Asignar($persona, $articulo, $fechadesde, $fechahasta, $cantidad, $cc, $observaciones, $usuario)
     {
@@ -106,6 +132,7 @@ class StockMovimiento extends Model
                 'cantidadconsigno'=>$cantidad * -1,
                 'usuario_id'=>$usuario->id,
                 'tipomovimiento_id'=>config('global.TM_Consumo'),
+                'estado'=>'PENDIENTE',
                 'observaciones'=>$observaciones]);
 
             $stock->update(['saldo'=>$stock->saldo-$cantidad]);

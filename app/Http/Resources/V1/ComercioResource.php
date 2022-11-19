@@ -14,8 +14,10 @@ class ComercioResource extends JsonResource
      */
     public function toArray($request)
     {
-        return ['razonSocial'=>$this->razonsocial,
+        return ['id'=>$this->id,
+            'razonSocial'=>$this->razonsocial,
             'nombreFantasia'=>$this->nombrefantasia,
-            'cuit'=>$this->cuit];
+            'cuit'=>$this->cuit,
+            'domicilio' =>$this->domicilio];
     }
 }

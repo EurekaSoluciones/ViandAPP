@@ -6,12 +6,14 @@ use App\Http\Controllers\AdminGeneralController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\StockController;
 use App\Http\Resources\V1\ComercioResource;
+use App\Http\Resources\v1\StockMovimientoResource;
 use App\Models\Articulo;
 use App\Models\Comercio;
 use App\Models\Persona;
 use App\Models\Stock;
 use App\Models\StockMovimiento;
 use Carbon\Carbon;
+use http\Exception;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -44,6 +46,50 @@ class ComercioController extends Controller
 
     }
 
+    /**
+     * Devuelve los movimientos pendientes de liquidar de un comercio
+     *
+     * @param Request $request --> debe tener: "fecha" como raw data y el token del comercio
+     * @return \Illuminate\Http\Response
+     */
+    public function consumosPendientesDeRendir (Request $request)
+    {
+        //por las dudas que venga mal formado el request
+        try {
+            $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
+        }
+        catch (Exception $e)
+        {
+            return response()->json(['message'=>"ERROR - ".$e->getMessage()],500);
+        }
+
+        $fecha=Carbon::parse($data["fecha"]);
+        $usuario= auth('sanctum')->user() ;
+
+        $comercio=Comercio::devolverComercioxCuit($usuario->email);
+
+        if ($comercio ==null)
+        {
+            return response()->json(['message'=>"Comercio inexistente"],401);
+        }
+
+        try {
+            $consumos=Comercio::devolverConsumosPendientesDeLiquidar($fecha, $comercio->id);
+            return response()->json(["Consumos"=>StockMovimientoResource::collection($consumos ),
+                'message'=>"OK"],200);
+        }
+        catch(Exception $e)
+        {
+            return response()->json(['message'=>"ERROR - ".$e->getMessage()],500);
+        }
+    }
+
+    /**
+     * Devuelve los movimientos pendientes de liquidar de un comercio
+     *
+     * @param Request $request --> debe tener: "fecha" como raw data y el token del comercio
+     * @return \Illuminate\Http\Response
+     */
     public function consumir(Request $request)
     {
         $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
@@ -82,6 +128,47 @@ class ComercioController extends Controller
         }
     }
 
+    /**
+     * Genera un nuevo cierre de lote con los consumos pendientes
+     *
+     * @param Request $request --> debe tener: ["observaciones",
+     *                                          "movimientos:["movimiento_id"]"] como raw data y el token del comercio
+     * @return \Illuminate\Http\Response
+     */
+    public function cerrarLote(Request $request)
+    {
+        //por las dudas que venga mal formado el request
+        try {
+            $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
+        }
+        catch (Exception $e)
+        {
+            return response()->json(['message'=>"ERROR - ".$e->getMessage()],500);
+        }
+
+        $observaciones=$data["observaciones"];
+        $usuario= auth('sanctum')->user() ;
+        $comercio=Comercio::devolverComercioxCuit($usuario->email);
+        $movimientos=$data["movimientos"];
+
+        if ($comercio ==null)
+        {
+            return response()->json(['message'=>"Comercio inexistente"],401);
+        }
+
+        try {
+
+            $ok=$comercio->cerrarLote($observaciones,$movimientos, $usuario);
+
+            return response()->json(["lote"=>"OK",
+                'message'=>"OK"],200);
+        }
+        catch(Exception $e)
+        {
+            return response()->json(['message'=>"ERROR - ".$e->getMessage()],500);
+        }
+
+    }
     /**
      * Store a newly created resource in storage.
      *

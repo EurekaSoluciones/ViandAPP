@@ -18,14 +18,16 @@ class CreateStockMovimientosTable extends Migration
             $table->bigInteger('articulo_id')->unsigned()->references('id')->on('articulos');
             $table->bigInteger('persona_id')->unsigned()->references('id')->on('personas');
             $table->bigInteger('tipomovimiento_id')->unsigned()->references('id')->on('tipo_movimientos');
-            $table->bigInteger('comercio_id')->nullable($value = true)->unsigned()->references('id')->on('comercio');
+            $table->bigInteger('comercio_id')->nullable($value = true)->unsigned()->references('id')->on('comercios');
             $table->string('cc',20);
             $table->dateTime('fecha');
             $table->integer('cantidad');
             $table->string('operacion',3);
             $table->integer('cantidadconsigno');
-            $table->bigInteger('usuario_id')->unsigned()->references('id')->on('usuarios');
+            $table->bigInteger('usuario_id')->unsigned()->references('id')->on('users');
+            $table->string('estado',10)->nullable($value = true);
             $table->string('observaciones', 200)->nullable($value = true);
+            $table->bigInteger('cierrelote_id')->nullable($value = true)->unsigned()->references('id')->on('cierreslote');
             $table->timestamps();
         });
     }
