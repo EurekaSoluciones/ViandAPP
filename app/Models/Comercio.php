@@ -43,6 +43,16 @@ class Comercio extends Model
         return  $query ;
     }
 
+    public function movimientos()
+    {
+        return $this->hasMany(StockMovimiento::class, 'comercio_id')->orderBy('id','asc');
+    }
+
+    public function cierreslote()
+    {
+        return $this->hasMany(CierreLote::class, 'comercio_id')->orderBy('id','desc');
+    }
+
     public function devolverConsumosPendientesDeLiquidar($fecha, $comercioId)
     {
         //DB::enableQueryLog();
@@ -56,6 +66,8 @@ class Comercio extends Model
         //dd(DB::getQueryLog());
         return $consumos;
     }
+
+
 
     public static function devolverArrForCombo()
     {

@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\V1\ComercioResource;
+use App\Models\CierreLote;
 use App\Models\Comercio;
+use App\Models\Persona;
+use App\Models\StockMovimiento;
 use App\Models\User;
+use Carbon\Carbon;
+use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -166,5 +171,75 @@ class ComercioController extends Controller
 
         session()->flash('message' , 'Comercio reactivado exitosamente');
         return redirect()->route('comercios.index');
+    }
+
+
+    public function consumosPendientesDeRendir (Request $request)
+    {
+
+        $data=$request->all();
+        $fecha=Carbon::parse($data["fecha"]);
+        $usuario= auth('sanctum')->user() ;
+
+        $comercio=Comercio::devolverComercioxCuit($usuario->email);
+
+        $consumos=Comercio::devolverConsumosPendientesDeLiquidar($fecha, $comercio->id);
+
+        return view('comercios.cerrarlote')
+            ->with('movimientos', $consumos)
+            ->with('fecha', $fecha);
+
+    }
+    /**
+     * Genera un nuevo cierre de lote con los consumos pendientes
+     *
+     * @param Request $request --> debe tener: ["observaciones",
+     *                                          "movimientos:["movimiento_id"]"] como raw data y el token del comercio
+     * @return \Illuminate\Http\Response
+     */
+    public function cerrarLote(Request $request)
+    {
+        $data=$request->all();
+        $fecha=Carbon::parse($data["fecha"]);
+        $usuario= auth('sanctum')->user() ;
+
+        $comercio=Comercio::devolverComercioxCuit($usuario->email);
+
+        $consumos=Comercio::devolverConsumosPendientesDeLiquidar($fecha, $comercio->id);
+        session()->flash('message' , 'Lote Cerrado' );
+
+        $this->mostrarWelcome();
+    }
+
+    public static function mostrarWelcome()
+    {
+        $usuario= auth('sanctum')->user() ;
+
+        $comercio=Comercio::devolverComercioxCuit($usuario->email);
+
+        $fecha= \Illuminate\Support\Carbon::now();
+
+        $desayunos=count(StockMovimiento::whereMonth('fecha', $fecha->month)
+            ->whereYear('fecha', $fecha->year)
+            ->where('tipomovimiento_id', config('global.TM_Consumo'))
+            ->where('comercio_id',$comercio->id)
+            ->where('estado','!=',"ANULADO")
+            ->where('articulo_id',config('global.ART_Desayuno'))->get());
+
+        $viandas=count(StockMovimiento::whereMonth('fecha', $fecha->month)
+            ->whereYear('fecha', $fecha->year)
+            ->where('tipomovimiento_id', config('global.TM_Consumo'))
+            ->where('comercio_id',$comercio->id)
+            ->where('estado','!=',"ANULADO")
+            ->where('articulo_id',config('global.ART_Vianda'))->get());
+
+        $ultimosLotes= $comercio->cierreslote()->take(10);
+
+        return view('comercios.welcome')
+            ->with('ultimosLotes',$ultimosLotes)
+            ->with('viandas', $viandas)
+            ->with('desayunos',$desayunos);
+
+
     }
 }

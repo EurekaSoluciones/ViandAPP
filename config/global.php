@@ -9,6 +9,9 @@ return [
     'TM_Baja' =>5,
     'TM_Alta' => 6,
 
+    'ART_Desayuno' => 1,
+    'ART_Vianda' =>2,
+
     'PERFIL_Admin'=>1,
     'PERFIL_Operador'=> 2,
     'PERFIL_Persona'=> 3,

@@ -36,7 +36,10 @@
 
     <!-- /.card-header -->
         <!-- form start -->
-        <form class="form-horizontal">
+        <form class="form-horizontal" method="POST" action="{{ route('consumosPendientes') }}"  role="form" enctype="multipart/form-data">
+            @csrf
+            @method('POST')
+
             <div class="card-body">
                 <div class="form-group row">
                     <label for="fechahasta" class="col-sm-2 col-form-label">Fecha Hasta</label>
@@ -56,25 +59,6 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
-
-                    <label for="cuit" class="col-sm-2 col-form-label">CUIT</label>
-                    <div class="col-sm-4">
-                        <input type="text" class='form-control' name="cuit" id='cuit' placeholder='CUIT' value={{$cuit}}>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="offset-2 col-sm-2">
-                        <div class="form-check">
-                            <input type="checkbox" class='form-check-input' name= id='ckActivos'  checked="">
-
-                            <label class="form-check-label" for="ckActivos">Solo Activos</label>
-                        </div>
-                    </div>
-
-                </div>
-
                 <button type="submit" class="btn btn-info float-right">Buscar</button>
 
             </div>
@@ -89,49 +73,33 @@
                 <table id="tabla" class="table table-striped table-hover dataTable">
                     <thead class="thead">
                     <tr>
-                        <th>No</th>
-
-                        <th class="sorting_asc">Razón Social</th>
-                        <th>Nombre Fantasía</th>
-                        <th>Cuit</th>
-                        <th>Activo?</th>
-                        <th>Fecha Baja</th>
-                        <th></th>
+                        <th>#</th>
+                        <th class="sorting_asc">Fecha</th>
+                        <th>Persona</th>
+                        <th>Artículo</th>
+                        <th>Cantidad</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach ($comercios as $comercio)
+                    @foreach ($movimientos as $movimiento)
                         <tr>
-                            <td>{{ $comercio->id }}</td>
-                            <td>{{ $comercio->razonsocial}}</td>
-                            <td>{{ $comercio->nombrefantasia }}</td>
-                            <td>{{ $comercio->cuit }}</td>
-                            <td><input type="checkbox" name="esexterno" disabled="" {{ ($comercio->activo) ? "checked" : "" }}></td>
-                            <td>{{ ($comercio->fechabaja!=null)?$persona->fechabaja->format('d-m-Y') :"" }}</td>
-                            <td>
-                                <a class="btn btn-sm btn-info" href="{{ route('comercios.edit',$comercio->id) }}" title="Modificar"><i class="fas fa-pencil-alt"></i> </a>
-                                @if ($comercio->activo)
-                                    <form action="{{ route('comercios.destroy',$comercio->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" title="Borrar"><i class="fas fa-trash" ></i> </button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('comercios.reactivate',$comercio->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-warning btn-sm" title="Reactivar"><i class="fas fa-recycle" ></i> </button>
-                                    </form>
-                                @endif
-
-                            </td>
+                            <td>{{ $movimiento->id }}</td>
+                            <td>{{ $movimiento->fecha}}</td>
+                            <td>{{ $movimiento->persona->fullname }}</td>
+                            <td><i class="{{$movimiento->articulo->icon}}"></i> {{$movimiento->articulo->descripcion}}</td>
+                            <td>{{$movimiento->cantidad}}</td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
             </div>
+            <div class="row ">
+                <button type="submit" class="btn btn-info float-right" action="{{ route('cerrarLote') }}">Cerrar Lote</button>
+
+            </div>
         </div>
         <div class="card-footer">
-            {!! $comercios->links() !!}
+            {!! $movimientos->links() !!}
         </div>
 
     </div>

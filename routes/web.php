@@ -38,15 +38,24 @@ Route::get('/home', 'HomeController@index');
 Route::resource('personas', 'PersonaController');
 Route::resource('comercios', 'ComercioController');
 
+/*Acciones de Comercios*/
+Route::get('consumir', [Controllers\StockController::class, 'consumir'])->name('consumir');
+Route::POST('generarconsumo', [Controllers\StockController::class, 'generarconsumo'])->name('generarconsumo');
+Route::POST('cerrarLote', [Controllers\ComercioController::class, 'cerrarLote'])->name('cerrarLote');
+Route::POST('consumosPendientes', [Controllers\ComercioController::class, 'consumosPendientesDeRendir'])->name('consumosPendientes');
+
+/*Acciones de Administradores*/
 Route::POST('asignacionexcel', [Controllers\StockController::class, 'import'])->name('asignacionexcel');
 Route::get('importarexcel', [Controllers\StockController::class, 'index'])->name('importarexcel');
 Route::POST('confirmarimportacion', [Controllers\StockController::class, 'confirmarImportacion'])->name('confirmarimportacion');
-Route::get('consumir', [Controllers\StockController::class, 'consumir'])->name('consumir');
-Route::POST('generarconsumo', [Controllers\StockController::class, 'generarconsumo'])->name('generarconsumo');
 Route::get('aumentarstock', [Controllers\StockController::class, 'aumentarstock'])->name('aumentarstock');
 Route::POST('generaraumento', [Controllers\StockController::class, 'generaraumento'])->name('generaraumento');
 Route::get('disminuirstock', [Controllers\StockController::class, 'disminuirstock'])->name('disminuirstock');
 Route::POST('generardisminucion', [Controllers\StockController::class, 'generardisminucion'])->name('generardisminucion');
+
+/*Acciones de Personas*/
+
+
 
 /*Llamadas Ajax para obtener valores adicionales*/
 Route::get('/obtenerStockdePersona', 'AdminGeneralController@obtenerStockdePersona')->name('obtenerStockdePersona');

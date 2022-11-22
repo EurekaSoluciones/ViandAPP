@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Persona;
+use App\Models\Stock;
+use App\Models\StockMovimiento;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -59,16 +61,7 @@ class PersonaController extends Controller
 
         $data=$request->all();
 
-        $persona = Persona::create($data);
-
-        /*Y tengo que crear un usuario para esa persona*/
-
-        User::create([
-            'email'=>$data["dni"],
-            'name'=>$data["apellido"]." ".$data["nombre"],
-            'password'=>Hash::make($data["dni"]),//Hash::make(substr( $datos[0], strlen($datos[0])-4, 4)),
-            'perfil_id'=>"3",
-        ]);
+        $persona = Persona::crearPersonayUsuario($data["apellido"],$data["nombre"], $data["dni"], $data["cuit"]);
 
         session()->flash('message' , 'Persona creada exitosamente. Se creó también el usuario correspondiente.');
 
@@ -139,5 +132,39 @@ class PersonaController extends Controller
 
         session()->flash('message' , 'Persona inactivada exitosamente');
         return redirect()->route('personas.index');
+    }
+
+    public static function mostrarWelcome()
+    {
+        $usuario= auth('sanctum')->user() ;
+
+        $persona=Persona::devolverPersonaxDni($usuario->email);
+
+        $fecha= \Illuminate\Support\Carbon::now();
+
+        $stock =Stock::devolverStockdePersona($persona->id, $fecha);
+
+
+        $desayunos=count(StockMovimiento::whereMonth('fecha', $fecha->month)
+            ->whereYear('fecha', $fecha->year)
+            ->where('tipomovimiento_id', config('global.TM_Consumo'))
+            ->where('persona_id',$persona->id)
+            ->where('estado','!=',"ANULADO")
+            ->where('articulo_id',config('global.ART_Desayuno'))->get());
+
+        $viandas=count(StockMovimiento::whereMonth('fecha', $fecha->month)
+            ->whereYear('fecha', $fecha->year)
+            ->where('tipomovimiento_id', config('global.TM_Consumo'))
+            ->where('persona_id',$persona->id)
+            ->where('estado','!=',"ANULADO")
+            ->where('articulo_id',config('global.ART_Vianda'))->get());
+
+        return view('personas.welcome')
+            ->with('stock',$stock)
+            ->with('qr', $persona->qr)
+            ->with('viandas', $viandas)
+            ->with('desayunos',$desayunos);
+
+
     }
 }

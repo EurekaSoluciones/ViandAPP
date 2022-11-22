@@ -52,4 +52,22 @@ class Articulo extends Model
         return $item;
 
     }
+
+    public function geticonAttribute()
+    {
+        $clase="";
+        switch ($this->id)
+        {
+            case 1:
+                $clase="fas fa-mug-hot";
+                break;
+            case 2:
+                $clase="fas fa-utensils";
+                break;
+            default:
+                $clase="fas fa-question";
+                break;
+        }
+        return $clase;
+    }
 }

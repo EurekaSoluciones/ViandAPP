@@ -27,7 +27,7 @@ class Persona extends Model
      *
      * @var array
      */
-    protected $fillable = ['apellido','cuit', 'nombre','activo', 'dni','fechabaja'];
+    protected $fillable = ['apellido','cuit', 'nombre','activo', 'dni','fechabaja', 'qr'];
 
 
     public function getFullNameAttribute()
@@ -112,6 +112,13 @@ class Persona extends Model
             'nombre'=>$nombre,
             'cuit' => $cuit,
             'dni'=>$dni]);
+
+        /*tengo que generar el QR*/
+        /*El QR va a ser el ID padeado a 8 right + un numero random del 100000 al 999999*/
+
+        $qr=str_pad($persona->id, 8, "0").str_pad(rand(100000,999999), 8, "0");
+
+        $persona->update(["qr"=>$qr]);
 
         /*Y tengo que crear un usuario para esa persona*/
 

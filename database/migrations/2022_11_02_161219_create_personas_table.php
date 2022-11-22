@@ -21,6 +21,7 @@ class CreatePersonasTable extends Migration
             $table->string('cuit', 11)->unique();
             $table->boolean('activo')->default(1);
             $table->dateTime('fechabaja')->nullable($value = true);
+            $table->string('qr', 50);
             $table->timestamps();
         });
     }

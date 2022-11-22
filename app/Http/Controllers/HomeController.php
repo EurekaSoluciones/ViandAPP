@@ -27,25 +27,42 @@ class HomeController extends Controller
 
         $user=auth()->user();
 
-        $empleados=count(Persona:: where('activo', true)->get());
+        switch ($user->perfil_id)
+        {
+            case config('global.PERFIL_Comercio'):
+                return ComercioController::mostrarWelcome();
 
-        $comercios=count(Comercio:: where('activo', true)->get());
+                break;
 
-        $desayunos=count(StockMovimiento::whereMonth('fecha', $fecha->month)
-            ->whereYear('fecha', $fecha->year)
-            ->where('tipomovimiento_id', 2)
-            ->where('articulo_id',1)->get());
+            case config('global.PERFIL_Persona'):
+                return PersonaController::mostrarWelcome();
+                break;
 
-        $viandas=count(StockMovimiento::whereMonth('fecha', $fecha->month)
-            ->whereYear('fecha', $fecha->year)
-            ->where('tipomovimiento_id', 2)
-            ->where('articulo_id',2)->get());
+            default:
+                $empleados=count(Persona:: where('activo', true)->get());
 
-        return view('welcome')
-            ->with('empleados',$empleados)
-            ->with('comercios',$comercios)
-            ->with('viandas', $viandas)
-            ->with('desayunos',$desayunos);
+                $comercios=count(Comercio:: where('activo', true)->get());
+
+                $desayunos=count(StockMovimiento::whereMonth('fecha', $fecha->month)
+                    ->whereYear('fecha', $fecha->year)
+                    ->where('tipomovimiento_id', 2)
+                    ->where('articulo_id',1)->get());
+
+                $viandas=count(StockMovimiento::whereMonth('fecha', $fecha->month)
+                    ->whereYear('fecha', $fecha->year)
+                    ->where('tipomovimiento_id', 2)
+                    ->where('articulo_id',2)->get());
+
+                return view('welcome')
+                    ->with('empleados',$empleados)
+                    ->with('comercios',$comercios)
+                    ->with('viandas', $viandas)
+                    ->with('desayunos',$desayunos);
+
+            break;
+
+        }
+
 
     }
 }
