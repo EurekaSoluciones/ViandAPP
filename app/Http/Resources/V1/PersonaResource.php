@@ -14,17 +14,21 @@ class PersonaResource extends JsonResource
      */
     public function toArray($request)
     {
-        $stock=$this->stockActualParaComercio();
+
+        $stock=$this->stockActual()->get();
+
+        $totalViandas = $stock->where('articulo_id', config('global.ART_Vianda'))->sum('saldo');
+        $totalDesayunos = $stock->where('articulo_id', config('global.ART_Desayuno'))->sum('saldo');
 
         return ['id'=>$this->id,
-            'apellido'=> $this->apellido,
-            'nombre'=> $this->nombre,
-            'apellidoYNombre'=>$this->fullname,
+            'apellido'=> ucfirst(strtolower($this->apellido)),
+            'nombre'=>ucfirst(strtolower( $this->nombre)),
+            'apellidoYNombre'=>ucfirst(strtolower($this->fullname)),
             'dni'=>$this->dni,
             'cuit'=>$this->cuit,
             'qr' =>$this->qr,
-            'stockActual'=>StockResource::collection($this->stockActual()->get()),
-            'stockActual2'=>[$this->stockActualParaComercio()]
+            'stockViandas'=>$totalViandas,
+            'stockDesayunos'=>$totalDesayunos
         ];
 
 
