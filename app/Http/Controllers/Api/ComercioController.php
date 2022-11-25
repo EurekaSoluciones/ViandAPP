@@ -75,6 +75,7 @@ class ComercioController extends Controller
 
         try {
             $consumos=Comercio::devolverConsumosPendientesDeLiquidar($fecha, $comercio->id);
+
             return response()->json(["Consumos"=>StockMovimientoResource::collection($consumos ),
                 'message'=>"OK"],200);
         }
@@ -140,11 +141,11 @@ class ComercioController extends Controller
         $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
 
         $fecha= Carbon::now();
-        $consumo=StockMovimiento::devolverStockMovimientoxId($data["id"]);
+        $consumo=StockMovimiento::devolverStockMovimientoNoAnuladoxId($data["consumoId"]);
 
         $usuario= auth('sanctum')->user() ;
         $comercio=Comercio::devolverComercioxCuit($usuario->email);
-        $observaciones="";
+        $observaciones=$data["motivo"];
 
         if ($consumo ==null)
         {
@@ -182,8 +183,9 @@ class ComercioController extends Controller
 
         $observaciones=$data["observaciones"];
         $usuario= auth('sanctum')->user() ;
+        $fecha=$data["fecha"];
+
         $comercio=Comercio::devolverComercioxCuit($usuario->email);
-        $movimientos=$data["movimientos"];
 
         if ($comercio ==null)
         {
@@ -192,7 +194,7 @@ class ComercioController extends Controller
 
         try {
 
-            $ok=$comercio->cerrarLote($observaciones,$movimientos, $usuario);
+            $ok=$comercio->cerrarLote($observaciones,$fecha, $usuario);
 
             return response()->json(["lote"=>"OK",
                 'message'=>"OK"],200);

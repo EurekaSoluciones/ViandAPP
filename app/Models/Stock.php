@@ -59,6 +59,18 @@ class Stock extends Model
         return $stock;
     }
 
+    public function devolverStockActual($persona_id)
+    {
+        $fecha=Carbon::now();
+        //DB::enableQueryLog();
+        $stock= Stock::where('persona_id', $persona_id)
+            ->where('saldo',">", 0)
+            ->whereDate( 'fechadesde', '<=', $fecha->formatLocalized('%Y-%m-%d'))
+            ->whereDate( 'fechahasta', '>=', $fecha->formatLocalized('%Y-%m-%d'))->get();
+        //dd(DB::getQueryLog());
+        return $stock;
+    }
+
     public function devolverStockdePersona($persona_id, $fecha)
     {
         //DB::enableQueryLog();

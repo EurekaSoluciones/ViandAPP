@@ -22,7 +22,7 @@ class StockMovimiento extends Model
      */
     protected $fillable = ['articulo_id','persona_id', 'fecha', 'tipomovimiento_id',
         'comercio_id', 'cc','cantidad', 'operacion', 'cantidadconsigno', 'usuario_id',
-        'observaciones', 'cierrelote_id'];
+        'observaciones', 'cierrelote_id', 'estado'];
 
     public function articulo()
     {
@@ -49,9 +49,21 @@ class StockMovimiento extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function getPersonaFullNameAttribute()
+    {
+        return $this->apellido . ' ' . $this->nombre;
+    }
+
     public static function  devolverStockMovimientoxId($id)
     {
         $query = StockMovimiento::where('id','=', $id)
+            ->first() ;
+        return  $query ;
+    }
+    public static function  devolverStockMovimientoNoAnuladoxId($id)
+    {
+        $query = StockMovimiento::where('id','=', $id)
+            ->where('estado','=', 'PENDIENTE')
             ->first() ;
         return  $query ;
     }
@@ -164,7 +176,7 @@ class StockMovimiento extends Model
 
             $consumo->update([
                 'estado'=>'ANULADO',
-                'observaciones'=>$consumo->observaciones. " - ANULADO "."" ]);
+                'observaciones'=>$consumo->observaciones. " - " .$observaciones]);
 
             StockMovimiento::create([
                 'articulo_id'=>$consumo->articulo_id,
@@ -172,6 +184,7 @@ class StockMovimiento extends Model
                 'fecha'=>$consumo->fecha,
                 'cc'=>$consumo->cc,
                 'cantidad'=>$consumo->cantidad,
+                'comercio_id'=>$consumo->comercio_id,
                 'operacion'=>'INC',
                 'cantidadconsigno'=>$consumo->cantidad,
                 'usuario_id'=>$usuario->id,

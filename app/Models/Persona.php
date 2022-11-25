@@ -56,6 +56,13 @@ class Persona extends Model
         return  $query ;
     }
 
+    public static function  devolverPersonaxQR($qr)
+    {
+        $query = Persona::where('qr','=', $qr)
+            ->first() ;
+        return  $query ;
+    }
+
     public static function devolverArrForCombo()
     {
         $personas=Persona::orderBy('apellido')->get()->pluck('full_name', 'id')->toArray();
@@ -75,6 +82,16 @@ class Persona extends Model
     public function ultimosmovimientos()
     {
         return $this->hasMany(StockMovimiento::class, 'persona_id')->where('fecha','>=', Carbon::now()->addMonth(-2))->orderBy('id','desc');
+    }
+
+    public function stockActual()
+    {
+        $fecha=Carbon::now();
+        return $this->hasMany(Stock::class, 'persona_id')
+            ->where('saldo',">", 0)
+            ->whereDate( 'fechadesde', '<=', $fecha->formatLocalized('%Y-%m-%d'))
+            ->whereDate( 'fechahasta', '>=', $fecha->formatLocalized('%Y-%m-%d'))
+            ->orderBy('id','desc');
     }
 
     public function scopeApellido($query, $search)

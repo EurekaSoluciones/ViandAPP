@@ -56,18 +56,29 @@ class Comercio extends Model
     public function devolverConsumosPendientesDeLiquidar($fecha, $comercioId)
     {
         //DB::enableQueryLog();
-        $consumos= StockMovimiento::where('tipomovimiento_id',config('global.TM_Consumo'))
-            ->whereNull('cierrelote_id')
-            ->where('estado', 'PENDIENTE')
-            ->where( 'comercio_id', '=', $comercioId)
-            ->whereDate( 'fecha', '<', $fecha)
+        $fechaParaAnulados= Carbon::now()->addDays(-15);
+
+        $consumos= StockMovimiento::where(function($query) use ($comercioId, $fecha) {
+                    $query->where('estado', 'PENDIENTE')
+                    ->where('tipomovimiento_id',config('global.TM_Consumo'))
+                    ->where( 'comercio_id', '=', $comercioId)
+                    ->whereDate( 'fecha', '<=', $fecha)
+                    ->whereNull('cierrelote_id');
+                    })
+                ->orWhere(function($query) use ($comercioId, $fechaParaAnulados) {
+                    $query->where('estado', 'ANULADO')
+                    ->where('tipomovimiento_id',config('global.TM_Consumo'))
+                    ->where( 'comercio_id', '=', $comercioId)
+                    ->whereDate( 'fecha', '>', $fechaParaAnulados);
+                    })
+            ->join('personas', 'personas.id', '=', 'persona_id')
+            ->orderBy('fecha', 'ASC')
+            ->orderBy('personas.apellido', 'ASC')
             ->get();
 
         //dd(DB::getQueryLog());
         return $consumos;
     }
-
-
 
     public static function devolverArrForCombo()
     {
@@ -79,15 +90,17 @@ class Comercio extends Model
      * Genera un nuevo cierre de lote con los consumos pendientes
      *
      * @param string $observaciones
-     * @param array $movimientos
+     * @param Carbon $fecha
      * @param User $usuario
      * @return \Illuminate\Http\Response
      */
-    public function CerrarLote($observaciones, $movimientos, $usuario)
+    public function CerrarLote($observaciones, $fecha, $usuario)
     {
         try
         {
             DB::beginTransaction();
+
+            $movimientos= $this->devolverConsumosPendientesDeLiquidar($fecha, $this->id);
 
             /*Tengo que crear el lote*/
             $cierreLote=CierreLote::create(
@@ -98,9 +111,11 @@ class Comercio extends Model
                     'usuario_id'=>$usuario->id]);
 
             /*Actualizar los movimientos que lo incluyen*/
-            $movimientos=StockMovimiento:: whereIn('id',$movimientos);
-            $movimientos->update(['cierrelote_id'=>$cierreLote->id,
-                            'estado'=>'CERRADO']);
+            $keys=$movimientos->modelKeys();
+
+           StockMovimiento::whereIn('id', $keys)->update(['cierrelote_id'=>$cierreLote->id,
+                'estado'=>'CERRADO']);;
+
             DB::commit();
 
             return true;
@@ -113,8 +128,7 @@ class Comercio extends Model
 
     }
 
-
-    ///SCOPES
+        ///SCOPES
     public function scopeRazonSocial($query, $search)
     {
         if ($search!="")

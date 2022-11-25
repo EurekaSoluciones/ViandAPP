@@ -37,8 +37,14 @@ Route::post('helloWorldConAuth',  [App\Http\Controllers\Api\TestController::clas
 Route::post('comercios/consumir', [App\Http\Controllers\Api\ComercioController::class, 'consumir'])
     ->middleware('App\Http\Middleware\EureAuthApis');
 
+Route::post('comercios/anularConsumo', [App\Http\Controllers\Api\ComercioController::class, 'anularConsumo'])
+    ->middleware('App\Http\Middleware\EureAuthApis');
+
 Route::post('comercios/consumosPendientesDeRendir', [App\Http\Controllers\Api\ComercioController::class, 'consumosPendientesDeRendir'])
     ->middleware('App\Http\Middleware\EureAuthApis');
 
 Route::post('comercios/cerrarLote', [App\Http\Controllers\Api\ComercioController::class, 'cerrarLote'])
+    ->middleware('App\Http\Middleware\EureAuthApis');
+
+Route::post('personas/obtenerPersonaByQr', [App\Http\Controllers\Api\PersonaController::class, 'devolverPersonaxQR'])
     ->middleware('App\Http\Middleware\EureAuthApis');

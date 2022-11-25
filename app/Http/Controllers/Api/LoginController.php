@@ -126,6 +126,7 @@ class LoginController extends Controller
             'message'=>'Persona no encontrada'
         ], 401);
     }
+
     public function validateLogin(Request $request)
     {
 
