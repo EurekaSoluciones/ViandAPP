@@ -71,9 +71,7 @@ class Comercio extends Model
                     ->where( 'comercio_id', '=', $comercioId)
                     ->whereDate( 'fecha', '>', $fechaParaAnulados);
                     })
-            ->join('personas', 'personas.id', '=', 'persona_id')
             ->orderBy('fecha', 'ASC')
-            ->orderBy('personas.apellido', 'ASC')
             ->get();
 
         //dd(DB::getQueryLog());
@@ -111,7 +109,7 @@ class Comercio extends Model
                     'usuario_id'=>$usuario->id]);
 
             /*Actualizar los movimientos que lo incluyen*/
-            $keys=$movimientos->modelKeys();
+            $keys=$movimientos->where('estado', 'PENDIENTE')->pluck('id');
 
            StockMovimiento::whereIn('id', $keys)->update(['cierrelote_id'=>$cierreLote->id,
                 'estado'=>'CERRADO']);;

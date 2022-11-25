@@ -27,7 +27,7 @@ class CreateStockMovimientosTable extends Migration
             $table->bigInteger('usuario_id')->unsigned()->references('id')->on('users');
             $table->string('estado',10)->nullable($value = true);
             $table->string('observaciones', 200)->nullable($value = true);
-            $table->bigInteger('cierrelote_id')->nullable($value = true)->unsigned()->references('id')->on('cierreslote');
+            $table->bigInteger('cierrelote_id')->nullable($value = true)->unsigned()->references('id')->on('cierre_lotes');
             $table->timestamps();
         });
     }

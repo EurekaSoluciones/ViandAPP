@@ -11,6 +11,8 @@ class CierreLote extends Model
 
     protected $perPage = 30;
 
+    protected $table = "cierre_lotes";
+
     static $rules = [
         'comercio_id' => 'required',
 

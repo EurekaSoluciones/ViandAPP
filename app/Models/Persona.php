@@ -128,7 +128,8 @@ class Persona extends Model
         $persona = Persona::create(['apellido' => $apellido,
             'nombre'=>$nombre,
             'cuit' => $cuit,
-            'dni'=>$dni]);
+            'dni'=>$dni,
+            'qr'=>""]);
 
         /*tengo que generar el QR*/
         /*El QR va a ser el ID padeado a 8 right + un numero random del 100000 al 999999*/

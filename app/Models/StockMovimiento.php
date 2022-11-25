@@ -51,7 +51,7 @@ class StockMovimiento extends Model
 
     public function getPersonaFullNameAttribute()
     {
-        return $this->apellido . ' ' . $this->nombre;
+        return $this->persona()->apellido . ' ' . $this->persona()->nombre;
     }
 
     public static function  devolverStockMovimientoxId($id)
