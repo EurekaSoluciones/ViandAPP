@@ -49,6 +49,12 @@ class StockMovimiento extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public static function  devolverStockMovimientoxId($id)
+    {
+        $query = StockMovimiento::where('id','=', $id)
+            ->first() ;
+        return  $query ;
+    }
     public function scopeAFecha($query, $fecha)
     {
         $fechaTope= Carbon::parse(strtotime(str_replace('/', '-', $fecha)));
@@ -136,6 +142,54 @@ class StockMovimiento extends Model
                 'observaciones'=>$observaciones]);
 
             $stock->update(['saldo'=>$stock->saldo-$cantidad]);
+
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+            return false;
+        }
+    }
+
+    public function AnularConsumo($consumo,$usuario, $observaciones)
+    {
+
+        $stock=Stock::devolverStock($consumo->personaId, $consumo->fecha, $consumo->articuloId);
+
+        /*Tengo que buscar si hay stock disponible*/
+        try
+        {
+            DB::beginTransaction();
+
+            $consumo->update([
+                'estado'=>'ANULADO',
+                'observaciones'=>$consumo->observaciones. " - ANULADO "."" ]);
+
+            StockMovimiento::create([
+                'articulo_id'=>$consumo->articulo_id,
+                'persona_id'=>$consumo->persona->id,
+                'fecha'=>$consumo->fecha,
+                'cc'=>$consumo->cc,
+                'cantidad'=>$consumo->cantidad,
+                'operacion'=>'INC',
+                'cantidadconsigno'=>$consumo->cantidad,
+                'usuario_id'=>$usuario->id,
+                'tipomovimiento_id'=>config('global.TM_Anulacion'),
+                'observaciones'=>$observaciones]);
+
+            if ($stock==null)
+                Stock::create(
+                    ['articulo_id'=>$consumo->articulo_id,
+                        'persona_id'=>$consumo->persona->id,
+                        'fechadesde'=>$consumo->fecha,
+                        'fechahasta'=>$consumo->fecha,
+                        'cc'=>$consumo->cc,
+                        'stock'=>$consumo->cantidad,
+                        'saldo'=>$consumo->cantidad]);
+            else
+                $stock->update(['saldo'=>$stock->saldo + $consumo->cantidad]);
+
 
             DB::commit();
             return true;

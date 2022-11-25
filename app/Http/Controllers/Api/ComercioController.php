@@ -95,6 +95,7 @@ class ComercioController extends Controller
         $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
 
         $fecha= Carbon::now();
+
         $persona=Persona::devolverPersonaxId($data["personaId"]);
         $articulo=Articulo::devolverArticuloxId($data["articuloId"]);
 
@@ -127,6 +128,39 @@ class ComercioController extends Controller
             }
         }
     }
+
+    /**
+     * Devuelve los movimientos pendientes de liquidar de un comercio
+     *
+     * @param Request $request --> debe tener: "fecha" como raw data y el token del comercio
+     * @return \Illuminate\Http\Response
+     */
+    public function anularConsumo(Request $request)
+    {
+        $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
+
+        $fecha= Carbon::now();
+        $consumo=StockMovimiento::devolverStockMovimientoxId($data["id"]);
+
+        $usuario= auth('sanctum')->user() ;
+        $comercio=Comercio::devolverComercioxCuit($usuario->email);
+        $observaciones="";
+
+        if ($consumo ==null)
+        {
+            return response()->json(['message'=>"No existe el consumo a anular"], 400);
+        }
+        else
+        {
+            $anulacionOK=StockMovimiento::AnularConsumo($consumo, $usuario, $observaciones);
+            if ($anulacionOK)
+                return response()->json(['message'=>"Consumo Anulado"], 200);
+            else
+                return response()->json(['message'=>"Error: "], 400);
+
+        }
+    }
+
 
     /**
      * Genera un nuevo cierre de lote con los consumos pendientes
