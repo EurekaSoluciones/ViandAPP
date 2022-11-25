@@ -53,8 +53,8 @@ class Stock extends Model
         //DB::enableQueryLog();
         $stock= Stock::where('persona_id', $persona_id)
             ->where('articulo_id',$articulo_id)
-            ->whereDate( 'fechadesde', '<=', $fecha->formatLocalized('%Y-%m-%d'))
-            ->whereDate( 'fechahasta', '>=', $fecha->formatLocalized('%Y-%m-%d'))->first();
+            ->whereDate( 'fechadesde', '<=', $fecha)
+            ->whereDate( 'fechahasta', '>=', $fecha)->first();
         //dd(DB::getQueryLog());
         return $stock;
     }
@@ -65,8 +65,35 @@ class Stock extends Model
         //DB::enableQueryLog();
         $stock= Stock::where('persona_id', $persona_id)
             ->where('saldo',">", 0)
-            ->whereDate( 'fechadesde', '<=', $fecha->formatLocalized('%Y-%m-%d'))
-            ->whereDate( 'fechahasta', '>=', $fecha->formatLocalized('%Y-%m-%d'))->get();
+            ->whereDate( 'fechadesde', '<=', $fecha)
+            ->whereDate( 'fechahasta', '>=',$fecha)->get();
+        //dd(DB::getQueryLog());
+        return $stock;
+    }
+
+    public function devolverStockActualParaComercio($persona_id)
+    {
+        $fecha=Carbon::now();
+        //DB::enableQueryLog();
+//        $stock= Stock::where('persona_id', $persona_id)
+//            ->where('saldo',">", 0)
+//            ->whereDate( 'fechadesde', '>=', $fecha)
+//            ->whereDate( 'fechahasta', '<=', $fecha)
+//            ->groupBy('articulo_id')
+//            ->selectRaw('sum(saldo) as saldo, articulo_id')
+//            ->with('articulo')
+//            ->pluck('saldo','articulo_id');
+
+        $stock= Stock::where('persona_id', $persona_id)
+            ->where('saldo',">", 0)
+            ->whereDate( 'fechadesde', '>=', $fecha)
+            ->whereDate( 'fechahasta', '<=', $fecha)
+            ->with('articulo')
+            ->groupBy('articulo.descripcion')
+            ->selectRaw('sum(saldo) as saldo, articulo.descripcion as articulo')
+            ->pluck('saldo','articulo');
+
+
         //dd(DB::getQueryLog());
         return $stock;
     }

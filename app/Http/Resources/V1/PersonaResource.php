@@ -14,6 +14,8 @@ class PersonaResource extends JsonResource
      */
     public function toArray($request)
     {
+        $stock=$this->stockActualParaComercio();
+
         return ['id'=>$this->id,
             'apellido'=> $this->apellido,
             'nombre'=> $this->nombre,
@@ -21,7 +23,8 @@ class PersonaResource extends JsonResource
             'dni'=>$this->dni,
             'cuit'=>$this->cuit,
             'qr' =>$this->qr,
-            'stockActual'=> StockResource::collection($this->stockActual()->get())
+            'stockActual'=>StockResource::collection($this->stockActual()->get()),
+            'stockActual2'=>[$this->stockActualParaComercio()]
         ];
 
 

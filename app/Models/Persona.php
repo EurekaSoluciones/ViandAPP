@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class Persona extends Model
@@ -89,9 +90,31 @@ class Persona extends Model
         $fecha=Carbon::now();
         return $this->hasMany(Stock::class, 'persona_id')
             ->where('saldo',">", 0)
-            ->whereDate( 'fechadesde', '<=', $fecha->formatLocalized('%Y-%m-%d'))
-            ->whereDate( 'fechahasta', '>=', $fecha->formatLocalized('%Y-%m-%d'))
+            ->whereDate( 'fechadesde', '<=', $fecha)
+            ->whereDate( 'fechahasta', '>=', $fecha)
             ->orderBy('id','desc');
+    }
+
+    public function stockActualParaComercio()
+    {
+        $fecha=Carbon::now();
+
+        return $this->hasMany(Stock::class, 'persona_id')
+            ->where('saldo',">", 0)
+            ->whereDate( 'fechadesde', '<=', $fecha)
+            ->whereDate( 'fechahasta', '>=', $fecha)
+            ->groupBy('articulo_id')
+            ->selectRaw('sum(saldo) as saldo, articulo_id')
+            ->pluck('saldo','articulo_id');
+
+//
+//        return Persona::with(['articulo' => function($query){
+//            $query->select('id','descripcion');
+//        }
+//        ])->withCount(['stock as saldoStock' => function($query) {
+//            $query->select(DB::raw('SUM(saldo)'));
+//        }
+//        ])->get();
     }
 
     public function scopeApellido($query, $search)

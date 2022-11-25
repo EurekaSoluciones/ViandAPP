@@ -97,19 +97,34 @@ class ComercioController extends Controller
 
         $fecha= Carbon::now();
 
-        $persona=Persona::devolverPersonaxId($data["personaId"]);
+        if (isset($data["qr"]))
+            $persona=Persona::devolverPersonaxQR($data["qr"]);
+
+        if (isset($data["personaId"]))
+            $persona=Persona::devolverPersonaxId($data["personaId"]);
+
+        if ($persona ==null)
+        {
+            return response()->json(['message'=>"No existe la persona"], 400);
+        }
+
         $articulo=Articulo::devolverArticuloxId($data["articuloId"]);
+
+        if ($articulo ==null)
+        {
+            return response()->json(['message'=>"No existe el artículo"], 400);
+        }
 
         $usuario= auth('sanctum')->user() ;
         $comercio=Comercio::devolverComercioxCuit($usuario->email);
 
-        $stock=Stock::devolverStock( $data["personaId"], $fecha, $data["articuloId"]);
+        $stock=Stock::devolverStock( $persona->id, $fecha, $articulo->id);
 
         $cantidad=(int) $data["cantidad"];
 
         if ($stock ==null)
         {
-            return response()->json(['message'=>"No existe stock disponible para esa persona y artículo"], 200);
+            return response()->json(['message'=>"No existe stock disponible para esa persona y artículo"], 400);
         }
         else
         {
