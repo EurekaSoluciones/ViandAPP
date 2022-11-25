@@ -3,7 +3,17 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Dashboard</h1>
+
+
+<div class="col-md-12">
+    <div class="callout callout-danger">
+        <h1>Bienvenido !</h1>
+        <h5>
+            <strong> {{$persona->nombre .' '. $persona->apellido}}</strong>
+            <br>
+        </h5>
+    </div>
+</div>
 @stop
 
 @section('content')
@@ -13,7 +23,7 @@
                 <span class="info-box-icon bg-info elevation-1"><i class="fas fa-mug-hot"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">Desayunos (en el mes)</span>
+                    <span class="info-box-text">Desayunos consumidos (en el mes)</span>
                     <span class="info-box-number">{{$desayunos}}</span>
                 </div>
                 <!-- /.info-box-content -->
@@ -26,7 +36,7 @@
                 <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-utensils"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">Viandas (en el mes)</span>
+                    <span class="info-box-text">Viandas consumidas (en el mes)</span>
                     <span class="info-box-number">{{$viandas}}</span>
                 </div>
                 <!-- /.info-box-content -->
@@ -77,107 +87,22 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <ul class="todo-list ui-sortable" data-widget="todo-list">
+                    @foreach($persona->stockActual as $stock)
+
                     <li>
-                        <!-- drag handle -->
-                        <span class="handle ui-sortable-handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                        <!-- checkbox -->
-                        <div class="icheck-primary d-inline ml-2">
-                            <input type="checkbox" value="" name="todo1" id="todoCheck1">
-                            <label for="todoCheck1"></label>
+                        <div class="info-box mb-3 bg-warning">
+                            <span class="info-box-icon"> <i class='{{$stock->articulo->icon}}'></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">{{\Carbon\Carbon::parse( $stock->fechadesde )->format('d/m/Y')}} - {{\Carbon\Carbon::parse( $stock->fechahasta )->format('d/m/Y')}}</span>
+                                <span class="info-box-number">{{$stock->saldo}}</span>
+                            </div>
+                            <!-- /.info-box-content -->
                         </div>
-                        <!-- todo text -->
-                        <span class="text">Design a nice theme</span>
-                        <!-- Emphasis label -->
-                        <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small>
-                        <!-- General tools such as edit or delete-->
-                        <div class="tools">
-                            <i class="fas fa-edit"></i>
-                            <i class="fas fa-trash-o"></i>
-                        </div>
+
+
                     </li>
-                    <li class="done">
-                    <span class="handle ui-sortable-handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                        <div class="icheck-primary d-inline ml-2">
-                            <input type="checkbox" value="" name="todo2" id="todoCheck2" checked="">
-                            <label for="todoCheck2"></label>
-                        </div>
-                        <span class="text">Make the theme responsive</span>
-                        <small class="badge badge-info"><i class="far fa-clock"></i> 4 hours</small>
-                        <div class="tools">
-                            <i class="fas fa-edit"></i>
-                            <i class="fas fa-trash-o"></i>
-                        </div>
-                    </li>
-                    <li>
-                    <span class="handle ui-sortable-handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                        <div class="icheck-primary d-inline ml-2">
-                            <input type="checkbox" value="" name="todo3" id="todoCheck3">
-                            <label for="todoCheck3"></label>
-                        </div>
-                        <span class="text">Let theme shine like a star</span>
-                        <small class="badge badge-warning"><i class="far fa-clock"></i> 1 day</small>
-                        <div class="tools">
-                            <i class="fas fa-edit"></i>
-                            <i class="fas fa-trash-o"></i>
-                        </div>
-                    </li>
-                    <li>
-                    <span class="handle ui-sortable-handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                        <div class="icheck-primary d-inline ml-2">
-                            <input type="checkbox" value="" name="todo4" id="todoCheck4">
-                            <label for="todoCheck4"></label>
-                        </div>
-                        <span class="text">Let theme shine like a star</span>
-                        <small class="badge badge-success"><i class="far fa-clock"></i> 3 days</small>
-                        <div class="tools">
-                            <i class="fas fa-edit"></i>
-                            <i class="fas fa-trash-o"></i>
-                        </div>
-                    </li>
-                    <li>
-                    <span class="handle ui-sortable-handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                        <div class="icheck-primary d-inline ml-2">
-                            <input type="checkbox" value="" name="todo5" id="todoCheck5">
-                            <label for="todoCheck5"></label>
-                        </div>
-                        <span class="text">Check your messages and notifications</span>
-                        <small class="badge badge-primary"><i class="far fa-clock"></i> 1 week</small>
-                        <div class="tools">
-                            <i class="fas fa-edit"></i>
-                            <i class="fas fa-trash-o"></i>
-                        </div>
-                    </li>
-                    <li>
-                    <span class="handle ui-sortable-handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                        <div class="icheck-primary d-inline ml-2">
-                            <input type="checkbox" value="" name="todo6" id="todoCheck6">
-                            <label for="todoCheck6"></label>
-                        </div>
-                        <span class="text">Let theme shine like a star</span>
-                        <small class="badge badge-secondary"><i class="far fa-clock"></i> 1 month</small>
-                        <div class="tools">
-                            <i class="fas fa-edit"></i>
-                            <i class="fas fa-trash-o"></i>
-                        </div>
-                    </li>
+                    @endforeach
                 </ul>
             </div>
             <!-- /.card-body -->
@@ -197,7 +122,7 @@
             <div class="card-body text-center">
                 {!!QrCode::size(300)
                      ->backgroundColor(254,254,218)
-                     ->generate("{{$qr}}");!!}
+                     ->generate("{{$persona->qr}}");!!}
             </div>
 
         </div>

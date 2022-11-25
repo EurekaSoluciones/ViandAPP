@@ -33,12 +33,12 @@ class PersonaController extends Controller
                 return response()->json(["Persona"=> new PersonaResource($persona), 'message'=>"OK"], 200);
             else
                 return response()->json([
-                    'message'=>'Persona Dada de Baja'], 401);
+                    'message'=>'Persona Dada de Baja'], 400);
         }
         else
             {
                 return response()->json([
-                    'message'=>'Persona no encontrada - QR inválido'], 401);
+                    'message'=>'Persona no encontrada - QR inválido'], 400);
             }
 
     }

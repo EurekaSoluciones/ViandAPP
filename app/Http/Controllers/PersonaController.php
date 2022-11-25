@@ -142,9 +142,6 @@ class PersonaController extends Controller
 
         $fecha= \Illuminate\Support\Carbon::now();
 
-        $stock =Stock::devolverStockdePersona($persona->id, $fecha);
-
-
         $desayunos=count(StockMovimiento::whereMonth('fecha', $fecha->month)
             ->whereYear('fecha', $fecha->year)
             ->where('tipomovimiento_id', config('global.TM_Consumo'))
@@ -160,8 +157,7 @@ class PersonaController extends Controller
             ->where('articulo_id',config('global.ART_Vianda'))->get());
 
         return view('personas.welcome')
-            ->with('stock',$stock)
-            ->with('qr', $persona->qr)
+            ->with('persona', $persona)
             ->with('viandas', $viandas)
             ->with('desayunos',$desayunos);
 

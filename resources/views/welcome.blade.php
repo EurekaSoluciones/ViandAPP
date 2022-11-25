@@ -13,7 +13,7 @@
                 <span class="info-box-icon bg-info elevation-1"><i class="fas fa-mug-hot"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">Desayunos (en el mes)</span>
+                    <span class="info-box-text">Desayunos Consumidos (en el mes)</span>
                     <span class="info-box-number">{{$desayunos}}</span>
                 </div>
                 <!-- /.info-box-content -->
@@ -26,7 +26,7 @@
                 <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-utensils"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">Viandas (en el mes)</span>
+                    <span class="info-box-text">Viandas Consumidas (en el mes)</span>
                     <span class="info-box-number">{{$viandas}}</span>
                 </div>
                 <!-- /.info-box-content -->
