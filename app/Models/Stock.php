@@ -38,19 +38,19 @@ class Stock extends Model
 
     }
 
-    public function scopeDisponible($query, $persona_id, $fecha, $articulo_id)
-    {
-        DB::enableQueryLog();
-        $query->where('persona_id', $persona_id)
-            ->where('articulo_id',$articulo_id)
-            ->whereDate( 'fechadesde', '>=', $fecha)
-            ->whereDate( 'fechahasta', '<=', $fecha)->get();
-        //dd(DB::getQueryLog());
-    }
+//    public function scopeDisponible($query, $persona_id, $fecha, $articulo_id)
+//    {
+//        DB::enableQueryLog();
+//        $query->where('persona_id', $persona_id)
+//            ->where('articulo_id',$articulo_id)
+//            ->whereDate( 'fechadesde', '>=', $fecha)
+//            ->whereDate( 'fechahasta', '<=', $fecha)->get();
+//        //dd(DB::getQueryLog());
+//    }
 
     public function devolverStock($persona_id, $fecha, $articulo_id)
     {
-        //DB::enableQueryLog();
+       // DB::enableQueryLog();
         $stock= Stock::where('persona_id', $persona_id)
             ->where('articulo_id',$articulo_id)
             ->whereDate( 'fechadesde', '<=', $fecha)
@@ -101,9 +101,11 @@ class Stock extends Model
     public function devolverStockdePersona($persona_id, $fecha)
     {
         //DB::enableQueryLog();
+
         $stock= Stock::where('persona_id', $persona_id)
-            ->whereDate( 'fechadesde', '<=', $fecha->formatLocalized('%Y-%m-%d'))
-            ->whereDate( 'fechahasta', '>=', $fecha->formatLocalized('%Y-%m-%d'))->get();
+            ->whereDate( 'fechadesde', '<=', $fecha)
+            ->whereDate( 'fechahasta', '>=',$fecha)->get();
+
         //dd(DB::getQueryLog());
         return $stock;
     }

@@ -19,19 +19,19 @@ class StockMovimientoResource extends JsonResource
             "articulo_id"=>$this->articulo_id,
             "articulo"=>$this->articulo->descripcion ,
             "persona_id"=>$this->persona_id,
-            "persona"=>$this->persona->fullname,
+            "persona"=>ucfirst(strtolower($this->persona->fullname)),
             "tipomovimiento_id"=>$this->tipomovimiento_id,
             "tipomovimiento"=>$this->tipomovimiento->descripcion,
             "comercio_id"=>$this->comercio_id,
-            "comercio"=>$this->comercio->nombrefantasia,
+            "comercio"=>ucfirst(strtolower($this->comercio->nombrefantasia)),
             "cc"=>$this->cc,
             "fecha"=>$this->fecha,
             "cantidad"=>$this->cantidad,
             "operacion"=>$this->operacion,
             "usuario_id"=>$this->usuario_id,
-            "usuario"=>$this->usuario->name,
+            "usuario"=>ucfirst(strtolower($this->usuario->name)),
             "observaciones"=>$this->observaciones,
-            "estado" =>$this->estado];
+            "estado" =>ucfirst(strtolower($this->estado))];
 
     }
 }

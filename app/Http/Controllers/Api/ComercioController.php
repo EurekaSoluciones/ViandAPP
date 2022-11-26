@@ -139,7 +139,7 @@ class ComercioController extends Controller
             }
             else
             {
-                return response()->json(['message'=>"Stock insuficiente. Stock actual: ".$stock->cantidad], 200);
+                return response()->json(['message'=>"Stock insuficiente. Stock actual: ".$stock->cantidad], 400);
 
             }
         }
@@ -209,10 +209,12 @@ class ComercioController extends Controller
 
         try {
 
-            $ok=$comercio->cerrarLote($observaciones,$fecha, $usuario);
+            $resultado=$comercio->cerrarLote($observaciones,$fecha, $usuario);
 
-            return response()->json(["lote"=>"OK",
-                'message'=>"OK"],200);
+            if ($resultado["resultado"]==true)
+                return response()->json(["lote"=>$resultado["nroLote"], 'message'=>"OK"],200);
+            else
+                return response()->json(['message'=>"ERROR - ".$resultado["error"]],400);
         }
         catch(Exception $e)
         {

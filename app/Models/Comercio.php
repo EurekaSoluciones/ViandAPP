@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use http\Message;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -116,12 +117,12 @@ class Comercio extends Model
 
             DB::commit();
 
-            return true;
+            return ["resultado"=>true, "nroLote"=>$cierreLote->id];
         }
         catch (\Exception $e)
         {
             DB::rollBack();
-            return false;
+            return ["resultado"=>false, "error"=>$e->getMessage()];
         }
 
     }

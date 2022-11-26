@@ -167,7 +167,7 @@ class StockMovimiento extends Model
     public function AnularConsumo($consumo,$usuario, $observaciones)
     {
 
-        $stock=Stock::devolverStock($consumo->personaId, $consumo->fecha, $consumo->articuloId);
+        $stock=Stock::devolverStock($consumo->persona->id, $consumo->fecha, $consumo->articulo->id);
 
         /*Tengo que buscar si hay stock disponible*/
         try
