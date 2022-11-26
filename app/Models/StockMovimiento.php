@@ -246,12 +246,12 @@ class StockMovimiento extends Model
             DB::commit();
 
 
-            return ["Exitoso"=>true, "error"=>"", "movimiento_id"=>$movimiento->id];
+            return ["exitoso"=>true, "error"=>"", "movimiento_id"=>$movimiento->id];
         }
         catch (\Exception $e)
         {
             DB::rollBack();
-            return ["Exitoso"=>false, "error"=>$e->getMessage(), "movimiento_id"=>null];
+            return ["exitoso"=>false, "error"=>$e->getMessage(), "movimiento_id"=>null];
         }
 
     }

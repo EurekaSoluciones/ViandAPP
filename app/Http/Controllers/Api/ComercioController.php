@@ -131,10 +131,10 @@ class ComercioController extends Controller
             if ($stock->saldo >=$cantidad)
             {
                 $consumoOK=StockMovimiento::Consumir($persona, $articulo, $fecha, $cantidad, $comercio,"Consumo via APP", $usuario, $stock);
-                if ($consumoOK["Exitoso"])
-                    return response()->json(["exitoso"=>true, "operacion_id"=>$consumoOK["movimiento_id"], 'message'=>"Consumo Registrado"], 200);
+                if ($consumoOK["exitoso"])
+                    return response()->json([$consumoOK["exitoso"], "operacion_id"=>$consumoOK["movimiento_id"], 'message'=>"Consumo Registrado"], 200);
                 else
-                    return response()->json(["exitoso"=>false, "operacion_id"=>null, 'message'=>"Error: ".$consumoOK["error"]], 200);
+                    return response()->json([$consumoOK["exitoso"], "operacion_id"=>null, 'message'=>"Error: ".$consumoOK["error"]], 200);
 
             }
             else
