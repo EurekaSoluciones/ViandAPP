@@ -124,22 +124,22 @@ class ComercioController extends Controller
 
         if ($stock ==null)
         {
-            return response()->json(['message'=>"No existe stock disponible para esa persona y artículo"], 400);
+            return response()->json(["exitoso"=>false, "operacion_id"=>null, 'message'=>"Error: No existe Disponible para esta persona"], 200);
         }
         else
         {
             if ($stock->saldo >=$cantidad)
             {
                 $consumoOK=StockMovimiento::Consumir($persona, $articulo, $fecha, $cantidad, $comercio,"Consumo via APP", $usuario, $stock);
-                if ($consumoOK)
-                    return response()->json(['message'=>"Consumo Registrado"], 200);
+                if ($consumoOK["Exitoso"])
+                    return response()->json(["exitoso"=>true, "operacion_id"=>$consumoOK["movimiento_id"], 'message'=>"Consumo Registrado"], 200);
                 else
-                    return response()->json(['message'=>"Error: "], 400);
+                    return response()->json(["exitoso"=>false, "operacion_id"=>null, 'message'=>"Error: ".$consumoOK["error"]], 200);
 
             }
             else
             {
-                return response()->json(['message'=>"Stock insuficiente. Stock actual: ".$stock->cantidad], 400);
+                return response()->json(["exitoso"=>false, "operacion_id"=>null, 'message'=>"Disponible insuficiente para ese artículo."], 200);
 
             }
         }

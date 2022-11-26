@@ -219,7 +219,7 @@ class StockMovimiento extends Model
         {
             DB::beginTransaction();
 
-            StockMovimiento::create([
+            $movimiento= StockMovimiento::create([
                 'articulo_id'=>$articulo->id,
                 'persona_id'=>$persona->id,
                 'fecha'=>$fecha,
@@ -245,12 +245,13 @@ class StockMovimiento extends Model
 
             DB::commit();
 
-            return true;
+
+            return ["Exitoso"=>true, "error"=>"", "movimiento_id"=>$movimiento->id];
         }
         catch (\Exception $e)
         {
             DB::rollBack();
-            return false;
+            return ["Exitoso"=>false, "error"=>$e->getMessage(), "movimiento_id"=>null];
         }
 
     }
