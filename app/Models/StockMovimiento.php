@@ -99,7 +99,7 @@ class StockMovimiento extends Model
         {
             DB::beginTransaction();
 
-            StockMovimiento::create([
+            $movimiento=StockMovimiento::create([
                 'articulo_id'=>$articulo->id,
                 'persona_id'=>$persona->id,
                 'fecha'=>$fechadesde,
@@ -121,12 +121,12 @@ class StockMovimiento extends Model
                 'saldo'=>$cantidad]);
             DB::commit();
 
-            return true;
+            return ["exitoso"=>true, "error"=>"", "movimiento_id"=>$movimiento->id];
         }
         catch (\Exception $e)
         {
             DB::rollBack();
-            return false;
+            return ["exitoso"=>false, "error"=>$e->getMessage(), "movimiento_id"=>null];
         }
 
     }
@@ -139,7 +139,7 @@ class StockMovimiento extends Model
         {
             DB::beginTransaction();
 
-            StockMovimiento::create([
+            $movimiento=StockMovimiento::create([
                 'articulo_id'=>$articulo->id,
                 'persona_id'=>$persona->id,
                 'fecha'=>$fecha,
@@ -156,11 +156,12 @@ class StockMovimiento extends Model
             $stock->update(['saldo'=>$stock->saldo-$cantidad]);
 
             DB::commit();
-            return true;
-        } catch (\Exception $e) {
-
+            return ["exitoso"=>true, "error"=>"", "movimiento_id"=>$movimiento->id];
+        }
+        catch (\Exception $e)
+        {
             DB::rollBack();
-            return false;
+            return ["exitoso"=>false, "error"=>$e->getMessage(), "movimiento_id"=>null];
         }
     }
 
@@ -205,11 +206,13 @@ class StockMovimiento extends Model
 
 
             DB::commit();
-            return true;
-        } catch (\Exception $e) {
-
+            return ["exitoso"=>true, "error"=>"", "movimiento_id"=>$consumo->id];
+        }
+        catch (\Exception $e)
+        {
             DB::rollBack();
-            return false;
+            return ["exitoso"=>false, "error"=>$e->getMessage(), "movimiento_id"=>null];
+
         }
     }
 
@@ -264,7 +267,7 @@ class StockMovimiento extends Model
         {
             DB::beginTransaction();
 
-            StockMovimiento::create([
+            $movimiento=StockMovimiento::create([
                 'articulo_id'=>$articulo->id,
                 'persona_id'=>$persona->id,
                 'fecha'=>$fecha,
@@ -278,12 +281,12 @@ class StockMovimiento extends Model
 
             $stock->update(['saldo'=>$stock->saldo-$cantidad]);
             DB::commit();
-            return true;
+            return ["exitoso"=>true, "error"=>"", "movimiento_id"=>$movimiento->id];
         }
         catch (\Exception $e)
         {
             DB::rollBack();
-            return false;
+            return ["exitoso"=>false, "error"=>$e->getMessage(), "movimiento_id"=>null];
         }
     }
 
@@ -294,7 +297,7 @@ class StockMovimiento extends Model
         {
             DB::beginTransaction();
 
-            StockMovimiento::create([
+            $movimiento= StockMovimiento::create([
                 'articulo_id'=>$articulo->id,
                 'persona_id'=>$persona->id,
                 'fecha'=>$fecha,
@@ -308,12 +311,12 @@ class StockMovimiento extends Model
 
             $stock->update(['saldo'=>0]);
             DB::commit();
-            return true;
+            return ["exitoso"=>true, "error"=>"", "movimiento_id"=>$movimiento->id];
         }
         catch (\Exception $e)
         {
             DB::rollBack();
-            return false;
+            return ["exitoso"=>false, "error"=>$e->getMessage(), "movimiento_id"=>null];
         }
     }
 

@@ -169,10 +169,10 @@ class ComercioController extends Controller
         else
         {
             $anulacionOK=StockMovimiento::AnularConsumo($consumo, $usuario, $observaciones);
-            if ($anulacionOK)
+            if ($anulacionOK["exitoso"])
                 return response()->json(['message'=>"Consumo Anulado"], 200);
             else
-                return response()->json(['message'=>"Error: "], 400);
+                return response()->json(['message'=>"Error: ".$anulacionOK["error"]], 400);
 
         }
     }
@@ -211,7 +211,7 @@ class ComercioController extends Controller
 
             $resultado=$comercio->cerrarLote($observaciones,$fecha, $usuario);
 
-            if ($resultado["resultado"]==true)
+            if ($resultado["exitoso"]==true)
                 return response()->json(["lote"=>$resultado["nroLote"], 'message'=>"OK"],200);
             else
                 return response()->json(['message'=>"ERROR - ".$resultado["error"]],400);

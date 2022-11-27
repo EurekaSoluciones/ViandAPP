@@ -117,12 +117,12 @@ class Comercio extends Model
 
             DB::commit();
 
-            return ["resultado"=>true, "nroLote"=>$cierreLote->id];
+            return ["exitoso"=>true, "nroLote"=>$cierreLote->id];
         }
         catch (\Exception $e)
         {
             DB::rollBack();
-            return ["resultado"=>false, "error"=>$e->getMessage()];
+            return ["exitoso"=>false, "error"=>$e->getMessage()];
         }
 
     }
