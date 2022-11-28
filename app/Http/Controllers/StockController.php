@@ -92,7 +92,7 @@ class StockController extends Controller
 
             DB::commit();
             session()->flash('message' , 'Importacion Correcta');
-            return view('dashboard');
+            return AdminController::mostrarWelcome();
 
         } catch (\Exception $e)
         {
@@ -146,8 +146,15 @@ class StockController extends Controller
             if ($stock->saldo >=$cantidad)
             {
                 $consumoOK=StockMovimiento::Consumir($persona, $articulo, $fecha, $cantidad, $comercio, $data["observaciones"], $usuario, $stock);
-                session()->flash('message' , 'Consumo registrado' );
-
+                if ($consumoOK["exitoso"])
+                {
+                    session()->flash('message' , 'Consumo registrado' );
+                }
+                else
+                {
+                    session()->flash('error' , 'Ha ocurrido un error: '.$consumoOK["error"] );
+                    return back();
+                }
             }
             else
             {
@@ -199,9 +206,17 @@ class StockController extends Controller
         $cantidad=(int) $data["cantidad"];
 
         /*Si no encontré stock, tengo que crear un registro, sino se lo tengo que sumar al existente*/
-        $consumoOK=StockMovimiento::Aumentar($persona, $articulo, $fecha, $cantidad,  $data["observaciones"], $usuario, $stock, $data["cc"]);
+        $movimientoOK=StockMovimiento::Aumentar($persona, $articulo, $fecha, $cantidad,  $data["observaciones"], $usuario, $stock, $data["cc"]);
 
-        session()->flash('message' , 'Aumento registrado' );
+        if ($movimientoOK["exitoso"])
+        {
+            session()->flash('message' , 'Aumento registrado' );
+        }
+        else
+        {
+            session()->flash('error' , 'Ha ocurrido un error: '.$movimientoOK["error"] );
+        }
+
 
         $personas=Persona::devolverArrForCombo();
         $articulos=Articulo::devolverArrForCombo();
@@ -252,9 +267,13 @@ class StockController extends Controller
             $disminucionOK=StockMovimiento::Disminuir($persona, $articulo, $fecha, $cantidad,  $data["observaciones"], $usuario, $stock);
         }
 
-        if ($disminucionOK)
+        if ($disminucionOK["exitoso"])
         {
             session()->flash('message' , 'Disminución registrada' );
+        }
+        else
+        {
+            session()->flash('error' , 'Ha ocurrido un error: '.$disminucionOK["error"] );
         }
 
         $personas=Persona::devolverArrForCombo();

@@ -41,6 +41,11 @@
                     </div>
                 </div>
                 <button class="btn btn-primary">Import data</button>
+
+            </form>
+            <form action="{{ route('home') }}" method="GET" enctype="multipart/form-data">
+                @csrf
+            <button class="btn btn-info">Cancelar</button>
             </form>
     </div>
 @endsection

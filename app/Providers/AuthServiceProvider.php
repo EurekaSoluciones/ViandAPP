@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\Response;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,7 +26,22 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+        $user=auth()->user();
 
+        Gate::define('EsAdmin', function (User $user) {
+            return $user->perfil_id == config('global.PERFIL_Admin')? Response::allow()
+                : Response::deny();
+        });
+
+        Gate::define('EsComercio', function (User $user) {
+            return $user->perfil_id === config('global.PERFIL_Comercio')? Response::allow()
+                : Response::deny();
+        });
+
+        Gate::define('EsPersona', function (User $user) {
+            return $user->perfil_id === config('global.PERFIL_Persona')? Response::allow()
+                : Response::deny();
+        });
         //
     }
 }

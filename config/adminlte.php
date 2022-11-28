@@ -305,48 +305,52 @@ return [
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
+            'key'=>'search'
         ],
-        [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
-
         [
             'text'        => 'Importar Excel',
             'route'       => 'importarexcel',
             'icon'        => 'far fa-fw fa-file-excel',
+            'can'  => ['EsAdmin'],
             'label_color' => 'success',
         ],
         [
-            'text'        => 'Consumir en Comercio',
+            'text'        => 'Consumir',
             'route'       => 'consumir',
             'icon'        => 'fas fa-mug-hot',
             'label_color' => 'success',
+            'can'  => ['EsComercio'],
         ],
         [
             'text'        => 'Aumentar',
             'route'       => 'aumentarstock',
             'icon'        => 'fas fa-plus',
+            'can'  => ['EsAdmin'],
             'label_color' => 'success',
         ],
         [
             'text'        => 'Disminuir',
             'route'       => 'disminuirstock',
             'icon'        => 'fas fa-minus',
+            'can'  => ['EsAdmin'],
             'label_color' => 'success',
         ],
-        ['header' => 'Configuracion'],
+        [
+            'header' => 'Configuracion',
+            'can'  => ['EsAdmin'],
+            ],
         [
             'text'        => 'Personas',
             'route'       => 'personas.index',
             'icon'        => 'far fa-fw fa-user',
+            'can'  => ['EsAdmin'],
             'label_color' => 'success',
         ],
         [
             'text'        => 'Comercios',
             'route'       => 'comercios.index',
             'icon'        => 'fas fa-store',
+            'can'  => ['EsAdmin'],
             'label_color' => 'success',
         ],
         ['header' => 'Seguridad'],

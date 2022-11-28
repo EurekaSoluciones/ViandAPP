@@ -156,12 +156,12 @@ class StockMovimiento extends Model
             $stock->update(['saldo'=>$stock->saldo-$cantidad]);
 
             DB::commit();
-            return ["exitoso"=>true, "error"=>"", "movimiento_id"=>$movimiento->id];
+            return ["exitoso"=>true, "error"=>"", "movimiento"=>$movimiento];
         }
         catch (\Exception $e)
         {
             DB::rollBack();
-            return ["exitoso"=>false, "error"=>$e->getMessage(), "movimiento_id"=>null];
+            return ["exitoso"=>false, "error"=>$e->getMessage(), "movimiento"=>null];
         }
     }
 
