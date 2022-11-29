@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('template_title')
-    Cierre de Lote
+    Consumos Pendientes de Rendir
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@
             <div class="row mb-2">
                 <div class="col-sm-11">
                     <h1>
-                        <i class="fas fa-clipboard-check"></i>  Cierre de Lote
+                        <i class="fas fa-clipboard-list"></i>  Consumos Pendientes de Rendir
                     </h1>
                 </div><!-- /.col -->
                 <div class="box-tools text-right">
@@ -60,9 +60,7 @@
             </div>
             </form>
 
-            <form class="form-horizontal" method="POST" action="{{ route('generarCierreLote') }}"  role="form" enctype="multipart/form-data">
-                @csrf
-                @method('POST')
+
                 <div class="card-body">
                     <div class="row">
                     </div>
@@ -95,17 +93,7 @@
                         </div>
 
                 </div>
-            <div class="card-footer">
-                <div class="form-group row">
-                    <label for="observaciones"  class="col-sm-2 col-form-label">Observaciones</label>
-                    <div class="col-md-12">
-                        <textarea class='form-control'.{{($errors->has('observaciones') ? ' is-invalid' : '')}} name="observaciones"
-                                  id='observaciones' placeholder='Ingrese Observaciones' rows="3"></textarea>
-                    </div>
-                </div>
 
-                <button type="submit" class="btn btn-info float-right">Cerrar Lote</button>
-            </div>
     </form>
     </div>
 
@@ -142,7 +130,7 @@
                     'zeroRecords': 'No existen registros',
                     'info': 'Mostrando Página _PAGE_ de _PAGES_',
                     'infoEmpty': 'No hay registros disponibles',
-                    'infoFiltered': '(filtrando desde _MAX_ registros totales)',
+                    'infoFiltered': '(filtrando desde _MAX_ registros totales)'
                     'search':'Buscar'
                 },
             })

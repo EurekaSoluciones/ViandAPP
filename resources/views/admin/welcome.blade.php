@@ -19,27 +19,33 @@
 @section('content')
     <div class="row">
         <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-mug-hot"></i></span>
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{$desayunos}}</h3>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Desayunos consumidos (en el mes)</span>
-                    <span class="info-box-number">{{$desayunos}}</span>
+                    <p>Desayunos consumidos (en el mes)</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon">
+                    <i class="fas fa-mug-hot"></i>
+                </div>
+                <a href="#" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
+
+
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
         <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-utensils"></i></span>
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>{{$viandas}}</h3>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Viandas consumidas (en el mes)</span>
-                    <span class="info-box-number">{{$viandas}}</span>
+                    <p>Viandas consumidas (en el mes)</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <a href="#" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
             <!-- /.info-box -->
         </div>
@@ -49,26 +55,32 @@
         <div class="clearfix hidden-md-up"></div>
 
         <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-store"></i></span>
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{$comercios}}</h3>
 
-                <div class="info-box-content">
-{{--                    <span class="info-box-text">Comercios</span>--}}
-{{--                    <span class="info-box-number">{{$comercios}}</span>--}}
+                    <p>Comercios</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <a href="{{ route('comercios.index') }}" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <!-- /.info-box -->
         </div>
         <!-- /.col -->
         <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>{{$empleados}}</h3>
 
-                <div class="info-box-content">
-{{--                    <span class="info-box-text">Empleados</span>--}}
-{{--                    <span class="info-box-number">{{$empleados}}</span>--}}
+                        <p>Empleados</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <a href="{{ route('personas.index') }}" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
+
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
@@ -86,47 +98,47 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <ul class="todo-list ui-sortable" data-widget="todo-list">
-                    @foreach($persona->stockActual as $stock)
+{{--                <ul class="todo-list ui-sortable" data-widget="todo-list">--}}
+{{--                    @foreach($persona->stockActual as $stock)--}}
 
-                    <li>
-                        <div class="info-box mb-3 bg-warning">
-                            <span class="info-box-icon"> <i class='{{$stock->articulo->icon}}'></i></span>
+{{--                    <li>--}}
+{{--                        <div class="info-box mb-3 bg-warning">--}}
+{{--                            <span class="info-box-icon"> <i class='{{$stock->articulo->icon}}'></i></span>--}}
 
-                            <div class="info-box-content">
-                                <span class="info-box-text">{{\Carbon\Carbon::parse( $stock->fechadesde )->format('d/m/Y')}} - {{\Carbon\Carbon::parse( $stock->fechahasta )->format('d/m/Y')}}</span>
-                                <span class="info-box-number">{{$stock->saldo}}</span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
+{{--                            <div class="info-box-content">--}}
+{{--                                <span class="info-box-text">{{\Carbon\Carbon::parse( $stock->fechadesde )->format('d/m/Y')}} - {{\Carbon\Carbon::parse( $stock->fechahasta )->format('d/m/Y')}}</span>--}}
+{{--                                <span class="info-box-number">{{$stock->saldo}}</span>--}}
+{{--                            </div>--}}
+{{--                            <!-- /.info-box-content -->--}}
+{{--                        </div>--}}
 
 
-                    </li>
-                    @endforeach
-                </ul>
+{{--                    </li>--}}
+{{--                    @endforeach--}}
+{{--                </ul>--}}
             </div>
             <!-- /.card-body -->
 
         </div>
         </section>
-        <section class="col-lg-5">
-        <div class="card">
-            <div class="card-header ui-sortable-handle" style="cursor: move;">
-                <h3 class="card-title">
-                    <i class="fas fa-qrcode "></i>
-                    Mi QR
-                </h3>
+{{--        <section class="col-lg-5">--}}
+{{--        <div class="card">--}}
+{{--            <div class="card-header ui-sortable-handle" style="cursor: move;">--}}
+{{--                <h3 class="card-title">--}}
+{{--                    <i class="fas fa-qrcode "></i>--}}
+{{--                    Mi QR--}}
+{{--                </h3>--}}
 
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body text-center">
-                {!!QrCode::size(300)
-                     ->backgroundColor(254,254,218)
-                     ->generate("{{$persona->qr}}");!!}
-            </div>
+{{--            </div>--}}
+{{--            <!-- /.card-header -->--}}
+{{--            <div class="card-body text-center">--}}
+{{--                {!!QrCode::size(300)--}}
+{{--                     ->backgroundColor(254,254,218)--}}
+{{--                     ->generate("{{$persona->qr}}");!!}--}}
+{{--            </div>--}}
 
-        </div>
-        </section>
+{{--        </div>--}}
+{{--        </section>--}}
         <!-- /.col -->
     </div>
 @stop

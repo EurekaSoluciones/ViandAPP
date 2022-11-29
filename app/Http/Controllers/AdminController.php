@@ -29,7 +29,7 @@ class AdminController extends Controller
             ->where('tipomovimiento_id', 2)
             ->where('articulo_id',2)->get());
 
-        return view('welcome')
+        return view('admin.welcome')
             ->with('empleados',$empleados)
             ->with('comercios',$comercios)
             ->with('viandas', $viandas)

@@ -18,61 +18,103 @@
 
 @section('content')
     <div class="row">
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-mug-hot"></i></span>
+        <div class="col-12 col-sm-6 col-md-4">
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Desayunos consumidos (en el mes)</span>
-                    <span class="info-box-number">{{$desayunos}}</span>
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{$desayunos}}</h3>
+
+                    <p>Desayunos consumidos (en el mes)</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon">
+                    <i class="fas fa-mug-hot"></i>
+                </div>
+                <a href="{{ route('personas.show',$persona->id) }}" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
+
+{{--            <div class="info-box">--}}
+{{--                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-mug-hot"></i></span>--}}
+
+{{--                <div class="info-box-content">--}}
+{{--                    <span class="info-box-text">Desayunos consumidos (en el mes)</span>--}}
+{{--                    <span class="info-box-number">{{$desayunos}}</span>--}}
+{{--                </div>--}}
+{{--                <!-- /.info-box-content -->--}}
+{{--            </div>--}}
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-utensils"></i></span>
+        <div class="col-12 col-sm-6 col-md-4">
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>{{$viandas}}</h3>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Viandas consumidas (en el mes)</span>
-                    <span class="info-box-number">{{$viandas}}</span>
-                </div>
-                <!-- /.info-box-content -->
+                <p>Viandas consumidas (en el mes)</p>
             </div>
-            <!-- /.info-box -->
+            <div class="icon">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <a href="{{ route('personas.show',$persona->id) }}" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
+
+        </div>
+{{--        <div class="col-12 col-sm-6 col-md-4">--}}
+{{--            <div class="info-box mb-3">--}}
+{{--                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-utensils"></i></span>--}}
+
+{{--                <div class="info-box-content">--}}
+{{--                    <span class="info-box-text">Viandas consumidas (en el mes)</span>--}}
+{{--                    <span class="info-box-number">{{$viandas}}</span>--}}
+{{--                </div>--}}
+{{--                <!-- /.info-box-content -->--}}
+{{--            </div>--}}
+{{--            <!-- /.info-box -->--}}
+{{--        </div>--}}
         <!-- /.col -->
 
         <!-- fix for small devices only -->
         <div class="clearfix hidden-md-up"></div>
 
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-store"></i></span>
+        <div class="col-12 col-sm-6 col-md-4">
 
-                <div class="info-box-content">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{$comercios}}</h3>
+
+                    <p>Comercios</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <a href="{{ route('comercios.index') }}" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+{{--            --}}
+{{--            <div class="info-box mb-3">--}}
+{{--                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-store"></i></span>--}}
+
+
+{{--                <div class="info-box-content">--}}
 {{--                    <span class="info-box-text">Comercios</span>--}}
 {{--                    <span class="info-box-number">{{$comercios}}</span>--}}
-                </div>
-                <!-- /.info-box-content -->
-            </div>
+{{--                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>--}}
+{{--                </div>--}}
+{{--                <!-- /.info-box-content -->--}}
+{{--            </div>--}}
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+{{--        <div class="col-12 col-sm-6 col-md-3">--}}
+{{--            <div class="info-box mb-3">--}}
+{{--                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>--}}
 
-                <div class="info-box-content">
+{{--                <div class="info-box-content">--}}
 {{--                    <span class="info-box-text">Empleados</span>--}}
 {{--                    <span class="info-box-number">{{$empleados}}</span>--}}
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
+{{--                </div>--}}
+{{--                <!-- /.info-box-content -->--}}
+{{--            </div>--}}
+{{--            <!-- /.info-box -->--}}
+{{--        </div>--}}
     </div>
     <div class="row">
         <section class="col-lg-7 connectedSortable ui-sortable">

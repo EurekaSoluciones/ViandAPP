@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comercio;
 use App\Models\Persona;
 use App\Models\Stock;
 use App\Models\StockMovimiento;
@@ -142,6 +143,7 @@ class PersonaController extends Controller
 
         $fecha= \Illuminate\Support\Carbon::now();
 
+        $comercios=count(Comercio:: where('activo', true)->get());
         $desayunos=count(StockMovimiento::whereMonth('fecha', $fecha->month)
             ->whereYear('fecha', $fecha->year)
             ->where('tipomovimiento_id', config('global.TM_Consumo'))
@@ -158,6 +160,7 @@ class PersonaController extends Controller
 
         return view('personas.welcome')
             ->with('persona', $persona)
+            ->with('comercios', $comercios)
             ->with('viandas', $viandas)
             ->with('desayunos',$desayunos);
 

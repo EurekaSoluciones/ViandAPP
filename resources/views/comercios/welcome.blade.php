@@ -19,47 +19,62 @@
 @section('content')
     <div class="row">
         <div class="col-12 col-sm-6 col-md-4">
-            <div class="info-box">
-                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-mug-hot"></i></span>
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{$desayunos}}</h3>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Desayunos (en el mes)</span>
-                    <span class="info-box-number">{{$desayunos}}</span>
+                    <p>Desayunos entregados (en el mes)</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon">
+                    <i class="fas fa-mug-hot"></i>
+                </div>
+                <a href="#" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <!-- /.info-box -->
+
         </div>
         <!-- /.col -->
         <div class="col-12 col-sm-6 col-md-4">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-utensils"></i></span>
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>{{$viandas}}</h3>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Viandas (en el mes)</span>
-                    <span class="info-box-number">{{$viandas}}</span>
+                    <p>Viandas entregadas (en el mes)</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <a href="#" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <!-- /.info-box -->
         </div>
         <!-- /.col -->
 
         <!-- fix for small devices only -->
         <div class="clearfix hidden-md-up"></div>
-
         <div class="col-12 col-sm-6 col-md-4">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-clipboard-list"></i></span>
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{count($consumosPendientes)}}</h3>
 
-                <div class="info-box-content">
-                   <span class="info-box-text">Consumos Pendientes de Liquidar</span>
-                   <span class="info-box-number">{{count($consumosPendientes)}}</span>
+                    <p>Consumos Pendientes de Liquidar</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <a href="{{ route('consumosPendientes') }}" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <!-- /.info-box -->
         </div>
+{{--        <div class="col-12 col-sm-6 col-md-4">--}}
+{{--            <div class="info-box mb-3">--}}
+{{--                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-clipboard-list"></i></span>--}}
+
+{{--                <div class="info-box-content">--}}
+{{--                   <span class="info-box-text">Consumos Pendientes de Liquidar</span>--}}
+{{--                   <span class="info-box-number">{{count($consumosPendientes)}}</span>--}}
+{{--                </div>--}}
+{{--                <!-- /.info-box-content -->--}}
+{{--            </div>--}}
+{{--            <!-- /.info-box -->--}}
+{{--        </div>--}}
 
     </div>
     <div class="row">
