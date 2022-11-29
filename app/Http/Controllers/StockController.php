@@ -109,13 +109,12 @@ class StockController extends Controller
     /*************************************************************************************/
     public function consumir(Request $request)
     {
-        $comercios=Comercio::devolverArrForCombo();
+        $comercio=Comercio::devolverComercioxCuit(auth()->user()->email);
         $personas=Persona::devolverArrForCombo();
         $articulos=Articulo::devolverArrForCombo();
 
-
         return view('stock.consumir')
-            ->with('comercios', $comercios)
+            ->with('comercio', $comercio)
             ->with('personas', $personas)
             ->with('articulos', $articulos);
 
@@ -163,12 +162,12 @@ class StockController extends Controller
             }
         }
 
-        $comercios=Comercio::devolverArrForCombo();
+        $comercio=Comercio::devolverComercioxCuit(auth()->user()->email);
         $personas=Persona::devolverArrForCombo();
         $articulos=Articulo::devolverArrForCombo();
 
         return view('stock.consumir')
-            ->with('comercios', $comercios)
+            ->with('comercio', $comercio)
             ->with('personas', $personas)
             ->with('articulos', $articulos);
 

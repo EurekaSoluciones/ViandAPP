@@ -74,7 +74,7 @@ class ComercioController extends Controller
 
             User::create([
                 'email'=>$data["cuit"],
-                'name'=>$data["cuit"],
+                'name'=>$data["nombrefantasia"],
                 'password'=>Hash::make($data["cuit"]),
                 'perfil_id'=>"4", //Hash::make(substr( $datos[0], strlen($datos[0])-4, 4)),
             ]);
@@ -176,18 +176,20 @@ class ComercioController extends Controller
 
     public function consumosPendientesDeRendir (Request $request)
     {
+        $fechaHasta=$request->get('fechaHasta');
 
-        $data=$request->all();
-        $fecha=Carbon::parse($data["fecha"]);
+        if ($fechaHasta==null)
+            $fechaHasta=Carbon::now();
+
         $usuario= auth('sanctum')->user() ;
 
         $comercio=Comercio::devolverComercioxCuit($usuario->email);
 
-        $consumos=Comercio::devolverConsumosPendientesDeLiquidar($fecha, $comercio->id);
+        $consumos=Comercio::devolverConsumosPendientesDeLiquidar($fechaHasta, $comercio->id);
 
         return view('comercios.cerrarlote')
             ->with('movimientos', $consumos)
-            ->with('fecha', $fecha);
+            ->with('fecha', $fechaHasta);
 
     }
     /**
@@ -199,16 +201,56 @@ class ComercioController extends Controller
      */
     public function cerrarLote(Request $request)
     {
-        $data=$request->all();
-        $fecha=Carbon::parse($data["fecha"]);
+
+        $fechaHasta= Carbon::parse(strtotime(str_replace('/', '-', $request->get('fechaHasta')))) ;
+
+        if ($fechaHasta==null)
+            $fechaHasta=Carbon::now();
+
         $usuario= auth('sanctum')->user() ;
 
         $comercio=Comercio::devolverComercioxCuit($usuario->email);
 
-        $consumos=Comercio::devolverConsumosPendientesDeLiquidar($fecha, $comercio->id);
-        session()->flash('message' , 'Lote Cerrado' );
+        $consumos=Comercio::devolverConsumosPendientesDeLiquidar($fechaHasta, $comercio->id);
 
-        $this->mostrarWelcome();
+        return view('comercios.cerrarlote')
+            ->with('movimientos', $consumos)
+            ->with('fechaHasta', $fechaHasta);
+    }
+
+    public function generarCierreLote(Request $request)
+    {
+        $data=$request->all();
+        $fecha=Carbon::parse($data["fechaHasta"]);
+        $observaciones=$data["observaciones"];
+        $usuario= auth('sanctum')->user() ;
+
+        $comercio=Comercio::devolverComercioxCuit($usuario->email);
+
+        Comercio::CerrarLote($observaciones, $fecha, $usuario);
+
+        $cierreLoteOk=Comercio::devolverConsumosPendientesDeLiquidar($fecha, $comercio->id);
+
+        if ($cierreLoteOk["exitoso"])
+        {
+            session()->flash('message' , 'Lote Cerrado - Nro Lote: ' .$cierreLoteOk["nroLote"]);
+            $this->mostrarWelcome();
+        }
+        else
+        {
+            session()->flash('error' , 'Ha ocurrido un error: ' .$cierreLoteOk["error"]);
+            return back();
+        }
+
+
+
+
+    }
+    public function detalleLote($id)
+    {
+        $lote=CierreLote::findOrFail($id);
+
+        return view('comercios.cierrelotedetalle', compact('lote'));
     }
 
     public static function mostrarWelcome()
@@ -233,10 +275,14 @@ class ComercioController extends Controller
             ->where('estado','!=',"ANULADO")
             ->where('articulo_id',config('global.ART_Vianda'))->get());
 
-        $ultimosLotes= $comercio->cierreslote()->take(10);
+        $ultimosLotes= $comercio->cierreslote()->orderBy('id','DESC')->take(10)->get();
+
+        $consumosPendientess= $comercio->devolverConsumosPendientesDeLiquidar($fecha, $comercio->id );
 
         return view('comercios.welcome')
+            ->with('comercio', $comercio)
             ->with('ultimosLotes',$ultimosLotes)
+            ->with('consumosPendientes',$consumosPendientess)
             ->with('viandas', $viandas)
             ->with('desayunos',$desayunos);
 

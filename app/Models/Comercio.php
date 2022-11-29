@@ -54,6 +54,7 @@ class Comercio extends Model
         return $this->hasMany(CierreLote::class, 'comercio_id')->orderBy('id','desc');
     }
 
+
     public function devolverConsumosPendientesDeLiquidar($fecha, $comercioId)
     {
         //DB::enableQueryLog();
@@ -112,7 +113,7 @@ class Comercio extends Model
             /*Actualizar los movimientos que lo incluyen*/
             $keys=$movimientos->where('estado', 'PENDIENTE')->pluck('id');
 
-           StockMovimiento::whereIn('id', $keys)->update(['cierrelote_id'=>$cierreLote->id,
+            StockMovimiento::whereIn('id', $keys)->update(['cierrelote_id'=>$cierreLote->id,
                 'estado'=>'CERRADO']);;
 
             DB::commit();

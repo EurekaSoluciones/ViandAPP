@@ -317,7 +317,21 @@ return [
         [
             'text'        => 'Consumir',
             'route'       => 'consumir',
-            'icon'        => 'fas fa-mug-hot',
+            'icon'        => 'fas fa-shopping-bag',
+            'label_color' => 'success',
+            'can'  => ['EsComercio'],
+        ],
+        [
+            'text'        => 'Consumos Pend. Liq.',
+            'route'       => 'consumosPendientes',
+            'icon'        => 'fas fa-clipboard-list',
+            'label_color' => 'success',
+            'can'  => ['EsComercio'],
+        ],
+        [
+            'text'        => 'Cerrar Lote',
+            'route'       => 'cerrarLote',
+            'icon'        => 'fas fa-clipboard-check',
             'label_color' => 'success',
             'can'  => ['EsComercio'],
         ],

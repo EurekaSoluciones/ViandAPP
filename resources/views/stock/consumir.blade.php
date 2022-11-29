@@ -10,7 +10,7 @@
             <div class="row mb-2">
                 <div class="col-sm-12">
                     <h5>
-                        <i class="fas fa-mug-hot"></i> Nuevo Consumo
+                        <i class="fas fa-shopping-bag"></i> Nuevo Consumo
                     </h5>
                 </div><!-- /.col -->
 
@@ -33,21 +33,19 @@
                                 <div class="form-group row">
                                     <label for="comercio"  class="col-md-2 col-form-label">Comercio</label>
                                     <div class="col-md-4">
-                                        <select class='js-example-basic-single col-md-12' name="comercio">
-                                            <option value="0">Seleccione Comercio...  </option>
-                                            @foreach($comercios as  $key => $value)
-                                                <option  value="{{ $key }}"> {{ $value }}  {{ old('comercio')== $value? 'selected' : '' }}</option>
-                                            @endforeach
+                                        <select class='js-example-basic-single col-md-12' name="comercio" required>
+                                                <option  value="{{ $comercio->id }}"  selected=true> {{ $comercio->nombrefantasia }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="articulo"  class="col-md-2 col-form-label">Articulo</label>
                                     <div class="col-md-4">
-                                        <select class='js-example-basic-single  col-md-12' name="articulo">
-                                            <option value="0">Seleccione Artículo...  </option>
+                                        <select class='js-example-basic-single  col-md-12' name="articulo" required>
+
+                                            <option disabled value="" selected hidden>Seleccione Artículo...</option>
                                             @foreach($articulos as  $key => $value)
-                                                <option  value="{{ $key }}"> {{ $value }}  </option>
+                                                <option  value="{{ $key }}" data-icon="fa-mug"> {{ $value }}  </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -57,8 +55,8 @@
                                 <div class="form-group row">
                                     <label for="persona"  class="col-sm-2 col-form-label">Persona</label>
                                     <div class="col-md-4">
-                                        <select class='js-example-basic-single col-md-12' name="persona">
-                                            <option value="0">Seleccione Persona...  </option>
+                                        <select class='js-example-basic-single col-md-12' name="persona" required>
+                                            <option disabled value="" selected hidden>Seleccione Persona...</option>
                                             @foreach($personas as  $key => $value)
                                                 <option  value="{{ $key }}"> {{ $value }}  </option>
                                             @endforeach
@@ -122,7 +120,9 @@
 
         $(function () {
             //Initialize Select2 Elements
-            $('.select2').select2()
+
+
+
 
             //Initialize Select2 Elements
             $('.select2bs4').select2({
@@ -134,7 +134,19 @@
         })
 
         $(document).ready(function() {
-            $('.js-example-basic-single').select2();
+            // $('.js-example-basic-single').select2();
+
+            function iformat(icon) {
+                var originalOption = icon.element;
+                return $('<span><i class="fa ' + $(originalOption).data('icon') + '"></i> ' + icon.text + '</span>');
+            }
+
+            $('.js-example-basic-single').select2({
+                width: "100%",
+                templateSelection: iformat,
+                templateResult: iformat,
+                allowHtml: true
+            });
         });
 
 

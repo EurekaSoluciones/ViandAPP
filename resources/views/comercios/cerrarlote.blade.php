@@ -1,8 +1,7 @@
-<?php
 @extends('adminlte::page')
 
 @section('template_title')
-    Cierre de Lore
+    Cierre de Lote
 @endsection
 
 @section('content')
@@ -36,72 +35,70 @@
 
     <!-- /.card-header -->
         <!-- form start -->
-        <form class="form-horizontal" method="POST" action="{{ route('consumosPendientes') }}"  role="form" enctype="multipart/form-data">
-            @csrf
-            @method('POST')
-
+            <form class="form-horizontal">
             <div class="card-body">
                 <div class="form-group row">
                     <label for="fechahasta" class="col-sm-2 col-form-label">Fecha Hasta</label>
                     <div class="col-sm-4">
 
-                        <div class="input-group date" id="fechahastadatetime" data-target-input="nearest">
+                        <div class="input-group date" id="fechaHastadatetime" data-target-input="nearest">
 
-                            <input type="text" name ='fechahasta', class = 'form-control datetimepicker-input'
-                                   placeholder = 'Fecha Hasta' id='fechadesde' required  data-target= '#fechahastadatetime'>
-                            <div class="input-group-append" data-target="#fechahastadatetime" data-toggle="datetimepicker">
+                            <input type="text" value='{{$fechaHasta}}' name ='fechaHasta', class = 'form-control datetimepicker-input'
+                                   placeholder = 'Fecha Hasta' id='fechaHasta' required  data-target= '#fechaHastadatetime'>
+                            <div class="input-group-append" data-target="#fechaHastadatetime" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>
 
                         </div>
 
-                        {!! $errors->first('fechahasta', '<div class="invalid-feedback">:message</div>') !!}
+                        {!! $errors->first('fechaHasta', '<div class="invalid-feedback">:message</div>') !!}
                     </div>
                 </div>
 
                 <button type="submit" class="btn btn-info float-right">Buscar</button>
 
             </div>
+            </form>
 
+            <form class="form-horizontal" method="POST" action="{{ route('generarCierreLote') }}"  role="form" enctype="multipart/form-data">
+                @csrf
+                @method('POST')
+                <div class="card-body">
+                    <div class="row">
+                    </div>
 
-        </form>
+                        <div class="table-responsive">
+                            <table id="tabla" class="table table-striped table-hover dataTable">
+                            <thead class="thead">
+                            <tr>
+                                <th>#</th>
+                                <th class="sorting_asc">Fecha</th>
+                                <th>Persona</th>
+                                <th>Artículo</th>
+                                <th>Cantidad</th>
+                                <th>Estado</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($movimientos as $movimiento)
+                                <tr>
+                                    <td>{{ $movimiento->id }}</td>
+                                    <td>{{\Carbon\Carbon::parse( $movimiento->fecha)->format('d/m/Y')}}</td>
+                                    <td>{{ $movimiento->persona->fullname }}</td>
+                                    <td><i class="{{$movimiento->articulo->icon}}"></i> {{$movimiento->articulo->descripcion}}</td>
+                                    <td>{{$movimiento->cantidad}}</td>
+                                    <td>{{$movimiento->estado}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                        </div>
 
-        <div class="card-body">
-            <div class="row">
+                </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-info float-right">Cerrar Lote</button>
             </div>
-            <div class="table-responsive">
-                <table id="tabla" class="table table-striped table-hover dataTable">
-                    <thead class="thead">
-                    <tr>
-                        <th>#</th>
-                        <th class="sorting_asc">Fecha</th>
-                        <th>Persona</th>
-                        <th>Artículo</th>
-                        <th>Cantidad</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($movimientos as $movimiento)
-                        <tr>
-                            <td>{{ $movimiento->id }}</td>
-                            <td>{{ $movimiento->fecha}}</td>
-                            <td>{{ $movimiento->persona->fullname }}</td>
-                            <td><i class="{{$movimiento->articulo->icon}}"></i> {{$movimiento->articulo->descripcion}}</td>
-                            <td>{{$movimiento->cantidad}}</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <div class="row ">
-                <button type="submit" class="btn btn-info float-right" action="{{ route('cerrarLote') }}">Cerrar Lote</button>
-
-            </div>
-        </div>
-        <div class="card-footer">
-            {!! $movimientos->links() !!}
-        </div>
-
+    </form>
     </div>
 
 
@@ -117,6 +114,12 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             })
+
+            //Date and time picker
+            //$('#fechadesdedatetime').datetimepicker({ locale: 'es' , format: 'DD/MM/YYYY HH:mm', icons: { time: 'far fa-clock' } });
+
+            $('#fechaHastadatetime').datetimepicker({ locale: 'es' , format: 'DD/MM/YYYY'});
+
 
 
             $('#tabla').DataTable({
@@ -140,6 +143,10 @@
 
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
+
+            if ($('#fechaHasta').val()=="")
+                $('#fechaHasta').val(new Date().toLocaleDateString());
+
         });
 
         @if(Session::has('message'))

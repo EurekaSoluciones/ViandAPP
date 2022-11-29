@@ -9,7 +9,7 @@
     <div class="callout callout-danger">
         <h1>Bienvenido !</h1>
         <h5>
-            <strong> {{$persona->nombre .' '. $persona->apellido}}</strong>
+            <strong> {{auth()->user()->name}}</strong>
             <br>
         </h5>
     </div>
