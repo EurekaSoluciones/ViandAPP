@@ -48,3 +48,9 @@ Route::post('comercios/cerrarLote', [App\Http\Controllers\Api\ComercioController
 
 Route::post('personas/obtenerPersonaByQr', [App\Http\Controllers\Api\PersonaController::class, 'devolverPersonaxQR'])
     ->middleware('App\Http\Middleware\EureAuthApis');
+
+Route::post('comercios/pedidosGrupales', [App\Http\Controllers\Api\ComercioController::class, 'pedidosGrupales'])
+    ->middleware('App\Http\Middleware\EureAuthApis');
+
+Route::post('comercios/confirmarPedidoGrupal', [App\Http\Controllers\Api\ComercioController::class, 'confirmarPedidoGrupal'])
+    ->middleware('App\Http\Middleware\EureAuthApis');

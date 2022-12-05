@@ -15,8 +15,8 @@ class ComercioResource extends JsonResource
     public function toArray($request)
     {
         return ['id'=>$this->id,
-            'razonSocial'=>ucfirst(strtolower($this->razonsocial)),
-            'nombreFantasia'=>ucfirst(strtolower($this->nombrefantasia)),
+            'razonSocial'=>ucwords(strtolower($this->razonsocial)),
+            'nombreFantasia'=>ucwords(strtolower($this->nombrefantasia)),
             'cuit'=>$this->cuit,
             'domicilio' =>$this->domicilio];
     }

@@ -62,7 +62,7 @@ class PersonaController extends Controller
 
         $data=$request->all();
 
-        $persona = Persona::crearPersonayUsuario($data["apellido"],$data["nombre"], $data["dni"], $data["cuit"]);
+        $persona = Persona::crearPersonayUsuario($data["apellido"],$data["nombre"], $data["dni"], $data["cuit"], $data["cc"], $data["situacion"]);
 
         session()->flash('message' , 'Persona creada exitosamente. Se creó también el usuario correspondiente.');
 

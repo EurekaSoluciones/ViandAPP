@@ -19,6 +19,7 @@ class AsignacionesImport implements ToModel, WithHeadingRow
             'situacion' => $row['situacion'],
             'apellidoynombre'=> $row['apellido_y_nombre'],
             'cc'=> $row['cc'],
+            'situacion'=> $row['situacion'],
             'desayunos'=> $row['desayunos'],
             'viandas' => $row['viandas'],
         ]);

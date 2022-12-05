@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AdminGeneralController;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\PersonaResource;
 use App\Models\Comercio;
 use App\Models\Persona;
 use App\Models\User;
@@ -110,7 +111,7 @@ class LoginController extends Controller
                 return response()->json([
                     'token' => $user->createtoken($user->email)->plainTextToken,
                     'perfil' => $user->perfil_id,
-                    'persona' => $persona,
+                    'persona' => new PersonaResource($persona),
                     'message' => 'OK'
                 ], 200);
             }

@@ -44,7 +44,7 @@
                         <div class="input-group date" id="fechaHastadatetime" data-target-input="nearest">
 
                             <input type="text" value="{{old('fechaHasta')}}" name ='fechaHasta', class = 'form-control datetimepicker-input'
-                                   placeholder = 'Fecha Hasta' id='fechaHasta' required  data-target= '#fechaHastadatetime'>
+                                   placeholder = 'Fecha Hasta' id='fechaHasta' required  data-target= '#fechaHastadatetime' >
                             <div class="input-group-append" data-target="#fechaHastadatetime" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>

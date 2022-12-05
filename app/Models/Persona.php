@@ -28,7 +28,7 @@ class Persona extends Model
      *
      * @var array
      */
-    protected $fillable = ['apellido','cuit', 'nombre','activo', 'dni','fechabaja', 'qr'];
+    protected $fillable = ['apellido','cuit', 'nombre','activo', 'dni','fechabaja', 'qr', 'situacion', 'cc'];
 
 
     public function getFullNameAttribute()
@@ -67,6 +67,12 @@ class Persona extends Model
     public static function devolverArrForCombo()
     {
         $personas=Persona::orderBy('apellido')->get()->pluck('full_name', 'id')->toArray();
+        return $personas;
+    }
+
+    public static function devolverArrActivosForCombo()
+    {
+        $personas=Persona::where ('activo',1)->orderBy('apellido')->get()->pluck('full_name', 'id')->toArray();
         return $personas;
     }
 
@@ -125,12 +131,14 @@ class Persona extends Model
             $query->where('activo',true);
     }
 
-    public function crearPersonayUsuario($apellido, $nombre, $dni, $cuit)
+    public function crearPersonayUsuario($apellido, $nombre, $dni, $cuit, $cc, $situacion)
     {
         $persona = Persona::create(['apellido' => $apellido,
             'nombre'=>$nombre,
             'cuit' => $cuit,
             'dni'=>$dni,
+            'situacion'=>$situacion,
+            'cc'=>$cc,
             'qr'=>""]);
 
         /*tengo que generar el QR*/

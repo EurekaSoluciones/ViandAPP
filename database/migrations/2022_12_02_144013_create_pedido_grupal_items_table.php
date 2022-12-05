@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStocksTable extends Migration
+class CreatePedidoGrupalItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,12 @@ class CreateStocksTable extends Migration
      */
     public function up()
     {
-        Schema::create('stock', function (Blueprint $table) {
+        Schema::create('pedidosgrupales_items', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('articulo_id')->unsigned()->references('id')->on('articulos');
+            $table->bigInteger('pedidogrupal_id')->unsigned()->references('id')->on('pedidosgrupales');
             $table->bigInteger('persona_id')->unsigned()->references('id')->on('personas');
-            $table->dateTime('fechadesde');
-            $table->dateTime('fechahasta');
-            $table->string('cc',20);
-            $table->string('situacion', 10);
-            $table->integer('stock');
-            $table->integer('saldo');
+            $table->bigInteger('articulo_id')->unsigned()->references('id')->on('articulos');
+            $table->integer('cantidad');
             $table->timestamps();
         });
     }
@@ -34,6 +30,6 @@ class CreateStocksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stock');
+        Schema::dropIfExists('pedidosgrupales_items');
     }
 }

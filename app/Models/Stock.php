@@ -20,7 +20,7 @@ class Stock extends Model
      *
      * @var array
      */
-    protected $fillable = ['articulo_id','persona_id', 'fechadesde','fechahasta', 'cc','stock','saldo'];
+    protected $fillable = ['articulo_id','persona_id', 'fechadesde','fechahasta', 'cc','stock','saldo','situacion'];
 
     public function articulo()
     {

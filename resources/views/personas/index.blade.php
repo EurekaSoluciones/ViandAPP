@@ -117,7 +117,7 @@
                                                     <a class="btn btn-sm btn-info" href="{{ route('personas.edit',$persona->id) }}" title="Modificar"><i class="fas fa-pencil-alt"></i> </a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Borrar"><i class="fas fa-trash" ></i> </button>
+                                                    <button type="submit" class="btn btn-danger btn-sm" title="Borrar" ><i class="fas fa-trash" ></i> </button>
                                                 </form>
                                             </td>
                                         </tr>

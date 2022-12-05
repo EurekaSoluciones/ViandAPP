@@ -21,9 +21,9 @@ class PersonaResource extends JsonResource
         $totalDesayunos = $stock->where('articulo_id', config('global.ART_Desayuno'))->sum('saldo');
 
         return ['id'=>$this->id,
-            'apellido'=> ucfirst(strtolower($this->apellido)),
-            'nombre'=>ucfirst(strtolower( $this->nombre)),
-            'apellidoYNombre'=>ucfirst(strtolower($this->fullname)),
+            'apellido'=> ucwords(strtolower($this->apellido)),
+            'nombre'=>ucwords(strtolower( $this->nombre)),
+            'apellidoYNombre'=>ucwords(strtolower($this->fullname)),
             'dni'=>$this->dni,
             'cuit'=>$this->cuit,
             'qr' =>$this->qr,

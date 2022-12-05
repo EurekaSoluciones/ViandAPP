@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Carbon\Exceptions\Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,7 +20,7 @@ class CierreLote extends Model
 
     ];
 
-    protected $fillable = ['comercio_id','fecha', 'observaciones','usuario_id'];
+    protected $fillable = ['comercio_id','fecha', 'observaciones','usuario_id', 'visado', 'usuariovisa_id'];
 
     public function movimientos()
     {
@@ -33,5 +35,31 @@ class CierreLote extends Model
     public function usuario()
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+    public function devolverCierresDeLoteSinVisar()
+    {
+
+        $cierres= CierreLote::where('visado',0)
+            ->orderBy('fecha', 'ASC')
+            ->get();
+
+        return $cierres;
+    }
+
+    public function gettimeclassAttribute()
+    {
+        $clase = "";
+        $now = Carbon::now();
+
+        if ($now->diffInDays($this->fecha) <= 2)
+            $clase = "badge bg-danger";
+        else
+            if ($now->diffInDays($this->fecha) <= 7)
+                $clase = "badge bg-warning";
+            else
+                $clase = "badge bg-success";
+
+        return $clase;
     }
 }

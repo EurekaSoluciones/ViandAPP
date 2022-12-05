@@ -87,59 +87,100 @@
         </div>
     </div>
     <div class="row">
-        <section class="col-lg-7 connectedSortable ui-sortable">
-        <div class="card">
-            <div class="card-header ui-sortable-handle" style="cursor: move;">
-                <h3 class="card-title">
-                    <i class="ion ion-clipboard mr-1"></i>
-                    Stock Actual
-                </h3>
+        <section class="col-lg-6 connectedSortable ui-sortable">
+            <div class="card">
+                <div class="card-header ui-sortable-handle" style="cursor: move;">
+                    <h3 class="card-title">
+                        <i class="fas fa-clipboard-check mr-1"></i>
+                        Ultimos Cierres de Lote
+                    </h3>
+
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <ul class="todo-list ui-sortable" data-widget="todo-list">
+                        @foreach($ultimosLotes as $cierreLote)
+                            <li>
+                                <!-- drag handle -->
+                                <span class="handle ui-sortable-handle">
+                                  <i class="fas fa-ellipsis-v"></i>
+                                  <i class="fas fa-ellipsis-v"></i>
+                                </span>
+                                <!-- checkbox -->
+                                <div class="icheck-primary d-inline ml-2">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <!-- todo text -->
+                                <span class="text">Comercio: <strong> {{$cierreLote->comercio->nombrefantasia}}</strong></span>
+                                <span class="text">Fecha: <strong> {{\Carbon\Carbon::parse( $cierreLote->fecha )->format('d/m/Y')}}</strong></span>
+                                <!-- Emphasis label -->
+                                <small class="{{$cierreLote->timeclass}}"><i class="far fa-clock"></i> {{\Carbon\Carbon::create( $cierreLote->fecha)->diffForHumans()}}</small>
+                                <!-- General tools such as edit or delete-->
+                                <span class="handle ui-sortable-handle">
+                                    <span class="text">    # Operaciones: {{count($cierreLote->movimientos)}}</span>
+                                </span>
+                                <span class="handle ui-sortable-handle">
+                                    <span class="text">    # Consumos: {{$cierreLote->movimientos->sum('cantidad')}}</span>
+                                </span>
+                                <div class="tools">
+                                    <a href="{{ route('detalleLote',$cierreLote->id) }}"> <i class="fas fa-info-circle text-danger"></i></a>
+                                </div>
+                            </li>
+
+                        @endforeach
+                    </ul>
+                </div>
+                <!-- /.card-body -->
 
             </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-{{--                <ul class="todo-list ui-sortable" data-widget="todo-list">--}}
-{{--                    @foreach($persona->stockActual as $stock)--}}
-
-{{--                    <li>--}}
-{{--                        <div class="info-box mb-3 bg-warning">--}}
-{{--                            <span class="info-box-icon"> <i class='{{$stock->articulo->icon}}'></i></span>--}}
-
-{{--                            <div class="info-box-content">--}}
-{{--                                <span class="info-box-text">{{\Carbon\Carbon::parse( $stock->fechadesde )->format('d/m/Y')}} - {{\Carbon\Carbon::parse( $stock->fechahasta )->format('d/m/Y')}}</span>--}}
-{{--                                <span class="info-box-number">{{$stock->saldo}}</span>--}}
-{{--                            </div>--}}
-{{--                            <!-- /.info-box-content -->--}}
-{{--                        </div>--}}
-
-
-{{--                    </li>--}}
-{{--                    @endforeach--}}
-{{--                </ul>--}}
-            </div>
-            <!-- /.card-body -->
-
-        </div>
         </section>
-{{--        <section class="col-lg-5">--}}
-{{--        <div class="card">--}}
-{{--            <div class="card-header ui-sortable-handle" style="cursor: move;">--}}
-{{--                <h3 class="card-title">--}}
-{{--                    <i class="fas fa-qrcode "></i>--}}
-{{--                    Mi QR--}}
-{{--                </h3>--}}
+        <section class="col-lg-6 connectedSortable ui-sortable">
+            <div class="card">
+                <div class="card-header ui-sortable-handle" style="cursor: move;">
+                    <h3 class="card-title">
+                        <i class="fas fa-people-carry mr-1"></i>
+                        Ultimos Pedidos Grupales
+                    </h3>
 
-{{--            </div>--}}
-{{--            <!-- /.card-header -->--}}
-{{--            <div class="card-body text-center">--}}
-{{--                {!!QrCode::size(300)--}}
-{{--                     ->backgroundColor(254,254,218)--}}
-{{--                     ->generate("{{$persona->qr}}");!!}--}}
-{{--            </div>--}}
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <ul class="todo-list ui-sortable" data-widget="todo-list">
+                        @foreach($pedidosGrupales as $pedido)
+                            <li class="{{$pedido->fechacumplido!=null?"done":""}}">
+                                <!-- drag handle -->
 
-{{--        </div>--}}
-{{--        </section>--}}
-        <!-- /.col -->
+{{--                                 <div class="icheck-primary d-inline ml-2">--}}
+{{--                                  <input type="checkbox" value="" name="todo1" id="todoCheck1" readonly="true">--}}
+{{--                                  <label for="todoCheck1"></label>--}}
+{{--                                </div>--}}
+
+
+                                <!-- checkbox -->
+                                <div class="icheck-primary d-inline ml-2">
+                                    <i class="fas fa-people-carry"></i>
+                                </div>
+                                <!-- todo text -->
+                                <span class="text">Fecha: <strong> {{\Carbon\Carbon::parse( $pedido->fecha )->format('d/m/Y')}}</strong></span>
+                                <span class="text">Comercio: <strong> {{$pedido->comercio->nombrefantasia}}</strong></span>
+                                <!-- Emphasis label -->
+                                <small class="badge badge-danger"><i class="far fa-clock"></i> {{\Carbon\Carbon::create( $pedido->fecha)->diffForHumans()}}</small>
+                                <!-- General tools such as edit or delete-->
+                                <span class="handle ui-sortable-handle">
+                                    <span class="text"><i class='{{$pedido->items[0]->articulo->icon}}'></i> {{$pedido->cantidaddesayunos>0? "Desayunos":"Viandas"}}: {{$pedido->cantidaddesayunos + $pedido->cantidadviandas}}</span>
+                                </span>
+                                <div class="tools">
+                                    <a href="{{ route('detallePedido',$pedido->id) }}"> <i class="fas fa-boxes text-danger"></i></a>
+                                </div>
+                            </li>
+
+                        @endforeach
+                    </ul>
+                </div>
+                <!-- /.card-body -->
+
+            </div>
+        </section>
     </div>
 @stop
 

@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('template_title')
-    Cierre de Lote
+    Pedido Grupal
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@
             <div class="row mb-2">
                 <div class="col-sm-12">
                     <h1>
-                        <i class="fas fa-clipboard-check"></i>  Cierre de Lote # {{$lote->id}}
+                        <i class="fas fa-people-carry"></i>  Pedido Grupal # {{$pedido->id}}
                         <br>
 
                     </h1>
@@ -22,19 +22,47 @@
 
 
             </div><!-- /.row -->
-            <div class="callout callout-danger">
-                <h5>
-                    <strong> Comercio: </strong>{{$lote->comercio->nombrefantasia}}
-                    <br>
-                    <strong> Fecha: </strong>{{\Carbon\Carbon::parse( $lote->fecha )->format('d/m/Y')}}
-                    <br>
-                    <strong> Cant. Operaciones: </strong>{{count($lote->movimientos)}}
-                    <br>
-                    <strong> Cant. Consumos: </strong>{{$lote->movimientos->sum('cantidad')}}
-                    <br>
-                    <strong>Observaciones: </strong>{{$lote->observaciones}}
-                </h5>
+            <div class="row">
+            <div class="col-md-7">
+                <div class="callout callout-danger">
+                    <h6>
+                        <strong> Comercio: </strong>{{$pedido->comercio->nombrefantasia}}
+                        <br>
+                        <strong> Fecha: </strong>{{\Carbon\Carbon::parse( $pedido->fecha )->format('d/m/Y')}}
+                        <br>
+                        <strong> Cant. Personas: </strong>{{count($pedido->items)}}
+                        <br>
+                        <strong> <i class='{{$pedido->items[0]->articulo->icon}}'></i> Cant. {{ $pedido->items[0]->articulo->descripcion }}s: </strong>{{$pedido->items->sum('cantidad')}}
+                        <br>
+                        <strong> Ingresado Por:  </strong>{{ $pedido->usuario->name}}
+                        <br>
+                        <strong>Observaciones: </strong>{{$pedido->observaciones}}
+                    </h6>
+                </div>
             </div>
+            <div class="col-md-5">
+                <div class="callout callout-success">
+                    <h6>
+                        <strong> Estado: </strong>
+                        @if ($pedido->fechacumplido != null)
+                            <span class="right badge badge-success">Cumplido</span>
+                            <br>
+                            <strong> Fecha Cumplido: </strong> {{\Carbon\Carbon::parse( $pedido->fechacumplido )->format('d/m/Y')}}
+                            <br>
+                            <strong> Cumplido Por:  </strong>{{ $pedido->usuariocumple->name}}
+                            <br>
+                        @else
+                            <span class="right badge badge-danger">Pendiente</span>
+                        @endif
+
+                        <br>
+
+
+                    </h6>
+                </div>
+            </div>
+            </div>
+
         </div><!-- /.container-fluid -->
     </div>
     <div class="content">
@@ -46,8 +74,6 @@
                     <table id="tabla" class="table table-striped table-hover dataTable">
                         <thead class="thead">
                         <tr>
-                            <th class="sorting_asc">#</th>
-                            <th class="sorting_asc">Fecha</th>
                             <th class="sorting_asc">Persona</th>
                             <th class="sorting_asc">Situación</th>
                             <th class="text-center sorting_asc">CC</th>
@@ -56,15 +82,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($lote->movimientos as $movimiento)
+                        @foreach ($pedido->items as $item)
                             <tr>
-                                <td >{{$movimiento->id}}</td>
-                                <td >{{\Carbon\Carbon::parse( $movimiento->fecha )->format('d/m/Y')}}</td>
-                                <td>{{$movimiento->persona->fullname}}</td>
-                                <td class="text-center">{{$movimiento->situacion}}</td>
-                                <td class="text-center">{{$movimiento->cc}}</td>
-                                <td ><i class='{{$movimiento->articulo->icon}}'></i> {{$movimiento->articulo->descripcion}}</td>
-                                <td class="text-center">{{$movimiento->cantidad}}</td>
+                                <td>{{$item->persona->fullname}}</td>
+                                <td class="text-center">{{$item->persona->situacion}}</td>
+                                <td class="text-center">{{$item->persona->cc}}</td>
+                                <td ><i class='{{$item->articulo->icon}}'></i> {{$item->articulo->descripcion}}</td>
+                                <td class="text-center">{{$item->cantidad}}</td>
 
                             </tr>
                         @endforeach

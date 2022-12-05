@@ -86,6 +86,7 @@
                         <tr>
                             <th class="sorting_asc">DNI</th>
                             <th class="sorting_asc">Apellido y Nombre</th>
+                            <th class="text-center sorting_asc">Situación</th>
                             <th class="text-center sorting_asc">CC</th>
                             <th class="text-center sorting_asc">Desayunos</th>
                             <th class="text-center sorting_asc">Viandas</th>
@@ -94,11 +95,12 @@
                         <tbody>
                         @foreach ($asignaciones as $asignacion)
                             <tr>
-                                <td class="col-md-3">{{$asignacion->dni}}</td>
+                                <td class="col-md-2">{{$asignacion->dni}}</td>
                                 <td>{{$asignacion->apellidoynombre}}</td>
+                                <td class="text-center col-md-2">{{$asignacion->situacion}}</td>
                                 <td class="text-center col-md-2">{{$asignacion->cc}}</td>
-                                <td class="text-center col-md-2">{{$asignacion->desayunos}}</td>
-                                <td class="text-center col-md-2">{{$asignacion->viandas}}</td>
+                                <td class="text-center col-md-1">{{$asignacion->desayunos}}</td>
+                                <td class="text-center col-md-1">{{$asignacion->viandas}}</td>
 
                             </tr>
                         @endforeach

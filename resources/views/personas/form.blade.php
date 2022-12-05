@@ -38,6 +38,25 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="situacion"  class="col-sm-2 col-form-label">Situación</label>
+                    <input type="text" class='form-control'.{{($errors->has('situacion') ? ' is-invalid' : '')}} name="situacion"
+                           id='situacion' placeholder='Situación' value="{{old('situacion') ? old('situacion') :$persona->situacion}}" maxlength="10" required>
+                    {!! $errors->first('situacion', '<div class="invalid-feedback">:message</div>') !!}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="cc"  class="col-sm-2 col-form-label">CUIT</label>
+                    <input type="text" class='form-control'.{{($errors->has('cc') ? ' is-invalid' : '')}} name="cuit"
+                           id='cc' placeholder='Centro de Costo' value="{{old('cc') ? old('cc') :$persona->cc}}" maxlength="20" required>
+
+                    {!! $errors->first('cc', '<div class="invalid-feedback">:message</div>') !!}
+                </div>
+            </div>
+        </div>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>

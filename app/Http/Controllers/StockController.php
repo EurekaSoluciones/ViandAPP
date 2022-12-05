@@ -73,19 +73,19 @@ class StockController extends Controller
                     $apellido = substr($apellidoynombre, 0, strpos($apellidoynombre, " "));
                     $nombre = substr($apellidoynombre, strpos($apellidoynombre, " ") + 1);
 
-                    $persona = Persona::crearPersonayUsuario($apellido, $nombre, $dni, $cuit);
+                    $persona = Persona::crearPersonayUsuario($apellido, $nombre, $dni, $cuit, $asignacion["cc"], $asignacion["situacion"]);
                 }
 
                 /*Ahora si, ya tengo la persona, a crear el movimiento de stock*/
                 if ($asignacion["desayunos"] > 0) {
                     $stock = StockMovimiento::asignar($persona, $articuloDesayuno, $fechaDesde, $fechaHasta,
-                        $asignacion["desayunos"], $asignacion["cc"], 'Importacion Excel', 1);
+                        $asignacion["desayunos"], $asignacion["cc"],   $asignacion["situacion"], 'Importacion Excel', auth()->user()->id);
 
                 }
 
                 if ($asignacion["viandas"] > 0) {
                     $stock = StockMovimiento::asignar($persona, $articuloVianda, $fechaDesde, $fechaHasta,
-                        $asignacion["viandas"], $asignacion["cc"], 'Importacion Excel', 1);
+                        $asignacion["viandas"], $asignacion["cc"],  $asignacion["situacion"], 'Importacion Excel', auth()->user()->id);
 
                 }
             }
@@ -120,6 +120,7 @@ class StockController extends Controller
 
     }
 
+
     public function generarconsumo(Request $request)
     {
         /*Veamos entonces si puede consumir*/
@@ -144,7 +145,7 @@ class StockController extends Controller
         {
             if ($stock->saldo >=$cantidad)
             {
-                $consumoOK=StockMovimiento::Consumir($persona, $articulo, $fecha, $cantidad, $comercio, $data["observaciones"], $usuario, $stock);
+                $consumoOK=StockMovimiento::Consumir($persona, $articulo, $fecha, $cantidad, $comercio, $data["observaciones"], $usuario, $stock, false);
                 if ($consumoOK["exitoso"])
                 {
                     session()->flash('message' , 'Consumo registrado' );
@@ -172,7 +173,6 @@ class StockController extends Controller
             ->with('articulos', $articulos);
 
     }
-
 
     /*************************************************************************************
     /*Aumento de Stock*/

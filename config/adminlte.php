@@ -350,6 +350,13 @@ return [
             'label_color' => 'success',
         ],
         [
+            'text'        => 'Pedido Grupal',
+            'route'       => 'pedidogrupal',
+            'icon'        => 'fas fa-people-carry',
+            'can'  => ['EsAdmin'],
+            'label_color' => 'success',
+        ],
+        [
             'header' => 'Configuracion',
             'can'  => ['EsAdmin'],
             ],

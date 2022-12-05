@@ -249,6 +249,7 @@ class ComercioController extends Controller
 
 
     }
+
     public function detalleLote($id)
     {
         $lote=CierreLote::findOrFail($id);

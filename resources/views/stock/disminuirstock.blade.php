@@ -58,7 +58,7 @@
                                     <label for="fecha"  class="col-sm-4 col-form-label">Fecha</label>
                                     <div class="input-group date col-md-4" id="fechadatetime" data-target-input="nearest">
 
-                                        <input type="text" name ='fecha', class = 'form-control datetimepicker-input'
+                                        <input type="text" name ='fecha', class = 'form-control datetimepicker-input' value="{{\Carbon\Carbon::now()->format('d/m/Y')}}"
                                                placeholder = 'Fecha' id='fecha' required  data-target= '#fechadatetime' onchange="obtenerStockdePersona();" onblur="obtenerStockdePersona();">
                                         <div class="input-group-append" data-target="#fechadatetime" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>

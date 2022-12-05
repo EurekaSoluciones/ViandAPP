@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCierreLotesTable extends Migration
+class CreatePedidoGrupalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreateCierreLotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cierre_lotes', function (Blueprint $table) {
+        Schema::create('pedidosgrupales', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('comercio_id')->unsigned()->references('id')->on('comercios');
-            $table->bigInteger('usuario_id')->unsigned()->references('id')->on('users');
             $table->dateTime('fecha');
+            $table->integer('cantidad');
             $table->string('observaciones',200)->nullable($value = true);
-            $table->boolean('visado')->default(0);
-            $table->bigInteger('usuariovisa_id')->unsigned()->nullable($value = true)->references('id')->on('users');
-            $table->timestamps();
+            $table->bigInteger('usuario_id')->unsigned()->nullable(true)->references('id')->on('users');
+            $table->dateTime('fechacumplido')->nullable(true);
+            $table->bigInteger('usuariocumple_id')->unsigned()->nullable(true)->references('id')->on('users');
+           $table->timestamps();
         });
     }
 
@@ -32,6 +33,6 @@ class CreateCierreLotesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cierre_lotes');
+        Schema::dropIfExists('pedidosgrupales');
     }
 }

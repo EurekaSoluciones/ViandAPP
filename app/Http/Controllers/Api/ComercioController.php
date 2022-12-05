@@ -7,8 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\StockController;
 use App\Http\Resources\V1\ComercioResource;
 use App\Http\Resources\v1\StockMovimientoResource;
+use App\Http\Resources\v1\PedidoGrupalResource;
 use App\Models\Articulo;
 use App\Models\Comercio;
+use App\Models\PedidoGrupal;
 use App\Models\Persona;
 use App\Models\Stock;
 use App\Models\StockMovimiento;
@@ -130,7 +132,7 @@ class ComercioController extends Controller
         {
             if ($stock->saldo >=$cantidad)
             {
-                $consumoOK=StockMovimiento::Consumir($persona, $articulo, $fecha, $cantidad, $comercio,"Consumo via APP", $usuario, $stock);
+                $consumoOK=StockMovimiento::Consumir($persona, $articulo, $fecha, $cantidad, $comercio,"Consumo via APP", $usuario, $stock, true);
                 if ($consumoOK["exitoso"])
                     return response()->json(["exitoso"=>$consumoOK["exitoso"], "consumo"=>new StockMovimientoResource($consumoOK["movimiento"]), 'message'=>"Consumo Registrado"], 200);
                 else
@@ -182,7 +184,8 @@ class ComercioController extends Controller
      * Genera un nuevo cierre de lote con los consumos pendientes
      *
      * @param Request $request --> debe tener: ["observaciones",
-     *                                          "movimientos:["movimiento_id"]"] como raw data y el token del comercio
+     *                                          "fecha:"
+     *                                                  como raw data y el token del comercio
      * @return \Illuminate\Http\Response
      */
     public function cerrarLote(Request $request)
@@ -222,6 +225,87 @@ class ComercioController extends Controller
         }
 
     }
+
+    /**
+     * Devuelve los pedidos grupales realizados por los administradores
+     *
+     * @param Request $request --> no tiene parametros. Solo token de autorizacion del comercio
+     * @return \Illuminate\Http\Response
+     */
+    public function pedidosGrupales (Request $request)
+    {
+
+        $usuario= auth('sanctum')->user() ;
+
+        $comercio=Comercio::devolverComercioxCuit($usuario->email);
+
+        if ($comercio ==null)
+        {
+            return response()->json(['message'=>"Comercio inexistente"],401);
+        }
+
+        try {
+            $pedidos=PedidoGrupal::devolverPedidosgrupales( $comercio);
+
+            return response()->json(["cantidadPedidos"=>count($pedidos),
+                "Pedidos"=>PedidoGrupalResource::collection($pedidos),
+                'message'=>"OK"],200);
+        }
+        catch(Exception $e)
+        {
+            return response()->json(['message'=>"ERROR - ".$e->getMessage()],500);
+        }
+    }
+
+    /**
+     * Aprueba un pedido grupal realizado por un administrador
+     *
+     * @param Request $request --> debe tener: ["pedidoId",
+     *                                          "observaciones"] como raw data y el token del comercio
+     * @return \Illuminate\Http\Response
+     */
+    public function confirmarPedidoGrupal(Request $request)
+    {
+        //por las dudas que venga mal formado el request
+        try {
+            $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
+        }
+        catch (Exception $e)
+        {
+            return response()->json(['message'=>"ERROR - ".$e->getMessage()],500);
+        }
+
+        $observaciones=$data["observaciones"];
+        $usuario= auth('sanctum')->user() ;
+        $idPedido=$data["pedidoId"];
+
+        $comercio=Comercio::devolverComercioxCuit($usuario->email);
+
+        if ($comercio ==null)
+        {
+            return response()->json(['message'=>"Comercio inexistente"],401);
+        }
+
+        try {
+
+            $resultado=$comercio->confirmarPedidoGrupal($observaciones,$idPedido, $usuario);
+
+            if ($resultado["exitoso"]==true)
+                return response()->json(['message'=>"OK"],200);
+            else
+                return response()->json(['message'=>"ERROR - ".$resultado["error"]],400);
+        }
+        catch(Exception $e)
+        {
+            return response()->json(['message'=>"ERROR - ".$e->getMessage()],500);
+        }
+
+    }
+
+
+
+
+
     /**
      * Store a newly created resource in storage.
      *

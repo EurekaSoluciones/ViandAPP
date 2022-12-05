@@ -22,7 +22,7 @@ class StockMovimiento extends Model
      */
     protected $fillable = ['articulo_id','persona_id', 'fecha', 'tipomovimiento_id',
         'comercio_id', 'cc','cantidad', 'operacion', 'cantidadconsigno', 'usuario_id',
-        'observaciones', 'cierrelote_id', 'estado'];
+        'observaciones', 'cierrelote_id', 'estado','situacion', 'qr'];
 
     public function articulo()
     {
@@ -93,7 +93,7 @@ class StockMovimiento extends Model
     }
 
 
-    public function Asignar($persona, $articulo, $fechadesde, $fechahasta, $cantidad, $cc, $observaciones, $usuario)
+    public function Asignar($persona, $articulo, $fechadesde, $fechahasta, $cantidad, $cc, $situacion, $observaciones, $usuario)
     {
         try
         {
@@ -104,6 +104,7 @@ class StockMovimiento extends Model
                 'persona_id'=>$persona->id,
                 'fecha'=>$fechadesde,
                 'cc'=>$cc,
+                'situacion'=>$situacion,
                 'cantidad'=>$cantidad,
                 'operacion'=>'INC',
                 'cantidadconsigno'=>$cantidad,
@@ -116,6 +117,7 @@ class StockMovimiento extends Model
                 'persona_id'=>$persona->id,
                 'fechadesde'=>$fechadesde,
                 'fechahasta'=>$fechahasta,
+                'situacion'=>$situacion,
                 'cc'=>$cc,
                 'stock'=>$cantidad,
                 'saldo'=>$cantidad]);
@@ -131,7 +133,7 @@ class StockMovimiento extends Model
 
     }
 
-    public function Consumir($persona, $articulo, $fecha, $cantidad, $comercio, $observaciones, $usuario, $stock)
+    public function Consumir($persona, $articulo, $fecha, $cantidad, $comercio, $observaciones, $usuario, $stock, $consumoPorQr)
     {
 
         /*Tengo que buscar si hay stock disponible*/
@@ -145,13 +147,15 @@ class StockMovimiento extends Model
                 'fecha'=>$fecha,
                 'comercio_id'=>$comercio->id,
                 'cc'=>$stock->cc,
+                'situacion'=>$stock->situacion,
                 'cantidad'=>$cantidad,
                 'operacion'=>'DEC',
                 'cantidadconsigno'=>$cantidad * -1,
                 'usuario_id'=>$usuario->id,
                 'tipomovimiento_id'=>config('global.TM_Consumo'),
                 'estado'=>'PENDIENTE',
-                'observaciones'=>$observaciones]);
+                'observaciones'=>$observaciones,
+                'qr'=>$consumoPorQr?$persona->qr:null]);
 
             $stock->update(['saldo'=>$stock->saldo-$cantidad]);
 
@@ -184,6 +188,7 @@ class StockMovimiento extends Model
                 'persona_id'=>$consumo->persona->id,
                 'fecha'=>$consumo->fecha,
                 'cc'=>$consumo->cc,
+                'situacion'=>$consumo->persona->situacion,
                 'cantidad'=>$consumo->cantidad,
                 'comercio_id'=>$consumo->comercio_id,
                 'operacion'=>'INC',
@@ -226,6 +231,7 @@ class StockMovimiento extends Model
                 'articulo_id'=>$articulo->id,
                 'persona_id'=>$persona->id,
                 'fecha'=>$fecha,
+                'situacion'=>$persona->situacion,
                 'cc'=>$cc,
                 'cantidad'=>$cantidad,
                 'operacion'=>'INC',
@@ -240,6 +246,7 @@ class StockMovimiento extends Model
                         'persona_id'=>$persona->id,
                         'fechadesde'=>$fecha,
                         'fechahasta'=>$fecha,
+                        'situacion'=>$persona->situacion,
                         'cc'=>$cc,
                         'stock'=>$cantidad,
                         'saldo'=>$cantidad]);
@@ -272,6 +279,7 @@ class StockMovimiento extends Model
                 'persona_id'=>$persona->id,
                 'fecha'=>$fecha,
                 'cc'=>$stock->cc,
+                'situacion'=>$persona->situacion,
                 'cantidad'=>$cantidad,
                 'operacion'=>'DEC',
                 'cantidadconsigno'=>$cantidad*-1,
@@ -302,6 +310,7 @@ class StockMovimiento extends Model
                 'persona_id'=>$persona->id,
                 'fecha'=>$fecha,
                 'cc'=>$stock->cc,
+                'situacion'=>$persona->situacion,
                 'cantidad'=>$stock->saldo,
                 'operacion'=>'DEC',
                 'cantidadconsigno'=>$stock->saldo*-1,

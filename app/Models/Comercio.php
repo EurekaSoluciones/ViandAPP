@@ -80,9 +80,17 @@ class Comercio extends Model
         return $consumos;
     }
 
+
+
     public static function devolverArrForCombo()
     {
         $comercios=Comercio::orderBy('nombrefantasia')->get()->pluck('nombrefantasia', 'id')->toArray();
+        return $comercios;
+    }
+
+    public static function devolverArrActivosForCombo()
+    {
+        $comercios=Comercio::where ('activo',1)->orderBy('nombrefantasia')->get()->pluck('nombrefantasia', 'id')->toArray();
         return $comercios;
     }
 
@@ -128,6 +136,59 @@ class Comercio extends Model
 
     }
 
+
+    /**
+     * Genera un nuevo cierre de lote con los consumos pendientes
+     *
+     * @param string $observaciones
+     * @param int $idPedido
+     * @param User $usuario
+     * @return \Illuminate\Http\Response
+     */
+    public function ConfirmarPedidoGrupal($observaciones,$idPedido, $usuario)
+    {
+        $fecha=new Carbon(now());
+        try
+        {
+            $pedido=PedidoGrupal::find($idPedido);
+
+            if ($pedido==null)
+            {
+                return ["exitoso"=>false, "error"=>"El pedido indicado no existe o fue confirmado anteriormente."];
+            }
+            else
+            {
+                if ($pedido->usuariocumple_id!=null)
+                {
+                    return ["exitoso"=>false, "error"=>"El pedido indicado no existe o fue confirmado anteriormente."];
+                }
+            }
+
+            DB::beginTransaction();
+
+            $pedido->update(['usuariocumple_id'=>$usuario->id, 'fechacumplido'=>$fecha, 'observaciones'=>$pedido->observaciones . ' - '.$observaciones ]);
+
+            /*Crear los consumos para cada persona*/
+            foreach ($pedido->items as $item)
+            {
+                $persona=$item->persona()->first();
+                $articulo=$item->articulo()->first();
+                $stock=Stock::devolverStock($persona->id, $fecha,  $articulo->id);
+
+                $consumoOK=StockMovimiento::Consumir($persona,$articulo, $fecha, $item->cantidad, $this,"Consumo de Pedido Grupal Nro: ". $pedido->id, $usuario, $stock, false);
+            }
+
+            DB::commit();
+
+            return ["exitoso"=>true, "error"=>null];
+        }
+        catch (\Exception $e)
+        {
+            DB::rollBack();
+            return ["exitoso"=>false, "error"=>$e->getMessage()];
+        }
+
+    }
         ///SCOPES
     public function scopeRazonSocial($query, $search)
     {

@@ -57,7 +57,9 @@ Route::get('aumentarstock', [Controllers\StockController::class, 'aumentarstock'
 Route::POST('generaraumento', [Controllers\StockController::class, 'generaraumento'])->name('generaraumento');
 Route::get('disminuirstock', [Controllers\StockController::class, 'disminuirstock'])->name('disminuirstock');
 Route::POST('generardisminucion', [Controllers\StockController::class, 'generardisminucion'])->name('generardisminucion');
-
+Route::get('pedidogrupal', [Controllers\AdminController::class, 'pedidogrupal'])->name('pedidogrupal');
+Route::POST('generarpedidogrupal', [Controllers\AdminController::class, 'generarpedidogrupal'])->name('generarpedidogrupal');
+Route::get('detallePedido/{id}', [Controllers\AdminController::class, 'detallePedido'])->name('detallePedido');
 /*Acciones de Personas*/
 
 

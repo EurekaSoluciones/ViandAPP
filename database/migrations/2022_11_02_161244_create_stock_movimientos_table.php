@@ -20,6 +20,7 @@ class CreateStockMovimientosTable extends Migration
             $table->bigInteger('tipomovimiento_id')->unsigned()->references('id')->on('tipo_movimientos');
             $table->bigInteger('comercio_id')->nullable($value = true)->unsigned()->references('id')->on('comercios');
             $table->string('cc',20);
+            $table->string('situacion', 10);
             $table->dateTime('fecha');
             $table->integer('cantidad');
             $table->string('operacion',3);
@@ -28,6 +29,7 @@ class CreateStockMovimientosTable extends Migration
             $table->string('estado',10)->nullable($value = true);
             $table->string('observaciones', 200)->nullable($value = true);
             $table->bigInteger('cierrelote_id')->nullable($value = true)->unsigned()->references('id')->on('cierre_lotes');
+            $table->string('qr', 50)->nullable($value = true);
             $table->timestamps();
         });
     }

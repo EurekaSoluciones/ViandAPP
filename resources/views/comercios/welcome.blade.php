@@ -78,7 +78,7 @@
 
     </div>
     <div class="row">
-        <section class="col-lg-7 connectedSortable ui-sortable">
+        <section class="col-lg-6 connectedSortable ui-sortable">
             <div class="card">
                 <div class="card-header ui-sortable-handle" style="cursor: move;">
                     <h3 class="card-title">
@@ -111,6 +111,50 @@
                                 </span>
                                 <div class="tools">
                                     <a href="{{ route('detalleLote',$cierreLote->id) }}"> <i class="fas fa-info-circle text-danger"></i></a>
+                                </div>
+                            </li>
+
+                        @endforeach
+                    </ul>
+                </div>
+                <!-- /.card-body -->
+
+            </div>
+        </section>
+        <section class="col-lg-6 connectedSortable ui-sortable">
+            <div class="card">
+                <div class="card-header ui-sortable-handle" style="cursor: move;">
+                    <h3 class="card-title">
+                        <i class="fas fa-clipboard-check mr-1"></i>
+                        Ultimos Pedidos Grupales
+                    </h3>
+
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <ul class="todo-list ui-sortable" data-widget="todo-list">
+                        @foreach($pedidosGrupales as $pedido)
+                            <li>
+                                <!-- drag handle -->
+                                <span class="handle ui-sortable-handle">
+                                  <i class="fas fa-ellipsis-v"></i>
+                                  <i class="fas fa-ellipsis-v"></i>
+                                </span>
+                                <!-- checkbox -->
+                                <div class="icheck-primary d-inline ml-2">
+                                    <i class="fas fa-people-carry"></i>
+                                </div>
+                                <!-- todo text -->
+                                <span class="text">Fecha: <strong> {{\Carbon\Carbon::parse( $pedido->fecha )->format('d/m/Y')}}</strong></span>
+                                <span class="text">Comercio: <strong> {{$pedido->comercio->nombrefantasia}}</strong></span>
+                                <!-- Emphasis label -->
+                                <small class="badge badge-danger"><i class="far fa-clock"></i>{{\Carbon\Carbon::create( $pedido->fecha)->diffForHumans()}}</small>
+                                <!-- General tools such as edit or delete-->
+                                <span class="handle ui-sortable-handle">
+                                    <span class="text"># <i class='{{$pedido->items[0]->articulo->icon}}'></i> {{count($pedido->cantidaddesayunos)>0? "Desayunos":"Viandas"}}: {{$pedido->cantidaddesayunos + $pedido->cantidadviandas}}</span>
+                                </span>
+                                <div class="tools">
+                                    <a href="{{ route('detallePedido',$pedido->id) }}"> <i class="fas fa-boxes text-danger"></i></a>
                                 </div>
                             </li>
 
