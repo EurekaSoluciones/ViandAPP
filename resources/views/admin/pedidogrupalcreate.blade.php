@@ -33,15 +33,12 @@
                             <div class="form-group row">
                                 <label for="fecha"  class="col-sm-2 col-form-label">Fecha</label>
                                 <div class="input-group date col-md-2" id="fechadatetime" data-target-input="nearest">
-
                                     <input type="text" name ='fecha', class = 'form-control datetimepicker-input'
                                            placeholder = 'Fecha' id='fecha' required  data-target= '#fechadatetime' value="{{\Carbon\Carbon::now()->format('d/m/Y')}}">
                                     <div class="input-group-append" data-target="#fechadatetime" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
-
                                 </div>
-
                             </div>
 
                             <div class="form-group row">
@@ -54,7 +51,6 @@
                                     @endforeach
                                 </select>
                                 </div>
-
                             </div>
 
                             <div class="form-group row">
