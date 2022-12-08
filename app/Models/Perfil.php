@@ -20,4 +20,29 @@ class Perfil extends Model
         return $items;
 
     }
+
+
+    public function geticonclassAttribute()
+    {
+        $clase = "";
+        switch(strtoupper($this->id))
+        {
+            case config('global.PERFIL_Admin'):
+                $clase="fas fa-user-tie";
+                break;
+            case config('global.PERFIL_Operador'):
+                break;
+            case config('global.PERFIL_Persona'):
+            case config('global.PERFIL_Usuario'):
+            case config('global.PERFIL_Empleado'):
+                $clase="fas fa-user";
+                break;
+            case config('global.PERFIL_Comercio'):
+                $clase="fas fa-store";
+                break;
+        }
+
+        return $clase;
+    }
+
 }

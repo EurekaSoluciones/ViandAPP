@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AdminGeneralController;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\PedidoGrupalResource;
 use App\Http\Resources\v1\PersonaResource;
 use App\Models\Comercio;
+use App\Models\PedidoGrupal;
 use App\Models\Persona;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -64,10 +66,14 @@ class LoginController extends Controller
             if (Hash::check($data['password'], $user->password)) {
                 $comercio = Comercio::devolverComercioxCuit($data['login']);
 
+                $pedidos=PedidoGrupal::devolverPedidosgrupales($comercio);
+
                 return response()->json([
                     'token' => $user->createtoken($user->email)->plainTextToken,
                     'perfil' => $user->perfil_id,
                     'comercio' => $comercio,
+                    "cantidadPedidos"=>count($pedidos),
+                    "Pedidos"=>PedidoGrupalResource::collection($pedidos),
                     'message' => 'OK'
                 ], 200);
             }

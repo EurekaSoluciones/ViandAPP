@@ -133,7 +133,7 @@ return [
     'usermenu_header' => false,
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,
-    'usermenu_desc' => false,
+    'usermenu_desc' => true,
     'usermenu_profile_url' => false,
 
     /*
@@ -377,7 +377,7 @@ return [
         ['header' => 'Seguridad'],
         [
             'text' => 'Usuarios',
-            'url'  => 'personas.index',
+            'route'  => 'usuarios.index',
             'icon' => 'fas fa-fw fa-users',
             'can'  => ['EsAdmin'],
         ],

@@ -42,6 +42,7 @@ class User extends Authenticatable
         'two_factor_recovery_codes',
         'two_factor_secret',
     ];
+    protected $perPage = 60;
 
     public function perfil()
     {

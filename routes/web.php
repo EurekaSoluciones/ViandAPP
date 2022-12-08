@@ -37,6 +37,7 @@ Route::get('/home', 'HomeController@index')->name('home');;
 
 Route::resource('personas', 'PersonaController');
 Route::resource('comercios', 'ComercioController');
+Route::resource('usuarios', 'UserController');
 
 /*Acciones de Comercios*/
 Route::get('consumir', [Controllers\StockController::class, 'consumir'])->name('consumir');
