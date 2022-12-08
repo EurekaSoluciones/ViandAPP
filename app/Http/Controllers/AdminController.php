@@ -116,7 +116,8 @@ class AdminController extends Controller
             DB::beginTransaction();
 
             $pedido=PedidoGrupal::create(['comercio_id'=>$comercio->id,'fecha'=>$fecha,'cantidad'=>$cantidad,
-                'observaciones'=>$observaciones,'usuario_id'=>$usuario->id]);
+                'observaciones'=>$observaciones,'usuario_id'=>$usuario->id,
+                'estado'=>'GENERADO']);
 
             foreach ($personas as $value) {
                 PedidoGrupalItem::create(['pedidogrupal_id'=>$pedido->id,'persona_id'=>$value,'articulo_id'=>$articulo->id,'cantidad'=>$cantidad]);

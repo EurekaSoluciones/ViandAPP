@@ -78,4 +78,23 @@ class PedidoGrupal extends Model
         return new Carbon($fecha);
 
     }
+
+    public function getestadoclassAttribute()
+    {
+        $clase = "";
+        switch(strtoupper($this->estado))
+        {
+            case "GENERADO":
+                $clase = "fas fa-edit text-warning";
+                break;
+            case "CONFIRMADO":
+                $clase = "fa fa-thumbs-up text-success";
+                break;
+            case "RECHAZADO":
+                $clase = "fa fa-thumbs-down text-danger";
+                break;
+        }
+
+        return $clase;
+    }
 }

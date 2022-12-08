@@ -21,7 +21,10 @@ class CreatePedidoGrupalsTable extends Migration
             $table->string('observaciones',200)->nullable($value = true);
             $table->bigInteger('usuario_id')->unsigned()->nullable(true)->references('id')->on('users');
             $table->dateTime('fechacumplido')->nullable(true);
+            $table->string('estado',20)->nullable($value = true);
             $table->bigInteger('usuariocumple_id')->unsigned()->nullable(true)->references('id')->on('users');
+            $table->dateTime('fecharechazo')->nullable(true);
+            $table->bigInteger('usuariorechaza_id')->unsigned()->nullable(true)->references('id')->on('users');
            $table->timestamps();
         });
     }

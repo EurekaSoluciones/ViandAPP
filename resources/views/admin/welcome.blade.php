@@ -158,7 +158,7 @@
 
                                 <!-- checkbox -->
                                 <div class="icheck-primary d-inline ml-2">
-                                    <i class="fas fa-people-carry"></i>
+                                    <i class="{{$pedido->estadoclass}}"></i>
                                 </div>
                                 <!-- todo text -->
                                 <span class="text">Fecha: <strong> {{\Carbon\Carbon::parse( $pedido->fecha )->format('d/m/Y')}}</strong></span>

@@ -303,6 +303,51 @@ class ComercioController extends Controller
     }
 
 
+    /**
+     * Aprueba un pedido grupal realizado por un administrador
+     *
+     * @param Request $request --> debe tener: ["pedidoId",
+     *                                          "observaciones"] como raw data y el token del comercio
+     * @return \Illuminate\Http\Response
+     */
+    public function rechazarPedidoGrupal(Request $request)
+    {
+        //por las dudas que venga mal formado el request
+        try {
+            $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
+        }
+        catch (Exception $e)
+        {
+            return response()->json(['message'=>"ERROR - ".$e->getMessage()],500);
+        }
+
+        $observaciones=$data["observaciones"];
+        $usuario= auth('sanctum')->user() ;
+        $idPedido=$data["pedidoId"];
+
+        $comercio=Comercio::devolverComercioxCuit($usuario->email);
+
+        if ($comercio ==null)
+        {
+            return response()->json(['message'=>"Comercio inexistente"],401);
+        }
+
+        try {
+
+            $resultado=$comercio->rechazarPedidoGrupal($observaciones,$idPedido, $usuario);
+
+            if ($resultado["exitoso"]==true)
+                return response()->json(['message'=>"OK"],200);
+            else
+                return response()->json(['message'=>"ERROR - ".$resultado["error"]],400);
+        }
+        catch(Exception $e)
+        {
+            return response()->json(['message'=>"ERROR - ".$e->getMessage()],500);
+        }
+
+    }
+
 
 
 

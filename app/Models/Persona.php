@@ -141,12 +141,7 @@ class Persona extends Model
             'cc'=>$cc,
             'qr'=>""]);
 
-        /*tengo que generar el QR*/
-        /*El QR va a ser el ID padeado a 8 right + un numero random del 100000 al 999999*/
-
-        $qr=str_pad($persona->id, 8, "0").str_pad(rand(100000,999999), 8, "0");
-
-        $persona->update(["qr"=>$qr]);
+        $persona->generarQR();
 
         /*Y tengo que crear un usuario para esa persona*/
 
@@ -158,5 +153,29 @@ class Persona extends Model
         ]);
 
         return $persona;
+    }
+
+    /**
+     * Genera un nuevo QR para una persona
+     *
+     * @return string
+     */
+
+    public function generarQR()
+    {
+        /*tengo que generar el QR, tengo todos los datos de la persona*/
+        /*El QR va a ser el ID padeado a 8 right + un numero random del 100000 al 999999*/
+
+        $qrAnterior= $this->qr;
+
+        do
+        {
+            $qr=str_pad($this->id, 8, "0", STR_PAD_LEFT).str_pad(rand(100000,999999), 8, "0",STR_PAD_LEFT);
+        } while ($qrAnterior ==$qr );
+
+        $this->update(["qr"=>$qr]);
+
+        /*Y tengo que devolver el QR*/
+        return $qr;
     }
 }

@@ -45,14 +45,23 @@
                     <h6>
                         <strong> Estado: </strong>
                         @if ($pedido->fechacumplido != null)
-                            <span class="right badge badge-success">Cumplido</span>
+                            <i class="{{$pedido->estadoclass}}"></i><span class="right badge badge-success ml-2"> CONFIRMADO</span>
                             <br>
                             <strong> Fecha Cumplido: </strong> {{\Carbon\Carbon::parse( $pedido->fechacumplido )->format('d/m/Y')}}
                             <br>
                             <strong> Cumplido Por:  </strong>{{ $pedido->usuariocumple->name}}
                             <br>
                         @else
-                            <span class="right badge badge-danger">Pendiente</span>
+                            @if ($pedido->fecharechazo != null)
+                                <i class="{{$pedido->estadoclass}}"></i><span class="right badge badge-danger ml-2"> RECHAZADO</span>
+                                <br>
+                                <strong> Fecha Rechazo: </strong> {{\Carbon\Carbon::parse( $pedido->fecharechazo )->format('d/m/Y')}}
+                                <br>
+                                <strong> Recahazado Por:  </strong>{{ $pedido->usuariorechaza->name}}
+                                <br>
+                            @else
+                                <i class="{{$pedido->estadoclass}}"></i><span class="right badge badge-warning ml-2"> GENERADO</span>
+                            @endif
                         @endif
 
                         <br>

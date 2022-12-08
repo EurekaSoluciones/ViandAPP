@@ -34,6 +34,10 @@ Route::post('helloWorld', [App\Http\Controllers\Api\TestController::class, 'hell
 Route::post('helloWorldConAuth',  [App\Http\Controllers\Api\TestController::class, 'helloWorldConAuth'])
     ->middleware('App\Http\Middleware\EureAuthApis');
 
+/********************************************************************/
+/*OPERACIONES DE COMERCIOS*/
+/********************************************************************/
+
 Route::post('comercios/consumir', [App\Http\Controllers\Api\ComercioController::class, 'consumir'])
     ->middleware('App\Http\Middleware\EureAuthApis');
 
@@ -46,14 +50,21 @@ Route::post('comercios/consumosPendientesDeRendir', [App\Http\Controllers\Api\Co
 Route::post('comercios/cerrarLote', [App\Http\Controllers\Api\ComercioController::class, 'cerrarLote'])
     ->middleware('App\Http\Middleware\EureAuthApis');
 
+Route::post('comercios/pedidosGrupales', [App\Http\Controllers\Api\ComercioController::class, 'pedidosGrupales'])
+    ->middleware('App\Http\Middleware\EureAuthApis');
+
+Route::post('comercios/confirmarPedidoGrupal', [App\Http\Controllers\Api\ComercioController::class, 'confirmarPedidoGrupal'])
+    ->middleware('App\Http\Middleware\EureAuthApis');
+
+/********************************************************************/
+/*OPERACIONES DE PERSONAS*/
+/********************************************************************/
+
 Route::post('personas/obtenerPersonaByQr', [App\Http\Controllers\Api\PersonaController::class, 'devolverPersonaxQR'])
     ->middleware('App\Http\Middleware\EureAuthApis');
 
 Route::post('personas/obtenerPersonaByToken', [App\Http\Controllers\Api\PersonaController::class, 'devolverPersonaxToken'])
     ->middleware('App\Http\Middleware\EureAuthApis');
 
-Route::post('comercios/pedidosGrupales', [App\Http\Controllers\Api\ComercioController::class, 'pedidosGrupales'])
-    ->middleware('App\Http\Middleware\EureAuthApis');
-
-Route::post('comercios/confirmarPedidoGrupal', [App\Http\Controllers\Api\ComercioController::class, 'confirmarPedidoGrupal'])
+Route::post('personas/generarNuevoQr', [App\Http\Controllers\Api\PersonaController::class, 'generarNuevoQr'])
     ->middleware('App\Http\Middleware\EureAuthApis');

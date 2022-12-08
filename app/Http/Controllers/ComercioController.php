@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\V1\ComercioResource;
 use App\Models\CierreLote;
 use App\Models\Comercio;
+use App\Models\PedidoGrupal;
 use App\Models\Persona;
 use App\Models\StockMovimiento;
 use App\Models\User;
@@ -282,12 +283,15 @@ class ComercioController extends Controller
         $ultimosLotes= $comercio->cierreslote()->orderBy('id','DESC')->take(10)->get();
 
         $consumosPendientess= $comercio->devolverConsumosPendientesDeLiquidar($fecha, $comercio->id );
+        $pedidosGrupales=$comercio->pedidosgrupales()->orderBy('id','DESC')->take(10)->get();
+        ;
 
         return view('comercios.welcome')
             ->with('comercio', $comercio)
             ->with('ultimosLotes',$ultimosLotes)
             ->with('consumosPendientes',$consumosPendientess)
             ->with('viandas', $viandas)
+            ->with('pedidosGrupales', $pedidosGrupales)
             ->with('desayunos',$desayunos);
 
 
