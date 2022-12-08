@@ -56,6 +56,9 @@ Route::post('comercios/pedidosGrupales', [App\Http\Controllers\Api\ComercioContr
 Route::post('comercios/confirmarPedidoGrupal', [App\Http\Controllers\Api\ComercioController::class, 'confirmarPedidoGrupal'])
     ->middleware('App\Http\Middleware\EureAuthApis');
 
+Route::post('comercios/rechazarPedidoGrupal', [App\Http\Controllers\Api\ComercioController::class, 'rechazarPedidoGrupal'])
+    ->middleware('App\Http\Middleware\EureAuthApis');
+
 /********************************************************************/
 /*OPERACIONES DE PERSONAS*/
 /********************************************************************/

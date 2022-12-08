@@ -376,6 +376,12 @@ return [
         ],
         ['header' => 'Seguridad'],
         [
+            'text' => 'Usuarios',
+            'url'  => 'personas.index',
+            'icon' => 'fas fa-fw fa-users',
+            'can'  => ['EsAdmin'],
+        ],
+        [
             'text' => 'change_password',
             'url'  => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
