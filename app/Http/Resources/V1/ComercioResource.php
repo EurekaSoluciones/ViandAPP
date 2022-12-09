@@ -18,6 +18,7 @@ class ComercioResource extends JsonResource
             'razonSocial'=>ucwords(strtolower($this->razonsocial)),
             'nombreFantasia'=>ucwords(strtolower($this->nombrefantasia)),
             'cuit'=>$this->cuit,
-            'domicilio' =>$this->domicilio];
+            'domicilio' =>$this->domicilio,
+            'activo'=>$this->activo];
     }
 }

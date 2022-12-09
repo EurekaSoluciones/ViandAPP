@@ -22,8 +22,8 @@ class PedidoGrupalResource extends JsonResource
             "usuario_id"=>$this->usuario_id,
             "usuario"=>ucwords(strtolower($this->usuario->name)),
             "observaciones"=>$this->observaciones,
-            "cantidadViandas"=>$this->cantidadviandas,
-            "cantidadDesayunos"=>$this->cantidaddesayunos,
+            "cantidadViandas"=>intval($this->cantidadviandas),
+            "cantidadDesayunos"=>intval($this->cantidaddesayunos),
             ];
     }
 }

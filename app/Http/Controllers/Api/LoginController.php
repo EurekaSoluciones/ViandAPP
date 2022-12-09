@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AdminGeneralController;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\ComercioResource;
 use App\Http\Resources\v1\PedidoGrupalResource;
 use App\Http\Resources\v1\PersonaResource;
 use App\Models\Comercio;
@@ -71,9 +72,10 @@ class LoginController extends Controller
                 return response()->json([
                     'token' => $user->createtoken($user->email)->plainTextToken,
                     'perfil' => $user->perfil_id,
-                    'comercio' => $comercio,
-                    "cantidadPedidos"=>count($pedidos),
-                    "Pedidos"=>PedidoGrupalResource::collection($pedidos),
+                    'comercio' =>new ComercioResource( $comercio),
+                    'Pedidos'=>["cantidadPedidos"=>count($pedidos),
+                        "Pedidos"=>PedidoGrupalResource::collection($pedidos),
+                        'message'=>"OK"],
                     'message' => 'OK'
                 ], 200);
             }

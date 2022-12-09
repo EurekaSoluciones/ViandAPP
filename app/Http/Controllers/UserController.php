@@ -11,9 +11,26 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
+//        $nombre=$request->get('name');
+//        $perfil=$request->get('nombrefantasia');
+//        $soloActivos=$request->get('ckactivos');
+//
+//        $comercios = Comercio::razonsocial($razonsocial)
+//            ->nombrefantasia($nombrefantasia)
+//            ->cuit($cuit)
+//            ->soloactivos($soloActivos)
+//            ->orderby('razonsocial')->orderby('nombrefantasia')->paginate();
+//
+//        return view('comercios.index', compact('comercios'))
+//            ->with('razonsocial', $razonsocial)
+//            ->with('nombrefantasia', $nombrefantasia)
+//            ->with('cuit', $cuit)
+//            ->with('soloactivos', $soloActivos)
+//            ->with('i', (request()->input('page', 1) - 1) * $comercios->perPage());
+
         $perfiles=Perfil::devolverArrForCombo();
 
-        $usuarios =  User::orderby('name')->paginate();
+        $usuarios =  User::all()->orderby('name')->paginate();
 
         return view('admin.usuarios.index', compact('usuarios'))
             ->with('titulo','Usuarios')
