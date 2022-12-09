@@ -61,7 +61,15 @@ Route::POST('generardisminucion', [Controllers\StockController::class, 'generard
 Route::get('pedidogrupal', [Controllers\AdminController::class, 'pedidogrupal'])->name('pedidogrupal');
 Route::POST('generarpedidogrupal', [Controllers\AdminController::class, 'generarpedidogrupal'])->name('generarpedidogrupal');
 Route::get('detallePedido/{id}', [Controllers\AdminController::class, 'detallePedido'])->name('detallePedido');
+
+
+Route::get('/usuarios/inactivar/{id}', 'UserController@inactivar')->name('usuarios.inactivar');
+Route::post('/usuarios/reactivar/{id}', 'UserController@reactivar')->name('usuarios.reactivar');
+Route::get('/usuarios/reiniciarclave/{id}', 'UserController@reiniciarclave')->name('usuarios.reiniciarclave');
+Route::post('/usuarios/guardarclave', 'UserController@guardarclave')->name('usuarios.guardarclave');
+
 /*Acciones de Personas*/
+Route::get('/usuarios/cambiarcontrasenia', 'UserController@cambiarclave')->name('usuarios.cambiarcontrasenia');
 
 
 

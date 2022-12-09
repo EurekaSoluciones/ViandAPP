@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Perfil;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -30,7 +31,7 @@ class UserController extends Controller
 
         $perfiles=Perfil::devolverArrForCombo();
 
-        $usuarios =  User::all()->orderby('name')->paginate();
+        $usuarios =  User::orderby('name')->paginate();
 
         return view('admin.usuarios.index', compact('usuarios'))
             ->with('titulo','Usuarios')
@@ -54,18 +55,14 @@ class UserController extends Controller
 
         $data = request()->all();
 
-        $persona=Persona::where('id',$data['persona_id'])->first();
+        $login=$data['email'];
 
-        $password=Hash::make($data['cuit']);
-
-        $usuario=User::create(['nombre'=>$persona->nombre." ".$persona->apellido,
-            'cuit'=>$data['cuit'],
-            'perfil_id'=>$data['perfil_id'],
-            'persona_id' =>$data['persona_id'],
-            'password'=>$password]);
-
-        if (User::all()->count()==1)
-            return redirect()->route('login');
+        User::create([
+            'email'=>$data['email'],
+            'name'=>$data['name'],
+            'password'=>Hash::make($login),
+            'perfil_id'=>$data['perfil']
+        ]);
 
         return redirect()->route('usuarios.index');
 

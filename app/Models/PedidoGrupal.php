@@ -65,7 +65,7 @@ class PedidoGrupal extends Model
     public function devolverPedidosgrupales($comercio)
     {
 
-        $pedidos= PedidoGrupal::whereNull('usuariocumple_id')
+        $pedidos= PedidoGrupal::where('estado', 'GENERADO')
             ->where('comercio_id', $comercio->id)
             ->orderBy('id', 'DESC')
             ->get();

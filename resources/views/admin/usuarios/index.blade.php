@@ -51,6 +51,7 @@
 										<th>Activo?</th>
                                         <th>Fecha Baja</th>
                                         <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -63,13 +64,17 @@
 											<td>{{--<input type="checkbox" name="esactivo" disabled="" {{ ($usuario->activo) ? "checked" : "" }}>--}}</td>
                                             <td>{{--{{ ($persona->fechabaja!=null)?$persona->fechabaja->format('d-m-Y') :"" }}--}}</td>
 											<td>
-
-                                                <form action="{{ route('usuarios.destroy',$usuario->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-warning" href="{{ route('usuarios.show',$usuario->id) }}" title="Info"><i class="fas fa-info-circle"></i> </a>
+                                                <form action="{{ route('usuarios.reiniciarclave',$usuario->id) }}" method="get" class="form-inline">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-warning" title="Reiniciar Contraseña" ><i class="fas fa-lock-open" ></i> </button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form action="{{ route('usuarios.destroy',$usuario->id) }}" method="POST" class="form-inline">
                                                     <a class="btn btn-sm btn-info" href="{{ route('usuarios.edit',$usuario->id) }}" title="Modificar"><i class="fas fa-pencil-alt"></i> </a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Borrar" ><i class="fas fa-trash" ></i> </button>
+                                                    <button type="submit" class="btn btn-danger btn-sm" title="Inactivar" ><i class="fas fa-trash" ></i> </button>
                                                 </form>
                                             </td>
                                         </tr>
