@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('template_title')
-    Create Persona
+    Create Usuario
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@
             <div class="row mb-2">
                 <div class="col-sm-12">
                     <h5>
-                        <i class="fas fa-user"></i> Nueva Persona
+                        <i class="fas fa-user"></i> Nuevo Usuario
                     </h5>
                 </div><!-- /.col -->
 
@@ -26,10 +26,10 @@
                 <div class="card card-default">
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('personas.store') }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('usuarios.store') }}"  role="form" enctype="multipart/form-data">
                             @csrf
 
-                            @include('personas.form')
+                            @include('usuarios.form')
 
                         </form>
                     </div>

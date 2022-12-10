@@ -71,3 +71,6 @@ Route::post('personas/obtenerPersonaByToken', [App\Http\Controllers\Api\PersonaC
 
 Route::post('personas/generarNuevoQr', [App\Http\Controllers\Api\PersonaController::class, 'generarNuevoQr'])
     ->middleware('App\Http\Middleware\EureAuthApis');
+
+Route::post('cambiarClave', [App\Http\Controllers\Api\LoginController::class, 'cambiarClave'])
+    ->middleware('App\Http\Middleware\EureAuthApis');

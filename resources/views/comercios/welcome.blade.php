@@ -125,7 +125,7 @@
             <div class="card">
             <div class="card-header ui-sortable-handle" style="cursor: move;">
                 <h3 class="card-title">
-                    <i class="fas fa-people-carry mr-1"></i>
+                    <i class="fas fa-shopping-basket mr-1"></i>
                     Ultimos Pedidos Grupales
                 </h3>
 
@@ -173,6 +173,51 @@
     <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
 
-@section('js')
-    <script> console.log('Hi!'); </script>
+@section("js")
+
+
+    <script type="text/javascript">
+
+
+
+        @if(Session::has('message'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+        toastr.success("{{ session('message') }}");
+        @endif
+
+        @if(Session::has('error'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+        toastr.error("{{ session('error') }}");
+        @endif
+
+        @if(Session::has('info'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+        toastr.info("{{ session('info') }}");
+        @endif
+
+        @if(Session::has('warning'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+        toastr.warning("{{ session('warning') }}");
+        @endif
+
+    </script>
+
+
+@endsection
 @stop

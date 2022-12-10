@@ -145,4 +145,33 @@ class LoginController extends Controller
 //            'password'=>'required'
 //        ]);
     }
+
+    public function cambiarClave (Request $request)
+    {
+
+        $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
+
+        $usuario= auth('sanctum')->user() ;
+        if ($usuario!=null)
+        {
+            $resultado= $usuario->cambiarContrasenia($data['password']);
+
+            if ($resultado["exitoso"]==true) {
+                return response()->json([
+                    'message' => 'OK'
+                ], 200);
+            }
+            else
+            {
+                return response()->json([
+                    'message' => $resultado["error"]
+                ], 401);
+            }
+        }
+
+        return response()->json([
+            'message'=>'Persona no encontrada'
+        ], 401);
+    }
+
 }

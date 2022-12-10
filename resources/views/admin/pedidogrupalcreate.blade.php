@@ -10,7 +10,7 @@
             <div class="row mb-2">
                 <div class="col-sm-12">
                     <h5>
-                        <i class="fas fa-people-carry"></i> Nuevo Pedido Grupal
+                        <i class="fas fa-shopping-basket"></i> Nuevo Pedido Grupal
                     </h5>
                 </div><!-- /.col -->
 

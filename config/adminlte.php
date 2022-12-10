@@ -352,7 +352,7 @@ return [
         [
             'text'        => 'Pedido Grupal',
             'route'       => 'pedidogrupal',
-            'icon'        => 'fas fa-people-carry',
+            'icon'        => 'fas fa-shopping-basket',
             'can'  => ['EsAdmin'],
             'label_color' => 'success',
         ],
@@ -383,7 +383,7 @@ return [
         ],
         [
             'text' => 'change_password',
-            'url'  => 'admin/settings',
+            'route'  => 'usuarios.cambiarcontrasenia',
             'icon' => 'fas fa-fw fa-lock',
         ],
 

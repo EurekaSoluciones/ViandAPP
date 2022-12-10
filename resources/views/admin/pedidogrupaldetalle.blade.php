@@ -10,7 +10,7 @@
             <div class="row mb-2">
                 <div class="col-sm-12">
                     <h1>
-                        <i class="fas fa-people-carry"></i>  Pedido Grupal # {{$pedido->id}}
+                        <i class="fas fa-shopping-basket"></i>  Pedido Grupal # {{$pedido->id}}
                         <br>
 
                     </h1>

@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('template_title')
-    Personas
+    Usuarios
 @endsection
 
 @section('content')

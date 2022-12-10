@@ -69,7 +69,7 @@ Route::get('/usuarios/reiniciarclave/{id}', 'UserController@reiniciarclave')->na
 Route::post('/usuarios/guardarclave', 'UserController@guardarclave')->name('usuarios.guardarclave');
 
 /*Acciones de Personas*/
-Route::get('/usuarios/cambiarcontrasenia', 'UserController@cambiarclave')->name('usuarios.cambiarcontrasenia');
+Route::post('/usuarios/cambiarcontrasenia', 'UserController@cambiarcontrasenia')->name('usuarios.cambiarcontrasenia');
 
 
 

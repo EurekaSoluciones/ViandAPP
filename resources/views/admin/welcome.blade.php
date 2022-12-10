@@ -138,7 +138,7 @@
             <div class="card">
                 <div class="card-header ui-sortable-handle" style="cursor: move;">
                     <h3 class="card-title">
-                        <i class="fas fa-people-carry mr-1"></i>
+                        <i class="fas fa-shopping-basket mr-1"></i>
                         Ultimos Pedidos Grupales
                     </h3>
 
@@ -190,4 +190,87 @@
 
 @section('js')
     <script> console.log('Hi!'); </script>
+
+
+@section("js")
+
+
+    <script type="text/javascript">
+
+        $(function () {
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+            $('.select2').select2();
+
+
+            $('#fechadatetime').datetimepicker({locale: 'es', format: 'DD/MM/YYYY'});
+
+        })
+
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+            $('.js-example-basic-multiple').select2();
+        });
+
+
+        function SoloNumeros(evt){
+            if(window.event){//asignamos el valor de la tecla a keynum
+                keynum = evt.keyCode; //IE
+            }
+            else{
+                keynum = evt.which; //FF
+            }
+            //comprobamos si se encuentra en el rango numérico y que teclas no recibirá.
+            if((keynum > 47 && keynum < 58) || keynum == 8 || keynum == 13 || keynum == 6 ){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+        @if(Session::has('message'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+        toastr.success("{{ session('message') }}");
+        @endif
+
+        @if(Session::has('error'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+        toastr.error("{{ session('error') }}");
+        @endif
+
+        @if(Session::has('info'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+        toastr.info("{{ session('info') }}");
+        @endif
+
+        @if(Session::has('warning'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+        toastr.warning("{{ session('warning') }}");
+        @endif
+
+    </script>
+
+
+@endsection
+
 @stop

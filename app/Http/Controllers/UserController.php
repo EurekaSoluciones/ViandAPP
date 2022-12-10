@@ -12,28 +12,18 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-//        $nombre=$request->get('name');
-//        $perfil=$request->get('nombrefantasia');
-//        $soloActivos=$request->get('ckactivos');
-//
-//        $comercios = Comercio::razonsocial($razonsocial)
-//            ->nombrefantasia($nombrefantasia)
-//            ->cuit($cuit)
-//            ->soloactivos($soloActivos)
-//            ->orderby('razonsocial')->orderby('nombrefantasia')->paginate();
-//
-//        return view('comercios.index', compact('comercios'))
-//            ->with('razonsocial', $razonsocial)
-//            ->with('nombrefantasia', $nombrefantasia)
-//            ->with('cuit', $cuit)
-//            ->with('soloactivos', $soloActivos)
-//            ->with('i', (request()->input('page', 1) - 1) * $comercios->perPage());
+        $nombre=$request->get('nombre');
+        $login=$request->get('login');
+        $perfil=$request->get('perfil');
+
+        $usuarios = User::nombre($nombre)
+            ->login($login)
+            ->perfil($perfil)
+            ->orderby('name')->paginate();
 
         $perfiles=Perfil::devolverArrForCombo();
 
-        $usuarios =  User::orderby('name')->paginate();
-
-        return view('admin.usuarios.index', compact('usuarios'))
+       return view('usuarios.index', compact('usuarios'))
             ->with('titulo','Usuarios')
             ->with('i', (request()->input('page', 1) - 1) * $usuarios->perPage());
     }
@@ -43,10 +33,9 @@ class UserController extends Controller
         $usuario = new User();
 
         $perfiles=Perfil::devolverArrForCombo();
-        $personas=Persona::devolverSinUsuarioArrForCombo();
+
         return view('usuarios.create', compact('usuario'))
-            ->with('perfiles', $perfiles)
-            ->with('personas', $personas);
+            ->with('perfiles', $perfiles);
     }
 
     public function store(Request $request)
@@ -72,27 +61,28 @@ class UserController extends Controller
     public function edit($idUsuario)
     {
         $usuario=User::where('id',$idUsuario)->first();
-        $personas=Persona::devolverArrForCombo();
+
         $perfiles=Perfil::devolverArrForCombo();
 
         return view('usuarios.edit', compact('usuario'))
-            ->with('perfiles', $perfiles)
-            ->with('personas', $personas);
+            ->with('perfiles', $perfiles);
 
     }
 
-    public function update(Request $request, $idUsuario)
+    public function show($idUsuario)
     {
-        User::$rules['cuit'] = User::$rules['cuit'] .','. $idUsuario;
+        return $this->cambiarcontrasenia();
+
+    }
+
+
+    public function update( $idUsuario)
+    {
+        User::$rules['email'] = User::$rules['email'] .','. $idUsuario;
 
         $data = request()->all();
-        $persona=Persona::where('id',$data['persona_id'])->first();
 
-        User::where('id',$idUsuario)
-            ->update(
-                array('nombre'=>$persona->nombre." ".$persona->apellido,
-                    'persona_id'=>$persona->id,
-                    'perfil_id'=>$data['perfil_id']));
+        User::where('id',$idUsuario)->update(['name'=>$data['name']]);
 
         return redirect()->route('usuarios.index');
 
@@ -134,13 +124,13 @@ class UserController extends Controller
 
     public function cambiarcontrasenia()
     {
-        $usuario=auth()->user;
+        $usuario=auth()->user();
 
         return view('usuarios.cambiopassword',compact('usuario'))->with('title','Cambiar Contraseña');
 
     }
 
-    public function guardarclave(Request $request, $idUsuario)
+    public function guardarclave(Request $request)
     {
         $v = \Validator::make($request->all(), [
             'new_password' => 'required',
@@ -153,13 +143,22 @@ class UserController extends Controller
 
         $data = request()->all();
 
-        $usuario=User::where('id',$idUsuario)->first();
+        $usuario=auth()->user();
 
-        $password=Hash::make($data['new_password']);
+        $resultado= $usuario->cambiarContrasenia($data['new_password']);
 
-        $usuario->update(array('password'=>$password));
+        if ($resultado["exitoso"]==true) {
+            session()->flash('message', 'Contraseña Modificada exitosamente!');
+            return HomeController::index();
+        }
+        else
+        {
+            session()->flash('error', $resultado["error"]);
+            return back();
+        }
 
-        return redirect()->route('home');
+
+
 
     }
 }
