@@ -18,7 +18,7 @@ class PedidoGrupal extends Model
      *
      * @var array
      */
-    protected $fillable = ['comercio_id','fecha','cantidad','observaciones','usuario_id','fechacumplido','usuariocumple_id'];
+    protected $fillable = ['comercio_id','fecha','cantidad','observaciones','usuario_id','fechacumplido','usuariocumple_id', 'estado', 'usuariorechaza_id', 'fecharechazo'];
 
     public function items()
     {
