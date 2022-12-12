@@ -105,7 +105,7 @@
 
 
             $('#tabla').DataTable({
-                'paging'      : true,
+                'paging'      : false,
                 'lengthChange': false,
                 'searching'   : true,
                 'ordering'    : true,

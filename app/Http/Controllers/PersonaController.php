@@ -166,4 +166,18 @@ class PersonaController extends Controller
 
 
     }
+
+    public function generarNuevoQr()
+    {
+        $usuario= auth('sanctum')->user() ;
+
+        $persona=Persona::devolverPersonaxDni($usuario->email);
+
+        $persona->generarQR();
+
+        session()->flash('message' , 'Nuevo QR Generado');
+
+        return $this->mostrarWelcome();
+
+    }
 }

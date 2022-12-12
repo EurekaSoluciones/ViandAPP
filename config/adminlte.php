@@ -149,10 +149,10 @@ return [
     */
 
     'layout_topnav' => null,
-    'layout_boxed' => null,
+    'layout_boxed' => false,
     'layout_fixed_sidebar' => null,
     'layout_fixed_navbar' => null,
-    'layout_fixed_footer' => null,
+    'layout_fixed_footer' => ['xs' => true, 'lg' => true, 'sm' => true,'md' => true,'xl' => true],
     'layout_dark_mode' => null,
 
     /*
@@ -293,7 +293,7 @@ return [
         // Navbar items:
         [
             'type'         => 'navbar-search',
-            'text'         => 'search',
+            'text'         => 'buscar',
             'topnav_right' => true,
         ],
         [
@@ -304,7 +304,7 @@ return [
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
-            'text' => 'search',
+            'text' => 'buscar',
             'key'=>'search'
         ],
         [
@@ -374,6 +374,13 @@ return [
             'can'  => ['EsAdmin'],
             'label_color' => 'success',
         ],
+        [
+            'text'        => 'Regenerar QR',
+            'route'       => 'cambiarqr',
+            'icon'        => 'fas fa-qrcode',
+            'can'  => ['EsPersona'],
+            'label_color' => 'success',
+        ],
         ['header' => 'Seguridad'],
         [
             'text' => 'Usuarios',
@@ -383,7 +390,7 @@ return [
         ],
         [
             'text' => 'change_password',
-            'route'  => 'usuarios.cambiarcontrasenia',
+            'route'  => 'cambiarcontrasenia',
             'icon' => 'fas fa-fw fa-lock',
         ],
 
@@ -445,6 +452,48 @@ return [
                     'asset' => false,
                     'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
                     'defer' => true,
+                ],
+
+            ],
+        ],
+        'DatatablesPlugins' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/js/dataTables.buttons.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.bootstrap4.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.html5.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.print.min.js',
+                ],
+
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/pdfmake/pdfmake.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/pdfmake/vfs_fonts.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/css/buttons.bootstrap4.min.css',
                 ],
             ],
         ],

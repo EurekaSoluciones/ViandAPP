@@ -184,6 +184,16 @@
     </div>
 @stop
 
+
+@section('footer')
+
+        <div class="float-right d-none d-sm-block">
+            <b>Version</b> 1.0.0
+        </div>
+        <strong>Desarrollado por <img src="vendor/adminlte/dist/img/logoEureka.jpg"></img> <a target="_blank" href="http://www.eurekasoluciones.com.ar">Eureka Soluciones Informáticas</a>.</strong> Todos los derechos reservados.
+
+@stop
+
 @section('css')
     <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
@@ -274,3 +284,5 @@
 @endsection
 
 @stop
+
+

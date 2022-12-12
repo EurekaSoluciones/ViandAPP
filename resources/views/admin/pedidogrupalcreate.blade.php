@@ -87,7 +87,7 @@
 
                                 <label for="cantidad"  class="col-sm-2 col-form-label">Cantidad</label>
                                 <div class="col-md-2">
-                                <input type="text" class='form-control'.{{($errors->has('cantidad') ? ' is-invalid' : '')}} name="cantidad" value="1"
+                                <input type="text" class='form-control text-right'.{{($errors->has('cantidad') ? ' is-invalid' : '')}} name="cantidad" value="1"
                                        id='cantidad' placeholder='Cantidad' onKeyPress="return SoloNumeros(event)"
                                        required>
                                 </div>

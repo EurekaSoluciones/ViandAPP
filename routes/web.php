@@ -62,14 +62,18 @@ Route::get('pedidogrupal', [Controllers\AdminController::class, 'pedidogrupal'])
 Route::POST('generarpedidogrupal', [Controllers\AdminController::class, 'generarpedidogrupal'])->name('generarpedidogrupal');
 Route::get('detallePedido/{id}', [Controllers\AdminController::class, 'detallePedido'])->name('detallePedido');
 
+/*Acciones de Personas*/
+Route::get('cambiarqr', 'PersonaController@generarNuevoQr')->name('cambiarqr');
+
+Route::get('cambiarcontrasenia', 'UserController@cambiarcontrasenia')->name('cambiarcontrasenia');
+
+
 
 Route::get('/usuarios/inactivar/{id}', 'UserController@inactivar')->name('usuarios.inactivar');
 Route::post('/usuarios/reactivar/{id}', 'UserController@reactivar')->name('usuarios.reactivar');
 Route::get('/usuarios/reiniciarclave/{id}', 'UserController@reiniciarclave')->name('usuarios.reiniciarclave');
 Route::post('/usuarios/guardarclave', 'UserController@guardarclave')->name('usuarios.guardarclave');
 
-/*Acciones de Personas*/
-Route::post('/usuarios/cambiarcontrasenia', 'UserController@cambiarcontrasenia')->name('usuarios.cambiarcontrasenia');
 
 
 

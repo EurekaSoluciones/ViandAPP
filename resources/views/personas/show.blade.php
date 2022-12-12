@@ -25,15 +25,31 @@
                         <strong> {{$persona->apellido.' '.$persona->nombre }}</strong>
                         <br>
                     </h5>
-                    <h6>
-                        <strong> DNI: </strong>
-                        {{$persona->dni }}
-                        <br>
-                        <strong> CUIT: </strong>
+                    <div class="form-inline">
+                    <div class="col-md-6">
+                        <h6>
+                            <strong> DNI: </strong>
+                            {{$persona->dni }}
+                            <br>
+                            <strong> CUIT: </strong>
 
-                        {{$persona->cuit}}
+                            {{$persona->cuit}}
 
-                    </h6>
+
+                        </h6>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>
+
+                            <strong> Situación: </strong>
+                            {{$persona->situacion}}
+                            <br>
+                            <strong> CC: </strong>
+
+                            {{$persona->cc}}
+                        </h6>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -57,6 +73,7 @@
                                 <th>Hasta</th>
                                 <th>Articulo</th>
                                 <th>CC</th>
+                                <th>Situacion</th>
                                 <th>Asignado</th>
                                 <th>Saldo</th>
                             </tr>
@@ -69,7 +86,8 @@
                                     <td>{{ $stock->fechahasta->formatLocalized('%d/%m/%Y')}}</td>
 
                                     <td>{{ $stock->articulo->descripcion }}</td>
-                                    <td class="text-center">{{ $stock->articulo->cc }}</td>
+                                    <td class="text-center">{{ $stock->cc }}</td>
+                                    <td class="text-center">{{ $stock->situacion }}</td>
                                     <td class="text-center">{{ $stock->stock }}</td>
                                     <td class="text-center">{{ $stock->saldo }}</td>
                                 </tr>
@@ -119,7 +137,11 @@
                                         <td>{{ $movimiento->articulo->descripcion }}</td>
                                         <td >@if ($movimiento->comercio!=null){{ $movimiento->comercio->nombrefantasia }} @endif</td>
                                         <td class="text-center">{{ $movimiento->cantidad }}</td>
-                                        <td class="text-center"><i class="fas fa-bars" title={{$movimiento->observaciones}}></i></td>
+                                        <td class="text-center">
+                                            @if ($movimiento->observaciones!="")
+                                            <i class="fas fa-bars" title={{$movimiento->observaciones}}></i>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
