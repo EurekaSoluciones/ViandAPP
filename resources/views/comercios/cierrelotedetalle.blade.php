@@ -55,7 +55,7 @@
                             <th class="sorting_asc">#</th>
                             <th class="sorting_asc">Fecha</th>
                             <th class="sorting_asc">Persona</th>
-                            <th class="sorting_asc">Situación</th>
+                            <th class="text-center sorting_asc">Situación</th>
                             <th class="text-center sorting_asc">CC</th>
                             <th class="sorting_asc">Articulo</th>
                             <th class="text-center sorting_asc">Cantidad</th>

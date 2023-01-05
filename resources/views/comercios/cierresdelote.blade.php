@@ -71,12 +71,12 @@
                             <thead class="thead">
                             <tr>
                                 <th>#</th>
-                                <th class="sorting_asc">Fecha</th>
+                                <th class="text-center sorting_asc">Fecha</th>
                                 <th>Comercio</th>
                                 <th>Observaciones</th>
-                                <th>Cant. Operaciones</th>
-                                <th>Cant. Consumos</th>
-                                <th>Visado</th>
+                                <th class="text-center">Cant. Operaciones</th>
+                                <th class="text-center">Cant. Consumos</th>
+                                <th class="text-center">Visado</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -87,9 +87,9 @@
                                     <td>{{\Carbon\Carbon::parse( $lote->fecha)->format('d/m/Y')}}</td>
                                     <td>{{ $lote->comercio->nombrefantasia }}</td>
                                     <td>{{ $lote->observaciones }}</td>
-                                    <td>{{count($lote->movimientos)}}</td>
-                                    <td>{{$lote->movimientos->sum('cantidad')}}</td>
-                                    <td><input type="checkbox" disabled="" {{ ($lote->visado) ? "checked" : "" }}></td>
+                                    <td class="text-center">{{count($lote->movimientos)}}</td>
+                                    <td class="text-center">{{$lote->movimientos->sum('cantidad')}}</td>
+                                    <td class="text-center"><input type="checkbox" disabled="" {{ ($lote->visado) ? "checked" : "" }}></td>
                                     <td> <a href="{{ route('detalleLote',$lote->id) }}"> <i class="fas fa-info-circle text-primary" title="Ver Detalle"></i></a></td>
                                 </tr>
                             @endforeach
