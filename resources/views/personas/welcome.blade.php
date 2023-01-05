@@ -162,8 +162,8 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body text-center">
-                {!!QrCode::size(300)
-                     ->backgroundColor(254,254,218)
+                {!!QrCode::size(200)
+
                      ->generate("{{$persona->qr}}");!!}
             </div>
 

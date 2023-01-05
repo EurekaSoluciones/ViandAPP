@@ -32,10 +32,41 @@
                         </div>
                     @endif
 
+                        <form class="form-horizontal">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="apellido" class="col-sm-2 col-form-label">Nombre y Apellido</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class='form-control' name="nombre" id='nombre' placeholder='Apellido' value={{$nombre}}>
+
+                                    </div>
+                                    <label for="nombre" class="col-sm-2 col-form-label">Login</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class='form-control' name="login"  id='login' placeholder='login' value={{$login}}>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <label for="dni" class="col-sm-2 col-form-label">Perfil</label>
+                                    <div class="col-sm-4">
+                                    <select class='js-example-basic-single  col-md-12' name="perfil" required>
+
+                                        <option disabled value="" hidden selected>Seleccione Perfil...</option>
+                                        @foreach($perfiles as  $key => $value)
+
+                                            <option  value="{{ $key }}"> {{ $value }}  </option>
+                                        @endforeach
+                                    </select>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-info float-right">Buscar</button>
+
+                            </div>
 
 
-                        <!-- /.card-header -->
-                        <!-- form start -->
+                        </form>
 
                     <div class="card-body">
                         <div class="row">
@@ -44,7 +75,7 @@
                             <table id="tabla" class="table table-striped table-hover dataTable">
                                 <thead class="thead">
                                     <tr>
-                                        <th>#</th>
+{{--                                        <th>#</th>--}}
 										<th >Login</th>
 										<th>Nombre y Apellido</th>
 										<th>Perfil</th>
@@ -57,25 +88,34 @@
                                 <tbody>
                                     @foreach ($usuarios as $usuario)
                                         <tr>
-                                            <td>{{ $usuario->id }}</td>
+{{--                                            <td>{{ $usuario->id }}</td>--}}
 											<td class="sorting_asc">{{ $usuario->email }}</td>
 											<td class="sorting_asc">{{ $usuario->name }}</td>
 											<td><i class="{{$usuario->perfil->iconclass}}"></i> {{ $usuario->perfil->descripcion }}</td>
-											<td>{{--<input type="checkbox" name="esactivo" disabled="" {{ ($usuario->activo) ? "checked" : "" }}>--}}</td>
-                                            <td>{{--{{ ($persona->fechabaja!=null)?$persona->fechabaja->format('d-m-Y') :"" }}--}}</td>
+											<td><input type="checkbox" name="esactivo" disabled="" {{ ($usuario->activo) ? "checked" : "" }}></td>
+                                            <td>{{ ($usuario->fechabaja!=null)?$usuario->fechabaja->format('d-m-Y') :"" }}</td>
 											<td>
-                                                <form action="{{ route('usuarios.reiniciarclave',$usuario->id) }}" method="get" class="form-inline">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-warning" title="Reiniciar Contraseña" ><i class="fas fa-lock-open" ></i> </button>
-                                                </form>
+                                                @if($usuario->fechabaja==null)
+                                                    <form action="{{ route('usuarios.reiniciarclave',$usuario->id) }}" method="get" class="form-inline">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-sm btn-warning" title="Reiniciar Contraseña" ><i class="fas fa-lock-open" ></i> </button>
+                                                    </form>
+                                                @endif
                                             </td>
                                             <td>
-                                                <form action="{{ route('usuarios.destroy',$usuario->id) }}" method="POST" class="form-inline">
-                                                    <a class="btn btn-sm btn-info" href="{{ route('usuarios.edit',$usuario->id) }}" title="Modificar"><i class="fas fa-pencil-alt"></i> </a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Inactivar" ><i class="fas fa-trash" ></i> </button>
-                                                </form>
+                                                @if($usuario->fechabaja!=null)
+                                                    <form action="{{ route('usuarios.reactivar',$usuario->id) }}" method="post" class="form-inline">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-sm btn-warning" title="Reactivar" ><i class="fas fa-recycle" ></i> </button>
+                                                    </form>
+                                                @else
+                                                    <form action="{{ route('usuarios.destroy',$usuario->id) }}" method="POST" class="form-inline">
+                                                        <a class="btn btn-sm btn-info" href="{{ route('usuarios.edit',$usuario->id) }}" title="Modificar"><i class="fas fa-pencil-alt"></i> </a>
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm" title="Inactivar" ><i class="fas fa-trash" ></i> </button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -107,7 +147,7 @@
             $('#tabla').DataTable({
                 'paging'      : false,
                 'lengthChange': false,
-                'searching'   : true,
+                'searching'   : false,
                 'ordering'    : true,
                 'info'        : false,
                 'autoWidth'   : false,
@@ -117,7 +157,8 @@
                     'info': 'Mostrando Página _PAGE_ de _PAGES_',
                     'infoEmpty': 'No hay registros disponibles',
                     'infoFiltered': '(filtrando desde _MAX_ registros totales)',
-                    'search':'Buscar'
+                    'search':'Buscar',
+                    'order': [1, 'asc']
                 },
             })
 

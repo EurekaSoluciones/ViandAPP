@@ -49,8 +49,8 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="cc"  class="col-sm-2 col-form-label">CUIT</label>
-                    <input type="text" class='form-control'.{{($errors->has('cc') ? ' is-invalid' : '')}} name="cuit"
+                    <label for="cc"  class="col-sm-2 col-form-label">CC</label>
+                    <input type="text" class='form-control'.{{($errors->has('cc') ? ' is-invalid' : '')}} name="cc"
                            id='cc' placeholder='Centro de Costo' value="{{old('cc') ? old('cc') :$persona->cc}}" maxlength="20" required>
 
                     {!! $errors->first('cc', '<div class="invalid-feedback">:message</div>') !!}

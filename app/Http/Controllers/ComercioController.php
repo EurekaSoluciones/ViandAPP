@@ -193,6 +193,34 @@ class ComercioController extends Controller
             ->with('fechaHasta', $fechaHasta);
 
     }
+
+    public function cierresDeLote (Request $request)
+    {
+
+        $usuario= auth('sanctum')->user() ;
+
+        $fecha=$request->get('fechaDesde');
+
+        if ($fecha==null)
+            $fechaDesde=Carbon::now();
+        else
+            $fechaDesde =Carbon::parse(strtotime(str_replace('/', '-', $fecha)));
+
+        if ($usuario->perfil_id == config('global.PERFIL_Comercio'))
+        {
+            $comercio=Comercio::devolverComercioxCuit($usuario->email);
+            $cierres=CierreLote::devolverCierresDeLoteDeComercio($comercio->id, $fechaDesde);
+        }
+        else
+        {
+            $cierres=CierreLote::devolverCierresDeLote( $fechaDesde);
+        }
+
+        return view('comercios.cierresdelote')
+            ->with('cierres', $cierres)
+            ->with('fechaDesde', $fechaDesde);
+
+    }
     /**
      * Genera un nuevo cierre de lote con los consumos pendientes
      *

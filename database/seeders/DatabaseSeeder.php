@@ -21,7 +21,10 @@ class DatabaseSeeder extends Seeder
             'cierre_lotes',
             'comercios',
             'stock',
-            'stock_movimientos'
+            'stock_movimientos',
+            'pedidosgrupales_items',
+            'pedidosgrupales',
+
         ];
 
         $this->truncateTables($tables);

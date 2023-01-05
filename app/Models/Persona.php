@@ -17,7 +17,7 @@ class Persona extends Model
     static $rules = [
         'apellido' => 'required|max:50',
         'nombre'=> 'required|max:50',
-        'cuit' => 'required|max:13',
+        'cuit' => 'required|max:13|unique:personas,cuit',
         'dni' => 'required|max:8|unique:personas,dni',
 
     ];

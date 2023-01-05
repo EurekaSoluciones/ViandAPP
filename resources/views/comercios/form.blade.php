@@ -69,7 +69,9 @@
 <br>
 <br>
 <div class="box-footer mt20 float-right">
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    @if(auth()->user()->perfil->id==1 || auth()->user()->perfil->id==2 )
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    @endif
     <a  class="btn btn-secondary" href="{{ route('comercios.index') }}">
         <i class="fa fa-undo"></i> Volver
     </a>

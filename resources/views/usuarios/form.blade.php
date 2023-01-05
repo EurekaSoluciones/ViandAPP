@@ -4,7 +4,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="email"  class="col-sm-3 col-form-label">Login</label>
-                        <input type="text" class='form-control'.{{($errors->has('email') ? ' is-invalid' : '')}} name="apellido"
+                        <input type="text" class='form-control'.{{($errors->has('email') ? ' is-invalid' : '')}} name="email"
                                id='email' placeholder='Login' value="{{ old('email') ? old('email') : $usuario->email }}" onKeyPress="return SoloNumeros(event)" required>
                     {!! $errors->first('email', '<div class="invalid-feedback">:message</div>') !!}
                 </div>
@@ -31,8 +31,11 @@
 
                             <option disabled value="" hidden>Seleccione Perfil...</option>
                             @foreach($perfiles as  $key => $value)
-
-                                <option  value="{{ $key }}"> {{ $value }} {{$usuario->perfil_id ==$value?" selected":""}}   </option>
+                                @if($usuario->perfil_id == $value)
+                                    <option  value="{{ $key }}" >{{ $value }}  selected  </option>
+                                @else
+                                    <option  value="{{ $key }}"> {{ $value }} </option>
+                                @endif
                             @endforeach
                         </select>
                     </div>

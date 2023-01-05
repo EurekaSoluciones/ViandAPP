@@ -32,7 +32,13 @@
                     <br>
                     <strong> Cant. Consumos: </strong>{{$lote->movimientos->sum('cantidad')}}
                     <br>
+                    <strong><i class='fas fa-mug-hot'></i> Desayunos: </strong> Desayunos: {{$lote->desayunos->sum('cantidad')}}
+                    <br>
+                    <strong> <i class='fas fa-utensils'></i> Viandas: </strong> Viandas: {{$lote->viandas->sum('cantidad')}}
+                    <br>
                     <strong>Observaciones: </strong>{{$lote->observaciones}}
+                    <br>
+                    <strong>Visado: </strong>{{$lote->visado?"SI":"NO"}}
                 </h5>
             </div>
         </div><!-- /.container-fluid -->

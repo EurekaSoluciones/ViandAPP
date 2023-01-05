@@ -61,7 +61,7 @@
                                 <div class="form-group row">
                                     <div class="offset-2 col-sm-2">
                                         <div class="form-check">
-                                            <input type="checkbox" class='form-check-input' name= id='ckActivos'  checked="">
+                                            <input type="checkbox" class='form-check-input' name= id='ckActivos'  checked>
 
                                             <label class="form-check-label" for="ckActivos">Solo Activos</label>
                                         </div>
@@ -103,20 +103,22 @@
 											<td><input type="checkbox" name="esexterno" disabled="" {{ ($comercio->activo) ? "checked" : "" }}></td>
                                             <td>{{ ($comercio->fechabaja!=null)?$persona->fechabaja->format('d-m-Y') :"" }}</td>
 											<td>
-                                                <a class="btn btn-sm btn-info" href="{{ route('comercios.edit',$comercio->id) }}" title="Modificar"><i class="fas fa-pencil-alt"></i> </a>
-                                                @if ($comercio->activo)
-                                                    <form action="{{ route('comercios.destroy',$comercio->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm" title="Borrar"><i class="fas fa-trash" ></i> </button>
-                                                    </form>
-                                                @else
-                                                    <form action="{{ route('comercios.reactivate',$comercio->id) }}" method="POST">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-warning btn-sm" title="Reactivar"><i class="fas fa-recycle" ></i> </button>
-                                                    </form>
+                                                <a class="btn btn-sm btn-info" href="{{ route('comercios.show',$comercio->id) }}" title="Ver"><i class="fas fa-eye"></i> </a>
+                                                @if(auth()->user()->perfil->id==1 || auth()->user()->perfil->id==2 )
+                                                    <a class="btn btn-sm btn-info" href="{{ route('comercios.edit',$comercio->id) }}" title="Modificar"><i class="fas fa-pencil-alt"></i> </a>
+                                                    @if ($comercio->activo)
+                                                        <form action="{{ route('comercios.destroy',$comercio->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm" title="Borrar"><i class="fas fa-trash" ></i> </button>
+                                                        </form>
+                                                    @else
+                                                        <form action="{{ route('comercios.reactivate',$comercio->id) }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-warning btn-sm" title="Reactivar"><i class="fas fa-recycle" ></i> </button>
+                                                        </form>
+                                                    @endif
                                                 @endif
-
                                             </td>
                                         </tr>
                                     @endforeach

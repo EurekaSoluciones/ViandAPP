@@ -228,5 +228,5 @@
     </script>
 
 
-@endsection
+
 @stop

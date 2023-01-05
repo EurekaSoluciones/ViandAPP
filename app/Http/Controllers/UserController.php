@@ -6,6 +6,7 @@ use App\Models\Perfil;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -24,8 +25,12 @@ class UserController extends Controller
         $perfiles=Perfil::devolverArrForCombo();
 
        return view('usuarios.index', compact('usuarios'))
-            ->with('titulo','Usuarios')
-            ->with('i', (request()->input('page', 1) - 1) * $usuarios->perPage());
+                ->with('titulo','Usuarios')
+                ->with('nombre', $nombre)
+                ->with('login', $login)
+                ->with('perfil', $perfil)
+                ->with('perfiles', $perfiles)
+                ->with('i', (request()->input('page', 1) - 1) * $usuarios->perPage());
     }
 
     public function create()
@@ -88,12 +93,12 @@ class UserController extends Controller
 
     }
 
-    public function inactivar(Request $request, $idUsuario)
+    public function destroy(Request $request, $idUsuario)
     {
 
         $data = request()->all();
 
-        User::where('id',$idUsuario)->update(array('active'=>0));
+        User::where('id',$idUsuario)->update(array('activo'=>0, 'fechabaja'=>Carbon::now() ));
 
         return redirect()->route('usuarios.index');
 
@@ -101,7 +106,7 @@ class UserController extends Controller
 
     public function reactivar(Request $request, $idUsuario)
     {
-        User::where('id',$idUsuario)->update(array('active'=>1));
+        User::where('id',$idUsuario)->update(array('activo'=>1,'fechabaja'=>null ));
 
         return redirect()->route('usuarios.index');
 

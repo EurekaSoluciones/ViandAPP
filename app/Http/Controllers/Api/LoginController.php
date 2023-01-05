@@ -59,6 +59,7 @@ class LoginController extends Controller
         $password=Hash::make($data['password']);
         $user=User:: where('email',$data['login'])
             ->where('perfil_id', config('global.PERFIL_Comercio'))
+            ->where('activo', 1)
             ->first();
 
         if ($user!=null)

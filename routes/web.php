@@ -48,7 +48,7 @@ Route::POST('generarCierreLote', [Controllers\ComercioController::class, 'genera
 Route::get('detalleLote/{id}', [Controllers\ComercioController::class, 'detalleLote'])->name('detalleLote');
 
 Route::get('consumosPendientes', [Controllers\ComercioController::class, 'consumosPendientesDeRendir'])->name('consumosPendientes');
-
+Route::get('cierresdelote', [Controllers\ComercioController::class, 'cierresDeLote'])->name('cierresdelote');
 
 /*Acciones de Administradores*/
 Route::POST('asignacionexcel', [Controllers\StockController::class, 'import'])->name('asignacionexcel');

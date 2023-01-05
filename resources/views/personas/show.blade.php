@@ -139,7 +139,7 @@
                                         <td class="text-center">{{ $movimiento->cantidad }}</td>
                                         <td class="text-center">
                                             @if ($movimiento->observaciones!="")
-                                            <i class="fas fa-bars" title={{$movimiento->observaciones}}></i>
+                                            <i class="fas fa-comment" title={{$movimiento->observaciones}}></i>
                                             @endif
                                         </td>
                                     </tr>

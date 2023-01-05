@@ -27,6 +27,15 @@ class CierreLote extends Model
         return $this->hasMany(StockMovimiento::class, 'cierrelote_id')->orderBy('id','asc');
     }
 
+    public function viandas()
+    {
+        return $this->hasMany(StockMovimiento::class, 'cierrelote_id')->where('articulo_id',2)->orderBy('id','asc');
+    }
+    public function desayunos()
+    {
+        return $this->hasMany(StockMovimiento::class, 'cierrelote_id')->where('articulo_id',1)->orderBy('id','asc');
+    }
+
     public function comercio()
     {
         return $this->belongsTo('App\Models\Comercio');
@@ -46,6 +55,29 @@ class CierreLote extends Model
 
         return $cierres;
     }
+
+    public function devolverCierresDeLoteDeComercio($comercio_id, $fechaDesde)
+    {
+
+        $cierres= CierreLote::where('comercio_id',$comercio_id)
+            ->whereDate('fecha',">=", $fechaDesde)
+            ->orderBy('fecha', 'ASC')
+            ->get();
+
+        return $cierres;
+    }
+
+    public function devolverCierresDeLote( $fechaDesde)
+    {
+
+        $cierres= CierreLote::whereDate('fecha',">=", $fechaDesde)
+            ->orderBy('fecha', 'ASC')
+            ->get();
+
+        return $cierres;
+    }
+
+
 
     public function gettimeclassAttribute()
     {

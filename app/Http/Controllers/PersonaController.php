@@ -26,7 +26,7 @@ class PersonaController extends Controller
             ->dni($dni)
             ->cuit($cuit)
             ->soloactivos($soloActivos)
-            ->orderby('apellido')->orderby('nombre')->paginate();
+            ->orderby('apellido')->paginate();
 
         return view('personas.index', compact('personas'))
             ->with('apellido', $apellido)
@@ -106,6 +106,7 @@ class PersonaController extends Controller
     public function update(Request $request, $id)
     {
         Persona::$rules['dni'] = Persona::$rules['dni'] .','. $id;
+        Persona::$rules['cuit'] = Persona::$rules['cuit'] .','. $id;
 
         $validateddata=request()->validate(Persona::$rules);
 

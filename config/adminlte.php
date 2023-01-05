@@ -329,6 +329,13 @@ return [
             'can'  => ['EsComercio'],
         ],
         [
+            'text'        => 'Cierres de Lote',
+            'route'       => 'cierresdelote',
+            'icon'        => 'fas fa-clipboard-check mr-1',
+            'label_color' => 'success',
+            'can'  => ['EsComercio','EsAdmin'],
+        ],
+        [
             'text'        => 'Cerrar Lote',
             'route'       => 'cerrarLote',
             'icon'        => 'fas fa-clipboard-check',
@@ -371,7 +378,7 @@ return [
             'text'        => 'Comercios',
             'route'       => 'comercios.index',
             'icon'        => 'fas fa-store',
-            'can'  => ['EsAdmin'],
+            'can'  => ['EsAdmin', 'EsPersona'],
             'label_color' => 'success',
         ],
         [

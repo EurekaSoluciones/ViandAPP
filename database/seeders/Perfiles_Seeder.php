@@ -15,7 +15,7 @@ class Perfiles_Seeder extends Seeder
     {
         $valores=['Administrador',
             'Operador',
-            'Usuario',
+            'Persona',
             'Comercio',
         ];
 
