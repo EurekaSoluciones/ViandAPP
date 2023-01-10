@@ -219,7 +219,7 @@ class AdminController extends Controller
                 ->with('comercio',$comercio)
                 ->with('persona',$persona)
                 ->with('movimientos', $movimientos);
-        else
+//        else
 //        {
 //            $pdf = PDF::loadView('admin.exceldetalleconsumos')
 //                ->with('fechaDesde',$fechaDesde)
