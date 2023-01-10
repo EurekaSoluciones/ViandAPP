@@ -46,7 +46,7 @@ Route::POST('generarconsumo', [Controllers\StockController::class, 'generarconsu
 Route::get('cerrarLote', [Controllers\ComercioController::class, 'cerrarLote'])->name('cerrarLote');
 Route::POST('generarCierreLote', [Controllers\ComercioController::class, 'generarCierreLote'])->name('generarCierreLote');
 Route::get('detalleLote/{id}', [Controllers\ComercioController::class, 'detalleLote'])->name('detalleLote');
-Route::get('visarlote/{id}/{vuelta}', [Controllers\AdminController::class, 'visarLote'])->name('visarlote');
+Route::get('visarlote/{id}', [Controllers\AdminController::class, 'visarLote'])->name('visarlote');
 
 
 Route::get('consumosPendientes', [Controllers\ComercioController::class, 'consumosPendientesDeRendir'])->name('consumosPendientes');
