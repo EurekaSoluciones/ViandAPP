@@ -91,6 +91,7 @@
 										<th>Activo?</th>
                                         <th>Fecha Baja</th>
                                         <th></th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -103,7 +104,7 @@
 											<td><input type="checkbox" name="esexterno" disabled="" {{ ($comercio->activo) ? "checked" : "" }}></td>
                                             <td>{{ ($comercio->fechabaja!=null)?$persona->fechabaja->format('d-m-Y') :"" }}</td>
 											<td>
-                                                <a class="btn btn-sm btn-info" href="{{ route('comercios.show',$comercio->id) }}" title="Ver"><i class="fas fa-eye"></i> </a>
+                                                <a class="btn btn-sm btn-primary" href="{{ route('comercios.show',$comercio->id) }}" title="Ver"><i class="fas fa-eye"></i> </a>
                                                 @if(auth()->user()->perfil->id==1 || auth()->user()->perfil->id==2 )
                                                     <a class="btn btn-sm btn-info" href="{{ route('comercios.edit',$comercio->id) }}" title="Modificar"><i class="fas fa-pencil-alt"></i> </a>
                                                     @if ($comercio->activo)

@@ -144,6 +144,13 @@
             })
 
 
+
+        })
+
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+
+
             $('#tabla').DataTable({
                 'paging'      : false,
                 'lengthChange': false,
@@ -158,15 +165,14 @@
                     'infoEmpty': 'No hay registros disponibles',
                     'infoFiltered': '(filtrando desde _MAX_ registros totales)',
                     'search':'Buscar',
-                    'order': [1, 'asc']
+
                 },
+                order: [[1, 'asc']],
+
             })
 
 
-        })
 
-        $(document).ready(function() {
-            $('.js-example-basic-single').select2();
         });
 
         @if(Session::has('message'))

@@ -46,9 +46,13 @@ Route::POST('generarconsumo', [Controllers\StockController::class, 'generarconsu
 Route::get('cerrarLote', [Controllers\ComercioController::class, 'cerrarLote'])->name('cerrarLote');
 Route::POST('generarCierreLote', [Controllers\ComercioController::class, 'generarCierreLote'])->name('generarCierreLote');
 Route::get('detalleLote/{id}', [Controllers\ComercioController::class, 'detalleLote'])->name('detalleLote');
+Route::get('visarlote/{id}/{vuelta}', [Controllers\AdminController::class, 'visarLote'])->name('visarlote');
+
 
 Route::get('consumosPendientes', [Controllers\ComercioController::class, 'consumosPendientesDeRendir'])->name('consumosPendientes');
 Route::get('cierresdelote', [Controllers\ComercioController::class, 'cierresDeLote'])->name('cierresdelote');
+Route::get('reportes', [Controllers\AdminController::class, 'reportes'])->name('reportes');
+Route::get('reportesdetalleconsumos', [Controllers\AdminController::class, 'reportesdetalleconsumos'])->name('reportesdetalleconsumos');
 
 /*Acciones de Administradores*/
 Route::POST('asignacionexcel', [Controllers\StockController::class, 'import'])->name('asignacionexcel');

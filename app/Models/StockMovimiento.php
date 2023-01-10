@@ -77,8 +77,25 @@ class StockMovimiento extends Model
 
     public function scopeDeComercio($query, $idComercio)
     {
-        if ($idComercio !=null)
+        if ($idComercio !=null && $idComercio !=0)
             $query= $query->where( 'comercio_id', '=', $idComercio);
+    }
+
+    public function scopeDePersona($query, $idPersona)
+    {
+        if ($idPersona !=null && $idPersona !=0)
+            $query= $query->where( 'persona_id', '=', $idPersona);
+    }
+
+    public function scopeDesdeFecha($query, Carbon $fecha)
+    {
+        if ($fecha !=null)
+            $query= $query->whereDate( 'fecha', '>=', $fecha->startOfDay());
+    }
+    public function scopeHastaFecha($query, Carbon $fecha)
+    {
+        if ($fecha !=null)
+            $query= $query->whereDate( 'fecha', '<=', $fecha->endOfDay());
     }
 
     public function scopePendientesDeLiquidacion($query)
@@ -327,6 +344,95 @@ class StockMovimiento extends Model
             DB::rollBack();
             return ["exitoso"=>false, "error"=>$e->getMessage(), "movimiento_id"=>null];
         }
+    }
+
+    public function devolverReportexCC(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
+    {
+
+        $movimientos = StockMovimiento::select('cc', DB::raw('SUM(case when articulo_id=1 then cantidad ELSE 0 END) AS desayunos'),
+            DB::raw('SUM(case when articulo_id=2 then cantidad ELSE 0 END) AS viandas'))
+            ->desdefecha($fechaDesde)
+            ->hastafecha($fechaHasta)
+            ->decomercio($comercio_id)
+            ->depersona($persona_id)
+            ->where ('tipomovimiento_id',2)
+            ->whereNotNull('cierrelote_id')
+            ->groupBy('cc')
+            ->get();
+        return $movimientos;
+    }
+
+    public function devolverReportexSituacion(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
+    {
+
+        $movimientos = StockMovimiento::select('situacion', DB::raw('SUM(case when articulo_id=1 then cantidad ELSE 0 END) AS desayunos'),
+            DB::raw('SUM(case when articulo_id=2 then cantidad ELSE 0 END) AS viandas'))
+            ->desdefecha($fechaDesde)
+            ->hastafecha($fechaHasta)
+            ->decomercio($comercio_id)
+            ->depersona($persona_id)
+            ->where ('tipomovimiento_id',2)
+            ->whereNotNull('cierrelote_id')
+            ->groupBy('situacion')
+            ->get();
+        return $movimientos;
+    }
+
+    public function devolverReportexComercio(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
+    {
+
+        $movimientos = StockMovimiento::select('comercios.nombrefantasia as comercio', DB::raw('SUM(case when articulo_id=1 then cantidad ELSE 0 END) AS desayunos'),
+            DB::raw('SUM(case when articulo_id=2 then cantidad ELSE 0 END) AS viandas'))
+            ->join('comercios', 'comercio_id', '=', 'comercios.id')
+            ->desdefecha($fechaDesde)
+            ->hastafecha($fechaHasta)
+            ->decomercio($comercio_id)
+            ->depersona($persona_id)
+            ->where ('tipomovimiento_id',2)
+            ->whereNotNull('cierrelote_id')
+            ->groupBy('comercios.nombrefantasia')
+            ->get();
+        return $movimientos;
+    }
+
+    public function devolverReportexPersona(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
+    {
+
+        $movimientos = StockMovimiento::select(DB::raw("CONCAT(personas.apellido,' ',personas.nombre)  AS persona"),
+            DB::raw('SUM(case when articulo_id=1 then cantidad ELSE 0 END) AS desayunos'),
+            DB::raw('SUM(case when articulo_id=2 then cantidad ELSE 0 END) AS viandas'))
+            ->join('personas', 'persona_id', '=', 'personas.id')
+            ->desdefecha($fechaDesde)
+            ->hastafecha($fechaHasta)
+            ->decomercio($comercio_id)
+            ->depersona($persona_id)
+            ->where ('tipomovimiento_id',2)
+            ->whereNotNull('cierrelote_id')
+            ->groupBy('personas.apellido', 'personas.nombre')
+            ->get();
+        return $movimientos;
+    }
+
+    public function devolverDetalleConsumoxPersona(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
+    {
+
+        $movimientos = StockMovimiento::select(
+            DB::raw("personas.dni"),
+            DB::raw("CONCAT(personas.apellido,' ',personas.nombre)  AS persona"),
+            DB::raw("stock_movimientos.cc"),
+            DB::raw("stock_movimientos.situacion"),
+            DB::raw('SUM(case when articulo_id=1 then cantidad ELSE 0 END) AS desayunos'),
+            DB::raw('SUM(case when articulo_id=2 then cantidad ELSE 0 END) AS viandas'))
+            ->join('personas', 'persona_id', '=', 'personas.id')
+            ->desdefecha($fechaDesde)
+            ->hastafecha($fechaHasta)
+            ->decomercio($comercio_id)
+            ->depersona($persona_id)
+            ->where ('tipomovimiento_id',2)
+            ->whereNotNull('cierrelote_id')
+            ->groupBy('personas.apellido', 'personas.nombre', 'personas.dni', 'stock_movimientos.cc','stock_movimientos.situacion')
+            ->get();
+        return $movimientos;
     }
 
 

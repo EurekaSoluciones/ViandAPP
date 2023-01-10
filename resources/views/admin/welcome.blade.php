@@ -123,7 +123,10 @@
                                     <span class="text">    # Consumos: {{$cierreLote->movimientos->sum('cantidad')}}</span>
                                 </span>
                                 <div class="tools">
-                                    <a href="{{ route('detalleLote',$cierreLote->id) }}"> <i class="fas fa-info-circle text-danger"></i></a>
+                                    <a href="{{ route('detalleLote',$cierreLote->id) }}"> <i class="fas fa-eye text-primary"></i></a>
+
+                                    <a href="{{ route('visarlote',[$cierreLote->id]) }}"> <i class="fas fa-check text-warning" title="Visar"></i></a>
+
                                 </div>
                             </li>
 

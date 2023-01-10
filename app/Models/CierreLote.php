@@ -59,7 +59,7 @@ class CierreLote extends Model
     public function devolverCierresDeLoteDeComercio($comercio_id, $fechaDesde)
     {
 
-        $cierres= CierreLote::where('comercio_id',$comercio_id)
+        $cierres= CierreLote::where('comercio_id',($comercio_id==0?">":"="), $comercio_id)
             ->whereDate('fecha',">=", $fechaDesde)
             ->orderBy('fecha', 'ASC')
             ->get();

@@ -53,6 +53,17 @@
 
                         {!! $errors->first('fechaDesde', '<div class="invalid-feedback">:message</div>') !!}
                     </div>
+                    <label for="comercio" class="col-sm-2 col-form-label">Comercios</label>
+                    <div class="col-sm-4">
+                        <select class='js-example-basic-single  col-md-12' name="comercio" required>
+
+                            <option disabled value="0" hidden {{$comercio==null?"selected":""}}>Seleccione Comercio...</option>
+                            @foreach($comercios as  $key => $value)
+
+                                <option  value="{{ $key }}" {{$comercio==$key?"selected":""}}> {{ $value }}  </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-info float-right">Buscar</button>
@@ -76,6 +87,8 @@
                                 <th>Observaciones</th>
                                 <th class="text-center">Cant. Operaciones</th>
                                 <th class="text-center">Cant. Consumos</th>
+                                <th class="text-center">Desayunos</th>
+                                <th class="text-center">Viandas</th>
                                 <th class="text-center">Visado</th>
                                 <th></th>
                             </tr>
@@ -89,8 +102,13 @@
                                     <td>{{ $lote->observaciones }}</td>
                                     <td class="text-center">{{count($lote->movimientos)}}</td>
                                     <td class="text-center">{{$lote->movimientos->sum('cantidad')}}</td>
+                                    <td class="text-center">{{$lote->desayunos->sum('cantidad')}}</td>
+                                    <td class="text-center">{{$lote->viandas->sum('cantidad')}}</td>
                                     <td class="text-center"><input type="checkbox" disabled="" {{ ($lote->visado) ? "checked" : "" }}></td>
-                                    <td> <a href="{{ route('detalleLote',$lote->id) }}"> <i class="fas fa-info-circle text-primary" title="Ver Detalle"></i></a></td>
+                                    <td> <a href="{{ route('detalleLote',$lote->id) }}"> <i class="fas fa-eye text-primary" title="Ver Detalle"></i></a>
+
+                                    </td>
+
                                 </tr>
                             @endforeach
                             </tbody>
@@ -106,7 +124,9 @@
 
 @section("js")
     <script type="text/javascript">
-        $(function () {
+
+
+    $(function () {
             //Initialize Select2 Elements
             $('.select2').select2()
 
@@ -134,20 +154,22 @@
                     'zeroRecords': 'No existen registros',
                     'info': 'Mostrando Página _PAGE_ de _PAGES_',
                     'infoEmpty': 'No hay registros disponibles',
-                    'infoFiltered': '(filtrando desde _MAX_ registros totales)'
+                    'infoFiltered': '(filtrando desde _MAX_ registros totales)',
+                    'search':'Buscar en la lista'
                 },
-            })
 
-
+            });
         })
 
-        // $(document).ready(function() {
-        //     $('.js-example-basic-single').select2();
-        //
-        //     // if ($('#fechaHasta').val()=="")
-        //     //     $('#fechaHasta').val(new Date().toLocaleDateString());
-        //
-        // });
+
+
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+
+            // if ($('#fechaHasta').val()=="")
+            //     $('#fechaHasta').val(new Date().toLocaleDateString());
+
+        });
 
         @if(Session::has('message'))
             toastr.options =

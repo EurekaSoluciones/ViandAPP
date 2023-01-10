@@ -110,7 +110,8 @@
                                     <span class="text">    # Consumos: {{count($cierreLote->movimientos)}}</span>
                                 </span>
                                 <div class="tools">
-                                    <a href="{{ route('detalleLote',$cierreLote->id) }}"> <i class="fas fa-info-circle text-danger"></i></a>
+                                    <a href="{{ route('detalleLote',$cierreLote->id) }}"> <i class="fas fa-eye text-primary"></i></a>
+
                                 </div>
                             </li>
 
@@ -135,15 +136,7 @@
                 <ul class="todo-list ui-sortable" data-widget="todo-list">
                     @foreach($pedidosGrupales as $pedido)
                         <li class="{{$pedido->fechacumplido!=null?"done":""}}">
-                            <!-- drag handle -->
 
-                        {{--                                 <div class="icheck-primary d-inline ml-2">--}}
-                        {{--                                  <input type="checkbox" value="" name="todo1" id="todoCheck1" readonly="true">--}}
-                        {{--                                  <label for="todoCheck1"></label>--}}
-                        {{--                                </div>--}}
-
-
-                        <!-- checkbox -->
                             <div class="icheck-primary d-inline ml-2">
                                 <i class="{{$pedido->estadoclass}}"></i>
                             </div>

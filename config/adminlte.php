@@ -307,6 +307,7 @@ return [
             'text' => 'buscar',
             'key'=>'search'
         ],
+
         [
             'text'        => 'Importar Excel',
             'route'       => 'importarexcel',
@@ -362,6 +363,24 @@ return [
             'icon'        => 'fas fa-shopping-basket',
             'can'  => ['EsAdmin'],
             'label_color' => 'success',
+        ],
+        [
+            'header' => 'Reportes',
+            'can'  => ['EsAdmin'],
+        ],
+        [
+            'text'        => 'Totales Agrupados',
+            'route'       => 'reportes',
+            'icon'        => 'fas fa-project-diagram',
+            'label_color' => 'success',
+            'can'  => ['EsAdmin'],
+        ],
+        [
+            'text'        => 'Detalle Consumos',
+            'route'       => 'reportesdetalleconsumos',
+            'icon'        => 'fas fa-file-invoice',
+            'label_color' => 'success',
+            'can'  => ['EsAdmin'],
         ],
         [
             'header' => 'Configuracion',
@@ -460,6 +479,12 @@ return [
                     'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
                     'defer' => true,
                 ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css',
+                    'defer' => true,
+                ],
 
             ],
         ],
@@ -503,6 +528,8 @@ return [
                     'location' => 'vendor/datatables-plugins/buttons/css/buttons.bootstrap4.min.css',
                 ],
             ],
+
+
         ],
         'Select2' => [
             'active' => true,

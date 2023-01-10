@@ -13,6 +13,7 @@ use App\Models\StockMovimiento;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class AdminController extends Controller
 {
@@ -141,6 +142,96 @@ class AdminController extends Controller
         $pedido=PedidoGrupal::findOrFail($id);
 
         return view('admin.pedidogrupaldetalle', compact('pedido'));
+    }
+
+
+    public function visarLote($id)
+    {
+        $cierre=CierreLote::findOrFail($id);
+
+
+        $cierre->update(['visado'=>true]);
+
+        return AdminController::mostrarWelcome();
+
+    }
+
+
+    public static function reportes(Request $request)
+    {
+
+        $fechaDesde=Carbon::parse(strtotime(str_replace('/', '-', $request->get('fechaDesde'))));
+        $fechaHasta=Carbon::parse(strtotime(str_replace('/', '-', $request->get('fechaHasta'))));
+
+        $comercio=$request->get('comercio');
+        $persona=$request->get('persona');
+
+        $fecha= \Illuminate\Support\Carbon::now();
+
+        $empleados=Persona::devolverArrActivosForCombo();
+        $comercios=Comercio::devolverArrActivosForCombo();
+
+
+        $movimientosxCC = StockMovimiento::devolverReportexCC($fechaDesde,$fechaHasta, $comercio, $persona );
+        $movimientosxSituacion=StockMovimiento::devolverReportexSituacion($fechaDesde,$fechaHasta, $comercio, $persona );
+        $movimientosxComercio=StockMovimiento::devolverReportexComercio($fechaDesde,$fechaHasta, $comercio, $persona );
+        $movimientosxPersona=StockMovimiento::devolverReportexPersona($fechaDesde,$fechaHasta, $comercio, $persona );
+
+        return view('admin.reportes')
+            ->with('personas',$empleados)
+            ->with('comercios',$comercios)
+            ->with('fechaDesde',$fechaDesde)
+            ->with('fechaHasta',$fechaHasta)
+            ->with('comercio',$comercio)
+            ->with('persona',$persona)
+            ->with('movimientosxCC', $movimientosxCC)
+            ->with('movimientosxSituacion', $movimientosxSituacion)
+            ->with('movimientosxComercio', $movimientosxComercio)
+            ->with('movimientosxPersona', $movimientosxPersona);
+
+    }
+
+    public static function reportesdetalleconsumos(Request $request)
+    {
+
+        $fechaDesde=Carbon::parse(strtotime(str_replace('/', '-', $request->get('fechaDesde'))));
+        $fechaHasta=Carbon::parse(strtotime(str_replace('/', '-', $request->get('fechaHasta'))));
+
+        $comercio=$request->get('comercio');
+        $persona=$request->get('persona');
+
+        $fecha= \Illuminate\Support\Carbon::now();
+
+        $empleados=Persona::devolverArrActivosForCombo();
+        $comercios=Comercio::devolverArrActivosForCombo();
+
+        $salida=$request->get('salida');
+
+        $movimientos = StockMovimiento::devolverDetalleConsumoxPersona($fechaDesde,$fechaHasta, $comercio, $persona );
+
+        if ($salida=="pantalla")
+
+            return view('admin.reportesdetalleconsumos')
+                ->with('personas',$empleados)
+                ->with('comercios',$comercios)
+                ->with('fechaDesde',$fechaDesde)
+                ->with('fechaHasta',$fechaHasta)
+                ->with('comercio',$comercio)
+                ->with('persona',$persona)
+                ->with('movimientos', $movimientos);
+        else
+        {
+            $pdf = PDF::loadView('admin.exceldetalleconsumos')
+                ->with('fechaDesde',$fechaDesde)
+                ->with('fechaHasta',$fechaHasta)
+                ->with('comercio',$comercio)
+                ->with('persona',$persona)
+                ->with('movimientos', $movimientos);
+
+
+            return $pdf->download('mi-archivo.pdf');
+
+        }
     }
 
 }

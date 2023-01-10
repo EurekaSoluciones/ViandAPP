@@ -200,6 +200,7 @@ class ComercioController extends Controller
         $usuario= auth('sanctum')->user() ;
 
         $fecha=$request->get('fechaDesde');
+        $comercio=$request->get('comercio');
 
         if ($fecha==null)
             $fechaDesde=Carbon::now();
@@ -213,11 +214,14 @@ class ComercioController extends Controller
         }
         else
         {
-            $cierres=CierreLote::devolverCierresDeLote( $fechaDesde);
+            $cierres=CierreLote::devolverCierresDeLoteDeComercio($comercio==null?0:$comercio, $fechaDesde);
         }
 
+        $comercios=Comercio::devolverArrForCombo();
         return view('comercios.cierresdelote')
             ->with('cierres', $cierres)
+            ->with('comercio', $comercio)
+            ->with('comercios', $comercios)
             ->with('fechaDesde', $fechaDesde);
 
     }
