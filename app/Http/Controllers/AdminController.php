@@ -209,7 +209,7 @@ class AdminController extends Controller
 
         $movimientos = StockMovimiento::devolverDetalleConsumoxPersona($fechaDesde,$fechaHasta, $comercio, $persona );
 
-        if ($salida=="pantalla")
+//        if ($salida=="pantalla")
 
             return view('admin.reportesdetalleconsumos')
                 ->with('personas',$empleados)
@@ -220,7 +220,7 @@ class AdminController extends Controller
                 ->with('persona',$persona)
                 ->with('movimientos', $movimientos);
         else
-        {
+//        {
 //            $pdf = PDF::loadView('admin.exceldetalleconsumos')
 //                ->with('fechaDesde',$fechaDesde)
 //                ->with('fechaHasta',$fechaHasta)
@@ -231,7 +231,7 @@ class AdminController extends Controller
 //
 //            return $pdf->download('mi-archivo.pdf');
 
-        }
+//        }
     }
 
 }
