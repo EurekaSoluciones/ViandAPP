@@ -221,15 +221,15 @@ class AdminController extends Controller
                 ->with('movimientos', $movimientos);
         else
         {
-            $pdf = PDF::loadView('admin.exceldetalleconsumos')
-                ->with('fechaDesde',$fechaDesde)
-                ->with('fechaHasta',$fechaHasta)
-                ->with('comercio',$comercio)
-                ->with('persona',$persona)
-                ->with('movimientos', $movimientos);
-
-
-            return $pdf->download('mi-archivo.pdf');
+//            $pdf = PDF::loadView('admin.exceldetalleconsumos')
+//                ->with('fechaDesde',$fechaDesde)
+//                ->with('fechaHasta',$fechaHasta)
+//                ->with('comercio',$comercio)
+//                ->with('persona',$persona)
+//                ->with('movimientos', $movimientos);
+//
+//
+//            return $pdf->download('mi-archivo.pdf');
 
         }
     }
