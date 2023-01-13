@@ -49,9 +49,9 @@ class User extends Authenticatable
     ];
 
     static $rules = [
-        'email' => 'required|max:50|unique:users,email',
-        'name' => 'required|max:50',
-        'perfil_id' => 'required',
+        'login' => 'required|max:50|unique:users,email',
+        'nombre' => 'required|max:50',
+        'perfil' => 'required',
     ];
 
     protected $perPage = 60;

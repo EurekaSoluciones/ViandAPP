@@ -334,7 +334,7 @@ return [
             'route'       => 'cierresdelote',
             'icon'        => 'fas fa-clipboard-check mr-1',
             'label_color' => 'success',
-            'can'  => ['EsComercio','EsAdmin'],
+            'can'  => ['EsComercio','EsAdmin', 'EsOperador'],
         ],
         [
             'text'        => 'Cerrar Lote',
@@ -347,21 +347,21 @@ return [
             'text'        => 'Aumentar',
             'route'       => 'aumentarstock',
             'icon'        => 'fas fa-plus',
-            'can'  => ['EsAdmin'],
+            'can'  => ['EsAdmin','EsOperador'],
             'label_color' => 'success',
         ],
         [
             'text'        => 'Disminuir',
             'route'       => 'disminuirstock',
             'icon'        => 'fas fa-minus',
-            'can'  => ['EsAdmin'],
+            'can'  => ['EsAdmin','EsOperador'],
             'label_color' => 'success',
         ],
         [
             'text'        => 'Pedido Grupal',
             'route'       => 'pedidogrupal',
             'icon'        => 'fas fa-shopping-basket',
-            'can'  => ['EsAdmin'],
+            'can'  => ['EsAdmin','EsOperador'],
             'label_color' => 'success',
         ],
         [
@@ -491,26 +491,6 @@ return [
         'DatatablesPlugins' => [
             'active' => true,
             'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/buttons/js/dataTables.buttons.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.bootstrap4.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.html5.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.print.min.js',
-                ],
 
                 [
                     'type' => 'js',

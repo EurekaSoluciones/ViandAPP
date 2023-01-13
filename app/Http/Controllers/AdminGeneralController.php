@@ -16,6 +16,7 @@ class AdminGeneralController extends Controller
 
         $stock =Stock::devolverStockdePersona($idPersona, $fecha);
 
+
         $arrDatos=["stock"=>$stock];
         return response($arrDatos);
     }

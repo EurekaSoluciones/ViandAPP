@@ -21,6 +21,13 @@ class Perfil extends Model
 
     }
 
+    public static function devolverArrForComboForCreate()
+    {
+        $items=Perfil::where('id', '<',3)->orderBy('descripcion')->pluck('descripcion', 'id')->toArray();
+        return $items;
+
+    }
+
 
     public function geticonclassAttribute()
     {

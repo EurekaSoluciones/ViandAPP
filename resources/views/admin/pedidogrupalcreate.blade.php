@@ -47,7 +47,7 @@
                                 <select class='js-example-basic-single w-75' name="comercio" required>
                                     <option disabled value="" selected hidden>Seleccione Comercio...</option>
                                     @foreach($comercios as  $key => $value)
-                                        <option  value="{{ $key }}"> {{ $value }}  {{ old('comercio')== $value? 'selected' : '' }}</option>
+                                        <option  value="{{ $key }}" {{ old('comercio')== $key? 'selected' : '' }}> {{ $value }} </option>
                                     @endforeach
                                 </select>
                                 </div>
@@ -57,10 +57,15 @@
                                 <label for="personas"  class="col-md-2 col-form-label">Personas</label>
 
                                 <div class="select2-blue col-md-10" >
-                                    <select class='js-example-basic-multiple w-75' name="personas[]" required
-                                            multiple="multiple" data-placeholder="Seleccione personas">
+                                    <select id="js-example-basic-multiple" class="js-example-basic-multiple" name="personas[]" required
+                                            multiple="multiple" data-placeholder="Seleccione personas" >
                                         @foreach($personas as  $key => $value)
-                                            <option  value="{{ $key }}"> {{ $value }}  {{ old('$personas')== $value? 'selected' : '' }}</option>
+
+
+
+                                                <option  value="{{ $key }}" > {{ $value }} </option>
+
+
                                         @endforeach
                                     </select>
 
@@ -76,7 +81,7 @@
 
                                         <option disabled value="" selected hidden>Seleccione Artículo...</option>
                                         @foreach($articulos as  $key => $value)
-                                            <option  value="{{ $key }}" data-icon="fa-mug"> {{ $value }}  </option>
+                                            <option  value="{{ $key }}" {{ old('articulo')== $key? 'selected' : '' }}> {{ $value }}  </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -87,7 +92,7 @@
 
                                 <label for="cantidad"  class="col-sm-2 col-form-label">Cantidad</label>
                                 <div class="col-md-2">
-                                <input type="text" class='form-control text-right'.{{($errors->has('cantidad') ? ' is-invalid' : '')}} name="cantidad" value="1"
+                                <input type="text" class='form-control text-right'.{{($errors->has('cantidad') ? ' is-invalid' : '')}} name="cantidad" value="{{ old('cantidad') }}"
                                        id='cantidad' placeholder='Cantidad' onKeyPress="return SoloNumeros(event)"
                                        required>
                                 </div>
@@ -98,9 +103,11 @@
                                 <label for="observaciones"  class="col-sm-2 col-form-label">Observaciones</label>
                                 <div class="col-md-12">
                                         <textarea class='form-control'.{{($errors->has('observaciones') ? ' is-invalid' : '')}} name="observaciones"
-                                                  id='observaciones' placeholder='Ingrese Observaciones' rows="3"></textarea>
+                                                  id='observaciones' placeholder='Ingrese Observaciones' rows="3" value="{{ old('observaciones') }}" ></textarea>
                                 </div>
                             </div>
+
+
                             @if ( $errors->any())
                                 <div class="alert alert-danger">
                                     <ul>
@@ -148,6 +155,27 @@
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
             $('.js-example-basic-multiple').select2();
+
+            @if ( $errors->any())
+            @if(!empty(Session::get('seleccionadas')))
+             $('.js-example-basic-multiple').select2('val',[{!! Session::get('seleccionadas') !!}]);
+             $('.js-example-basic-multiple').select2().val([{!! Session::get('seleccionadas') !!}]).trigger('change');
+
+            @endif
+            @endif
+
+
+
+
+                        // var personasseleccionadas=Session::get('seleccionadas');
+                        // alert (personasseleccionadas);
+            {{--    var selectedValues = seleccionadas.split(',');--}}
+            {{--    // selectedValues[0] = "302";--}}
+            {{--    // selectedValues[1] = "359";--}}
+            {{--    // selectedValues[2] = "358";--}}
+
+
+{{--            @endif--}}
         });
 
 

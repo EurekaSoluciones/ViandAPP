@@ -15,11 +15,10 @@ class AsignacionesImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        return new Asignacion(['dni' => $row['dni'],
+        return new Asignacion(['cuit' => $row['cuit'],
             'situacion' => $row['situacion'],
             'apellidoynombre'=> $row['apellido_y_nombre'],
             'cc'=> $row['cc'],
-            'situacion'=> $row['situacion'],
             'desayunos'=> $row['desayunos'],
             'viandas' => $row['viandas'],
         ]);

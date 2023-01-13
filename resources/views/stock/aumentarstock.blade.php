@@ -78,10 +78,20 @@
 
                                 <div class="form-group row">
                                     <label for="cc"  class="col-sm-4 col-form-label">CC</label>
-                                    <div class="col-md-4">
-                                    <input type="text" class='form-control '.{{($errors->has('cc') ? ' is-invalid' : '')}} name="cc"
-                                           id='cc' placeholder='CC'
-                                           required>
+                                    <div class="col-md-3">
+                                        <input type="text" class='form-control '.{{($errors->has('cc') ? ' is-invalid' : '')}} name="cc"
+                                               id='cc' placeholder='CC'
+                                               required>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+
+                                    <label for="situacion"  class="col-sm-4 col-form-label">Situación</label>
+                                    <div class="col-md-3">
+                                        <input type="text" class='form-control '.{{($errors->has('situacion') ? ' is-invalid' : '')}} name="situacion"
+                                               id='situacion' placeholder='Situacion'
+                                               required>
                                     </div>
                                 </div>
 
@@ -91,6 +101,7 @@
                                         <textarea class='form-control'.{{($errors->has('observaciones') ? ' is-invalid' : '')}} name="observaciones"
                                                   id='observaciones' placeholder='Ingrese Observaciones' rows="3"></textarea>
                                     </div>
+
                                 </div>
                                 @if ( $errors->any())
                                     <div class="alert alert-danger">
@@ -251,6 +262,10 @@
                                 lista.appendChild(linew);
                                 //linew.appendChild(contenido);
 
+                                var situacion= document.getElementById("situacion");
+                                situacion.value=data.situacion;
+                                var cc=document.getElementById("cc");
+                                cc.value=data.cc;
                             })
                         }
                         agregarElementos();

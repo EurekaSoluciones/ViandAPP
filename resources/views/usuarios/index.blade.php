@@ -37,7 +37,7 @@
                                 <div class="form-group row">
                                     <label for="apellido" class="col-sm-2 col-form-label">Nombre y Apellido</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class='form-control' name="nombre" id='nombre' placeholder='Apellido' value={{$nombre}}>
+                                        <input type="text" class='form-control' name="nombre" id='nombre' placeholder='Apellido' value={{ $nombre}}>
 
                                     </div>
                                     <label for="nombre" class="col-sm-2 col-form-label">Login</label>
@@ -55,7 +55,7 @@
                                         <option disabled value="" hidden selected>Seleccione Perfil...</option>
                                         @foreach($perfiles as  $key => $value)
 
-                                            <option  value="{{ $key }}"> {{ $value }}  </option>
+                                            <option  value="{{ $key }}" {{$perfil==$key?"selected":""}}> {{ $value }}  </option>
                                         @endforeach
                                     </select>
                                     </div>

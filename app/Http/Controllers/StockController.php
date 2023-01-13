@@ -29,6 +29,10 @@ class StockController extends Controller
     /*************************************************************************************/
     public function import(Request $request)
     {
+        $request->validate([
+            'file' => 'required|max:10000'
+        ]);
+
         Asignacion::truncate();
 
         Excel::import(new AsignacionesImport, $request->file('file')->store('temp'));
@@ -39,6 +43,13 @@ class StockController extends Controller
 
         return view('stock.importacion_confirmar', compact('asignaciones'));
 
+    }
+
+    public function messages()
+    {
+        return [
+            'file.required' => 'Debe seleccionar un archivo',
+        ];
     }
 
     public function confirmarImportacion(Request $request)
@@ -65,9 +76,9 @@ class StockController extends Controller
 
             foreach ($asignaciones as $asignacion)
             {
-                $persona = Persona::devolverPersonaxCuit($asignacion["dni"]);
+                $persona = Persona::devolverPersonaxCuit($asignacion["cuit"]);
                 if ($persona == null) {
-                    $cuit = $asignacion["dni"];
+                    $cuit = $asignacion["cuit"];
                     $dni = substr($asignacion["dni"], 2, 8);
                     $apellidoynombre = $asignacion["apellidoynombre"];
                     $apellido = substr($apellidoynombre, 0, strpos($apellidoynombre, " "));
@@ -203,9 +214,11 @@ class StockController extends Controller
         $stock=Stock::devolverStock( $data["persona"], $fecha, $data["articulo"]);
 
         $cantidad=(int) $data["cantidad"];
+        $cc=$data['cc'];
+        $situacion=$data['situacion'];
 
         /*Si no encontré stock, tengo que crear un registro, sino se lo tengo que sumar al existente*/
-        $movimientoOK=StockMovimiento::Aumentar($persona, $articulo, $fecha, $cantidad,  $data["observaciones"], $usuario, $stock, $data["cc"]);
+        $movimientoOK=StockMovimiento::Aumentar($persona, $articulo, $fecha, $cantidad,  $data["observaciones"], $usuario, $stock, $cc, $situacion);
 
         if ($movimientoOK["exitoso"])
         {

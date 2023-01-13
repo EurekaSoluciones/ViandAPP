@@ -33,6 +33,11 @@ class AuthServiceProvider extends ServiceProvider
                 : Response::deny();
         });
 
+        Gate::define('EsOperador', function (User $user) {
+            return $user->perfil_id == config('global.PERFIL_Operador')? Response::allow()
+                : Response::deny();
+        });
+
         Gate::define('EsComercio', function (User $user) {
             return $user->perfil_id === config('global.PERFIL_Comercio')? Response::allow()
                 : Response::deny();

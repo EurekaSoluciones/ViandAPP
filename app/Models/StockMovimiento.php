@@ -238,7 +238,7 @@ class StockMovimiento extends Model
         }
     }
 
-    public function Aumentar($persona, $articulo, $fecha, $cantidad,  $observaciones, $usuario, $stock, $cc)
+    public function Aumentar($persona, $articulo, $fecha, $cantidad,  $observaciones, $usuario, $stock, $cc, $situacion)
     {
         try
         {
@@ -248,7 +248,7 @@ class StockMovimiento extends Model
                 'articulo_id'=>$articulo->id,
                 'persona_id'=>$persona->id,
                 'fecha'=>$fecha,
-                'situacion'=>$persona->situacion,
+                'situacion'=>$situacion,
                 'cc'=>$cc,
                 'cantidad'=>$cantidad,
                 'operacion'=>'INC',
@@ -263,7 +263,7 @@ class StockMovimiento extends Model
                         'persona_id'=>$persona->id,
                         'fechadesde'=>$fecha,
                         'fechahasta'=>$fecha,
-                        'situacion'=>$persona->situacion,
+                        'situacion'=>$situacion,
                         'cc'=>$cc,
                         'stock'=>$cantidad,
                         'saldo'=>$cantidad]);
@@ -296,7 +296,7 @@ class StockMovimiento extends Model
                 'persona_id'=>$persona->id,
                 'fecha'=>$fecha,
                 'cc'=>$stock->cc,
-                'situacion'=>$persona->situacion,
+                'situacion'=>$stock->situacion,
                 'cantidad'=>$cantidad,
                 'operacion'=>'DEC',
                 'cantidadconsigno'=>$cantidad*-1,
@@ -327,7 +327,7 @@ class StockMovimiento extends Model
                 'persona_id'=>$persona->id,
                 'fecha'=>$fecha,
                 'cc'=>$stock->cc,
-                'situacion'=>$persona->situacion,
+                'situacion'=>$stock->situacion,
                 'cantidad'=>$stock->saldo,
                 'operacion'=>'DEC',
                 'cantidadconsigno'=>$stock->saldo*-1,

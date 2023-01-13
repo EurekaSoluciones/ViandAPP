@@ -4,9 +4,10 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="email"  class="col-sm-3 col-form-label">Login</label>
-                        <input type="text" class='form-control'.{{($errors->has('email') ? ' is-invalid' : '')}} name="email"
-                               id='email' placeholder='Login' value="{{ old('email') ? old('email') : $usuario->email }}" onKeyPress="return SoloNumeros(event)" required>
-                    {!! $errors->first('email', '<div class="invalid-feedback">:message</div>') !!}
+                        <input type="text" class='form-control'.{{($errors->has('login') ? ' is-invalid' : '')}} name="login"
+                               id='login' placeholder='Login' value="{{ old('login') ? old('login') : $usuario->email }}"
+                               required {{$ACTION!="Alta"?"readonly":""}}>
+                    {!! $errors->first('login', '<div class="invalid-feedback">:message</div>') !!}
                 </div>
             </div>
         </div>
@@ -14,10 +15,10 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="name"  class="col-sm-3 col-form-label">Nombre y Apellido</label>
-                    <input type="text" class='form-control'.{{($errors->has('name') ? ' is-invalid' : '')}} name="name"
-                           id='name' placeholder='Nombre y Apellido' value="{{ old('name') ? old('name') : $usuario->name }}" required>
-                    {!! $errors->first('name', '<div class="invalid-feedback">:message</div>') !!}
+                    <label for="nombre"  class="col-sm-3 col-form-label">Nombre y Apellido</label>
+                    <input type="text" class='form-control'.{{($errors->has('nombre') ? ' is-invalid' : '')}} name="nombre"
+                           id='nombre' placeholder='Nombre y Apellido' value="{{ old('nombre') ? old('nombre') : $usuario->name }}" required>
+                    {!! $errors->first('nombre', '<div class="invalid-feedback">:message</div>') !!}
                 </div>
             </div>
         </div>
@@ -27,12 +28,12 @@
                 <div class="form-group">
                     <label for="perfil"  class="col-sm-3 col-form-label">Perfil</label>
                     <div class="col-md-4">
-                        <select class='js-example-basic-single  col-md-12' name="perfil" required>
+                        <select class='js-example-basic-single  col-md-12' name="perfil" required >
 
                             <option disabled value="" hidden>Seleccione Perfil...</option>
                             @foreach($perfiles as  $key => $value)
-                                @if($usuario->perfil_id == $value)
-                                    <option  value="{{ $key }}" >{{ $value }}  selected  </option>
+                                @if($usuario->perfil_id == $key)
+                                    <option  value="{{ $key }}" selected>{{ $value }}    </option>
                                 @else
                                     <option  value="{{ $key }}"> {{ $value }} </option>
                                 @endif

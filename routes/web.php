@@ -49,10 +49,12 @@ Route::get('detalleLote/{id}', [Controllers\ComercioController::class, 'detalleL
 Route::get('visarlote/{id}', [Controllers\AdminController::class, 'visarLote'])->name('visarlote');
 
 
+
 Route::get('consumosPendientes', [Controllers\ComercioController::class, 'consumosPendientesDeRendir'])->name('consumosPendientes');
 Route::get('cierresdelote', [Controllers\ComercioController::class, 'cierresDeLote'])->name('cierresdelote');
 Route::get('reportes', [Controllers\AdminController::class, 'reportes'])->name('reportes');
 Route::get('reportesdetalleconsumos', [Controllers\AdminController::class, 'reportesdetalleconsumos'])->name('reportesdetalleconsumos');
+Route::get('exceldetalleconsumos', [Controllers\AdminController::class, 'excelDetalleConsumos'])->name('excelDetalleConsumos');
 
 /*Acciones de Administradores*/
 Route::POST('asignacionexcel', [Controllers\StockController::class, 'import'])->name('asignacionexcel');

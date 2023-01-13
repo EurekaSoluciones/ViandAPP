@@ -75,8 +75,15 @@
                                 <div class="form-group row">
                                     <label for="cc"  class="col-sm-4 col-form-label">CC</label>
                                     <input type="text" class='form-control col-md-2'.{{($errors->has('cc') ? ' is-invalid' : '')}} name="cc"
-                                           id='cc' placeholder='CC'
-                                           required>
+                                           id='cc' placeholder='CC' disabled
+                                           >
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="situacion"  class="col-sm-4 col-form-label">Situacion</label>
+                                    <input type="text" class='form-control col-md-2'.{{($errors->has('situacion') ? ' is-invalid' : '')}} name="situacion"
+                                           id='situacion' placeholder='Situacion' disabled
+                                           >
                                 </div>
 
                                 <div class="form-group row">
@@ -243,8 +250,12 @@
                                     " - Desde: "+ moment(data.fechadesde).format('DD/MM/YYYY') + " Hasta: " +moment(data.fechahasta).format('DD/MM/YYYY');
                                 // var contenido = document.createTextNode(
                                 lista.appendChild(linew);
-                                //linew.appendChild(contenido);
 
+
+                                var situacion= document.getElementById("situacion");
+                                situacion.value=data.situacion;
+                                var cc=document.getElementById("cc");
+                                cc.value=data.cc;
                             })
                         }
                         agregarElementos();

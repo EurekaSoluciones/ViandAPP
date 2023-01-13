@@ -17,7 +17,7 @@ class Asignacion extends Model
      *
      * @var array
      */
-        protected $fillable = ['dni','situacion', 'apellidoynombre','cc', 'desayunos','viandas'];
+        protected $fillable = ['cuit','situacion', 'apellidoynombre','cc', 'desayunos','viandas'];
 
 
 }

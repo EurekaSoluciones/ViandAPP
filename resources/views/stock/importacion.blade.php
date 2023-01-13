@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('template_title')
-    Personas
+    Importación Excel de Consumos
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@
             <div class="row mb-2">
                 <div class="col-sm-11">
                     <h1>
-                        <i class="fas fa-shopping-bag"></i>  Comercios
+                        <i class="fas fa-file-excel"></i>  Importación Excel de Consumos
                     </h1>
                 </div><!-- /.col -->
                 <div class="box-tools text-right">
@@ -23,30 +23,49 @@
         </div><!-- /.container-fluid -->
     </div>
     <div class="card">
+        <div class="card-body">
 
-        @if ($message = Session::get('success'))
-            <div class="alert alert-success">
-                <p>{{ $message }}</p>
+            <div class="row">
+
+
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-success">
+                        <p>{{ $message }}</p>
+                    </div>
+                @endif
             </div>
-        @endif
 
             <form action="{{ route('asignacionexcel') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
-                <div class="form-group col-md-6" >
+                <div class="form-group" >
 
-                    <div class="custom-file">
+                    <div class="custom-file col-md-8">
                         <i class="fas fa-paperclip"></i><input type="file" name="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile"></label>
+                        <label class="custom-file-label" for="customFile"> Seleccione Archivo a importar</label>
                     </div>
                 </div>
-                <button class="btn btn-primary">Import data</button>
+                <button class="btn btn-primary">Previsualizar Importación</button>
+                <a class="btn btn-info" href="{{ route('home') }}">Cancelar</a>
+            </form>
 
-            </form>
-            <form action="{{ route('home') }}" method="GET" enctype="multipart/form-data">
-                @csrf
-            <button class="btn btn-info">Cancelar</button>
-            </form>
+            <div class="row">
+            </div>
+                <div class="row no-print mt-3">
+                    <div class="col-12">
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                    </div>
+                </div>
+        </div>
     </div>
 @endsection
 

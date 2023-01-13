@@ -95,8 +95,10 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-info float-right">Buscar</button>
-
+                    <button type="submit" class="btn btn-primary float-right mr-2" onclick="marcarSalida('pantalla');"><i class="fas fa-search"></i> Buscar</button>
+                    <button type="submit" class="btn btn-outline-success float-right mr-2" onclick="marcarSalida('excel');"><i class="fas fa-file-excel"></i> Exportar EXCEL</button>
+                    <button type="submit" class="btn btn-outline-danger float-right mr-2" onclick="marcarSalida('pdf');"><i class="fas fa-file-pdf"></i> Exportar PDF </button>
+                    <input type="hidden" name="salida" id="salida">
 
                 </div>
             </form>
@@ -277,9 +279,6 @@
 
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
 
 @section('js')
     <script> console.log('Hi!'); </script>
@@ -346,6 +345,12 @@
         toastr.warning("{{ session('warning') }}");
         @endif
 
+
+        function marcarSalida(valor)
+        {
+            document.getElementById("salida").value=valor;
+
+        }
     </script>
 
 

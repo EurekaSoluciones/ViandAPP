@@ -37,10 +37,11 @@ class UserController extends Controller
     {
         $usuario = new User();
 
-        $perfiles=Perfil::devolverArrForCombo();
+        $perfiles=Perfil::devolverArrForComboForCreate();
 
         return view('usuarios.create', compact('usuario'))
-            ->with('perfiles', $perfiles);
+            ->with('perfiles', $perfiles)
+            ->with('ACTION', 'Alta');
     }
 
     public function store(Request $request)
@@ -49,11 +50,11 @@ class UserController extends Controller
 
         $data = request()->all();
 
-        $login=$data['email'];
+        $login=$data['login'];
 
         User::create([
-            'email'=>$data['email'],
-            'name'=>$data['name'],
+            'email'=>$data['login'],
+            'name'=>$data['nombre'],
             'password'=>Hash::make($login),
             'perfil_id'=>$data['perfil']
         ]);
@@ -70,7 +71,8 @@ class UserController extends Controller
         $perfiles=Perfil::devolverArrForCombo();
 
         return view('usuarios.edit', compact('usuario'))
-            ->with('perfiles', $perfiles);
+            ->with('perfiles', $perfiles)
+            ->with('ACTION', 'Edit');
 
     }
 
@@ -83,11 +85,11 @@ class UserController extends Controller
 
     public function update( $idUsuario)
     {
-        User::$rules['email'] = User::$rules['email'] .','. $idUsuario;
+        User::$rules['login'] = User::$rules['login'] .','. $idUsuario;
 
         $data = request()->all();
 
-        User::where('id',$idUsuario)->update(['name'=>$data['name']]);
+        User::where('id',$idUsuario)->update(['name'=>$data['nombre'], 'perfil_id'=>$data['perfil']]);
 
         return redirect()->route('usuarios.index');
 
