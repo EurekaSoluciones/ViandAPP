@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExcelBusquedaMovimientos;
 use App\Exports\ExcelDetalleConsumos;
 use App\Exports\ExcelReportesAgrupados;
 use App\Models\Articulo;
@@ -12,6 +13,7 @@ use App\Models\PedidoGrupalItem;
 use App\Models\Persona;
 use App\Models\Stock;
 use App\Models\StockMovimiento;
+use App\Models\TipoMovimiento;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -315,7 +317,7 @@ class AdminController extends Controller
         $fechaDesde=Carbon::parse(strtotime(str_replace('/', '-', $request->get('fechaDesde'))));
         $fechaHasta=Carbon::parse(strtotime(str_replace('/', '-', $request->get('fechaHasta'))));
 
-        $comercio=$request->get('comercio');
+        $comerciosseleccionados=$request->get('comercios');
         $persona=$request->get('persona');
 
         $fecha= \Illuminate\Support\Carbon::now();
@@ -327,25 +329,95 @@ class AdminController extends Controller
 
 
        if ($salida=="pantalla" || $salida==null ) {
-           $movimientos = StockMovimiento::devolverDetalleConsumoxPersona($fechaDesde, $fechaHasta, $comercio, $persona);
+           $movimientos = StockMovimiento::devolverDetalleConsumoxPersona($fechaDesde, $fechaHasta, $comerciosseleccionados, $persona);
 
+           if ($comerciosseleccionados!=null)
+               $seleccionadas= implode(", ",$comerciosseleccionados);
+           else
+               $seleccionadas=null;
+
+
+           session()->put('comercios_seleccionados' , $seleccionadas);
            return view('admin.reportesdetalleconsumos')
                ->with('personas', $empleados)
                ->with('comercios', $comercios)
                ->with('fechaDesde', $fechaDesde)
                ->with('fechaHasta', $fechaHasta)
-               ->with('comercio', $comercio)
                ->with('persona', $persona)
                ->with('movimientos', $movimientos);
        }
        else
        {
            if ($salida=="excel")
-               return Excel::download(new ExcelDetalleConsumos($fechaDesde,$fechaHasta,$comercio, $persona), 'detalleConsumos.xlsx');
+               return Excel::download(new ExcelDetalleConsumos($fechaDesde,$fechaHasta,$comerciosseleccionados, $persona), 'detalleConsumos.xlsx');
            else
-               return Excel::download(new ExcelDetalleConsumos($fechaDesde,$fechaHasta,$comercio, $persona), 'detalleConsumos.xlsx');
+               return Excel::download(new ExcelDetalleConsumos($fechaDesde,$fechaHasta,$comerciosseleccionados, $persona), 'detalleConsumos.xlsx');
        }
 
     }
 
+    public static function busquedamovimientos(Request $request)
+    {
+
+        $fechaDesde=Carbon::parse(strtotime(str_replace('/', '-', $request->get('fechaDesde'))));
+        $fechaHasta=Carbon::parse(strtotime(str_replace('/', '-', $request->get('fechaHasta'))));
+
+        $comerciosseleccionados=$request->get('comercios');
+        $personasseleccionadas=$request->get('personas');
+        $tipomovimientosseleccionados=$request->get('tipomovimientos');
+
+        $fecha= \Illuminate\Support\Carbon::now();
+
+        $empleados=Persona::devolverArrActivosForCombo();
+        $comercios=Comercio::devolverArrActivosForCombo();
+        $tipomovimientos=TipoMovimiento::devolverArrForCombo();
+
+        $salida=$request->get('salida');
+
+        if ($salida=="pantalla" || $salida==null ) {
+            $movimientos = StockMovimiento::devolverMovimientos($fechaDesde, $fechaHasta, $comerciosseleccionados, $personasseleccionadas, $tipomovimientosseleccionados);
+
+            if ($personasseleccionadas!=null)
+                $seleccionadas= implode(", ",$personasseleccionadas);
+            else
+                $seleccionadas=null;
+
+            session()->put('personas_seleccionadas' , $seleccionadas);
+
+            if ($comerciosseleccionados!=null)
+                $seleccionadas= implode(", ",$comerciosseleccionados);
+            else
+                $seleccionadas=null;
+
+
+            session()->put('comercios_seleccionados' , $seleccionadas);
+
+            if ($tipomovimientosseleccionados!=null)
+                $seleccionadas= implode(", ",$tipomovimientosseleccionados);
+            else
+                $seleccionadas=null;
+
+            session()->put('tipomovimientos_seleccionados' , $seleccionadas);
+
+
+
+            return view('admin.busquedamovimientos')
+                ->with('personas', $empleados)
+                ->with('comercios', $comercios)
+                ->with('tipomovimientos', $tipomovimientos)
+                ->with('fechaDesde', $fechaDesde)
+                ->with('fechaHasta', $fechaHasta)
+                ->with('persona', $personasseleccionadas)
+                ->with('tipomovimiento', $tipomovimientosseleccionados)
+                ->with('movimientos', $movimientos);
+        }
+        else
+        {
+            if ($salida=="excel")
+                return Excel::download(new ExcelBusquedaMovimientos($fechaDesde,$fechaHasta,$comerciosseleccionados, $personasseleccionadas, $tipomovimientosseleccionados), 'busquedamovimientos.xlsx');
+            else
+                return Excel::download(new ExcelBusquedaMovimientos($fechaDesde,$fechaHasta,$comerciosseleccionados, $personasseleccionadas, $tipomovimientosseleccionados), 'busquedamovimientos.xlsx');
+        }
+
+    }
 }

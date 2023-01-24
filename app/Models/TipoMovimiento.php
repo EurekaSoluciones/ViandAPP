@@ -25,7 +25,7 @@ class TipoMovimiento extends Model
 
     public static function devolverArrForCombo()
     {
-        $items=Articulo::all()->sortBy('descripcion')->pluck('descripcion', 'id')->toArray();
+        $items=TipoMovimiento::all()->sortBy('descripcion')->pluck('descripcion', 'id')->toArray();
         return $items;
 
     }

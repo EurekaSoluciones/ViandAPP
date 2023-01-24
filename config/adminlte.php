@@ -383,6 +383,13 @@ return [
             'can'  => ['EsAdmin'],
         ],
         [
+            'text'        => 'Búsqueda de Movimientos',
+            'route'       => 'busquedamovimientos',
+            'icon'        => 'fas fa-search',
+            'label_color' => 'success',
+            'can'  => ['EsAdmin','EsOperador'],
+        ],
+        [
             'header' => 'Configuracion',
             'can'  => ['EsAdmin'],
             ],

@@ -41,7 +41,7 @@
                 <div class="form-group" >
 
                     <div class="custom-file col-md-8">
-                        <i class="fas fa-paperclip"></i><input type="file" name="file" class="custom-file-input" id="customFile">
+                        <i class="fas fa-paperclip"></i><input type="file" name="archivo" class="custom-file-input" id="customFile">
                         <label class="custom-file-label" for="customFile"> Seleccione Archivo a importar</label>
                     </div>
                 </div>

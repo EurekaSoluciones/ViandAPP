@@ -13,6 +13,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class StockController extends Controller
@@ -29,19 +30,75 @@ class StockController extends Controller
     /*************************************************************************************/
     public function import(Request $request)
     {
-        $request->validate([
-            'file' => 'required|max:10000'
+
+        $validator = Validator::make($request->all(), [
+            'archivo' => 'required|max:10000',
         ]);
 
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
         Asignacion::truncate();
 
-        Excel::import(new AsignacionesImport, $request->file('file')->store('temp'));
+        Excel::import(new AsignacionesImport, $request->file('archivo')->store('temp'));
 
-        session()->flash('message' , 'Archivo procesado');
+        /*Voy a hacer unas validaciones por las dudas*/
 
-        $asignaciones = Asignacion::all();
+        $asignaciones = Asignacion::whereNotNull('cuit')->get();
 
-        return view('stock.importacion_confirmar', compact('asignaciones'));
+        $validator->after(function ($validator) use ($asignaciones) {
+
+            foreach($asignaciones as $asignacion)
+            {
+                /*Veamos que el cuit sea un numero de 11 digitos*/
+                if (strlen($asignacion->cuit) != 11 )
+                {
+                    $validator->errors()->add(
+                        'cuitIncorrecto'.$asignacion->cuit, 'ERROR - CUIT INCORRECTO: '.$asignacion->cuit
+                    );
+
+                    $asignacion->update(['estado'=> "ERROR - CUIT INCORRECTO"]);
+                }
+
+                /*Que tengan CC y Situacion*/
+
+                if ($asignacion->cc=="" || $asignacion->situacion=="")
+                {
+                    $validator->errors()->add(
+                        'FaltanDatos', 'ERROR - CC o Situación sin datos: '.$asignacion->cuit
+                    );
+                    $asignacion->update(['estado'=> "ERROR - CC o Situación sin datos"]);
+                }
+
+                $persona=Persona::devolverPersonaxCuit($asignacion->cuit);
+
+                if ($persona==null)
+                {
+                    $asignacion->update(['estado'=> "OK - CUIT no encontrado - Se creará la persona"]);
+                }
+                else
+                {
+                    $asignacion->update(['estado'=> "OK"]);
+                }
+            }
+        });
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        else
+        {
+            session()->flash('message' , 'Archivo procesado');
+
+            $asignaciones = Asignacion::whereNotNull('cuit')->get();
+
+            return view('stock.importacion_confirmar', compact('asignaciones'));
+        }
+
 
     }
 
@@ -67,7 +124,7 @@ class StockController extends Controller
         /*Primero veamos que no exista ya esa importación*/
         //Lo voy a dejar para después
 
-        $asignaciones = Asignacion::all();
+        $asignaciones = Asignacion::whereNotNull('cuit')->get();
         /*Ahora si, ver si existe la persona*/
 
         try
@@ -79,7 +136,7 @@ class StockController extends Controller
                 $persona = Persona::devolverPersonaxCuit($asignacion["cuit"]);
                 if ($persona == null) {
                     $cuit = $asignacion["cuit"];
-                    $dni = substr($asignacion["dni"], 2, 8);
+                    $dni = mb_substr($cuit,  2, 8);
                     $apellidoynombre = $asignacion["apellidoynombre"];
                     $apellido = substr($apellidoynombre, 0, strpos($apellidoynombre, " "));
                     $nombre = substr($apellidoynombre, strpos($apellidoynombre, " ") + 1);
@@ -109,7 +166,7 @@ class StockController extends Controller
         {
             DB::rollBack();
             session()->flash('error' , 'Ocurrió un error en la importación: ' . $e->getMessage());
-            $asignaciones = Asignacion::all();
+            $asignaciones = Asignacion::whereNotNull('cuit')->get();
             return view('stock.importacion_confirmar', compact('asignaciones'));
         }
 

@@ -90,6 +90,7 @@
                             <th class="text-center sorting_asc">CC</th>
                             <th class="text-center sorting_asc">Desayunos</th>
                             <th class="text-center sorting_asc">Viandas</th>
+                            <th class="text-center sorting_asc">Observaciones</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -101,7 +102,11 @@
                                 <td class="text-center col-md-2">{{$asignacion->cc}}</td>
                                 <td class="text-center col-md-1">{{$asignacion->desayunos}}</td>
                                 <td class="text-center col-md-1">{{$asignacion->viandas}}</td>
-
+                                @if ($asignacion->estado=="OK")
+                                    <td class="text-center col-md-1"><small class="badge badge-success">{{$asignacion->estado}}</small></td>
+                                    @else
+                                    <td class="text-center col-md-1"><small class="badge badge-danger">{{$asignacion->estado}}</small></td>
+                                    @endif
                             </tr>
                         @endforeach
                         </tbody>

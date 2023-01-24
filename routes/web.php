@@ -55,6 +55,7 @@ Route::get('cierresdelote', [Controllers\ComercioController::class, 'cierresDeLo
 Route::get('reportes', [Controllers\AdminController::class, 'reportes'])->name('reportes');
 Route::get('reportesdetalleconsumos', [Controllers\AdminController::class, 'reportesdetalleconsumos'])->name('reportesdetalleconsumos');
 Route::get('exceldetalleconsumos', [Controllers\AdminController::class, 'excelDetalleConsumos'])->name('excelDetalleConsumos');
+Route::get('busquedamovimientos', [Controllers\AdminController::class, 'busquedamovimientos'])->name('busquedamovimientos');
 
 /*Acciones de Administradores*/
 Route::POST('asignacionexcel', [Controllers\StockController::class, 'import'])->name('asignacionexcel');
