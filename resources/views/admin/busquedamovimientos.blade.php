@@ -75,7 +75,7 @@
 
                                 @foreach($comercios as  $key => $value)
 
-                                    <option  value="{{ $key }}" {{$comercio==$key?"selected":""}}> {{ $value }}  </option>
+                                    <option  value="{{ $key }}"> {{ $value }}  </option>
                                 @endforeach
                             </select>
                         </div>
@@ -87,7 +87,7 @@
 
                                 @foreach($personas as  $key => $value)
 
-                                    <option  value="{{ $key }}" {{$persona==$key?"selected":""}}> {{ $value }}  </option>
+                                    <option  value="{{ $key }}"> {{ $value }}  </option>
                                 @endforeach
                             </select>
                         </div>
@@ -101,7 +101,7 @@
 
                                 @foreach($tipomovimientos as  $key => $value)
 
-                                    <option  value="{{ $key }}" {{$tipomovimiento==$key?"selected":""}}> {{ $value }}  </option>
+                                    <option  value="{{ $key }}" > {{ $value }}  </option>
                                 @endforeach
                             </select>
                         </div>
