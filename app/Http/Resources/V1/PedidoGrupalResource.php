@@ -7,11 +7,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class PedidoGrupalResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
+ * Transform the resource into an array.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+ */
     public function toArray($request)
     {
         return [
@@ -24,6 +24,6 @@ class PedidoGrupalResource extends JsonResource
             "observaciones"=>$this->observaciones,
             "cantidadViandas"=>intval($this->cantidadviandas),
             "cantidadDesayunos"=>intval($this->cantidaddesayunos),
-            ];
+        ];
     }
 }

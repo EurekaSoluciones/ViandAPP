@@ -52,6 +52,7 @@ class ExcelBusquedaMovimientos implements FromCollection, WithHeadings, ShouldAu
             $movimiento->situacion,
             $movimiento->articulo->descripcion,
             ($movimiento->comercio!=null?$movimiento->comercio->nombrefantasia:""),
+            $movimiento->usuario->name,
             $movimiento->cantidad
 
         ];
@@ -82,6 +83,7 @@ class ExcelBusquedaMovimientos implements FromCollection, WithHeadings, ShouldAu
                 'SITUACION',
                 'ARTICULO',
                 'COMERCIO',
+                'INGRESADO POR',
                 'CANTIDAD']
         ];
 
@@ -89,14 +91,14 @@ class ExcelBusquedaMovimientos implements FromCollection, WithHeadings, ShouldAu
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->mergeCells('A2:I2');
+        $sheet->mergeCells('A2:J2');
         return [
             // Style the first row as bold text.
             'A2'  => [
                 'font' => ['bold' => true, 'size'=>18],
                 'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT ],
             ],
-            'A1:I4' =>
+            'A1:J4' =>
                 [
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,

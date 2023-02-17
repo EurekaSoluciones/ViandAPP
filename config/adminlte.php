@@ -365,6 +365,20 @@ return [
             'label_color' => 'success',
         ],
         [
+            'text'        => 'Notificaciones',
+            'route'       => 'notificaciones.index',
+            'icon'        => 'fas fa-comment',
+            'can'  => ['EsAdmin','EsOperador'],
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Mis Notificaciones',
+            'route'       => 'misnotificaciones',
+            'icon'        => 'fas fa-comment',
+            'can'  => ['EsPersona'],
+            'label_color' => 'success',
+        ],
+        [
             'header' => 'Reportes',
             'can'  => ['EsAdmin'],
         ],

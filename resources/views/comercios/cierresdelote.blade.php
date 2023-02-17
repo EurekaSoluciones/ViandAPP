@@ -55,14 +55,23 @@
                     </div>
                     <label for="comercio" class="col-sm-2 col-form-label">Comercios</label>
                     <div class="col-sm-4">
-                        <select class='js-example-basic-single  col-md-12' name="comercio" required>
+                        @if(auth()->user()->perfil->id==4)
+                            <select class='js-example-basic-single  col-md-12' name="comercio" required>
 
-                            <option disabled value="0" hidden {{$comercio==null?"selected":""}}>Seleccione Comercio...</option>
-                            @foreach($comercios as  $key => $value)
+                                <option  value="{{ $comercio->id }}" {{"selected"}}> {{ $comercio->nombrefantasia }}  </option>
 
-                                <option  value="{{ $key }}" {{$comercio==$key?"selected":""}}> {{ $value }}  </option>
-                            @endforeach
-                        </select>
+                            </select>
+                        @else
+                            <select class='js-example-basic-single  col-md-12' name="comercio" required>
+
+                                <option disabled value="0" hidden {{$comercio==null?"selected":""}}>Seleccione Comercio...</option>
+                                @foreach($comercios as  $key => $value)
+
+                                    <option  value="{{ $key }}" {{$comercio->id ==$key?"selected":""}}> {{ $value }}  </option>
+                                @endforeach
+                            </select>
+                        @endif
+
                     </div>
                 </div>
 

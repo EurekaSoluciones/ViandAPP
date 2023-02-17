@@ -4,7 +4,11 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\AdminGeneralController;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\NotificacionResource;
 use App\Http\Resources\v1\PersonaResource;
+use App\Http\Resources\v1\StockMovimientoResource;
+use App\Models\Notificacion;
+use App\Models\NotificacionPersona;
 use App\Models\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -93,4 +97,97 @@ class PersonaController extends Controller
                 'message'=>'Persona no encontrada'], 400);
         }
 
-    }}
+    }
+
+    /**
+     * Devuelve las notificaciones de una persona
+     *
+     * @param Request $request --> no tiene parametros. Solo token de autorizacion del comercio
+     * @return \Illuminate\Http\Response
+     */
+    public function notificaciones (Request $request)
+    {
+
+        $usuario= auth('sanctum')->user() ;
+
+        $persona=Persona::devolverPersonaxDni($usuario->email);
+
+        if ($persona!=null) {
+            /*Veamos si está activo*/
+
+            if ($persona->activo)
+            {
+                try {
+                    $notificaciones=NotificacionPersona::dePersona($persona->id);
+                    $notificacionesNoLeidas=NotificacionPersona::noLeidasDePersona($persona->id);
+
+
+                    return response()->json(["noleidas"=>count($notificacionesNoLeidas),
+                        "Notificaciones"=>NotificacionResource::collection($notificaciones),
+                        'message'=>"OK"],200);
+                }
+                catch(Exception $e)
+                {
+                    return response()->json(['message'=>"ERROR - ".$e->getMessage()],500);
+                }
+            }
+
+            else
+                return response()->json([
+                    'message'=>'Persona Dada de Baja'], 400);
+        }
+        else
+        {
+            return response()->json([
+                'message'=>'Persona no encontrada'], 400);
+        }
+
+
+
+    }
+
+    /**
+     * Devuelve los consumos de los 2 ultimos meses de una persona
+     *
+     * @param Request $request --> no tiene parametros. Solo token de autorizacion del comercio
+     * @return \Illuminate\Http\Response
+     */
+    public function misConsumos (Request $request)
+    {
+
+        $usuario= auth('sanctum')->user() ;
+
+        $persona=Persona::devolverPersonaxDni($usuario->email);
+
+        if ($persona!=null) {
+            /*Veamos si está activo*/
+
+            if ($persona->activo)
+            {
+                try {
+                    $consumos=$persona->ultimosConsumos()->get();
+
+                    return response()->json(["Consumos"=>StockMovimientoResource::collection($consumos ),
+                        'message'=>"OK"],200);
+                }
+                catch(Exception $e)
+                {
+                    return response()->json(['message'=>"ERROR - ".$e->getMessage()],500);
+                }
+            }
+
+            else
+                return response()->json([
+                    'message'=>'Persona Dada de Baja'], 400);
+        }
+        else
+        {
+            return response()->json([
+                'message'=>'Persona no encontrada'], 400);
+        }
+
+
+
+    }
+
+}

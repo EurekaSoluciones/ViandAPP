@@ -38,6 +38,7 @@ Route::get('/home', 'HomeController@index')->name('home');;
 Route::resource('personas', 'PersonaController');
 Route::resource('comercios', 'ComercioController');
 Route::resource('usuarios', 'UserController');
+Route::resource('notificaciones', 'NotificacionController');
 
 /*Acciones de Comercios*/
 Route::get('consumir', [Controllers\StockController::class, 'consumir'])->name('consumir');
@@ -56,6 +57,7 @@ Route::get('reportes', [Controllers\AdminController::class, 'reportes'])->name('
 Route::get('reportesdetalleconsumos', [Controllers\AdminController::class, 'reportesdetalleconsumos'])->name('reportesdetalleconsumos');
 Route::get('exceldetalleconsumos', [Controllers\AdminController::class, 'excelDetalleConsumos'])->name('excelDetalleConsumos');
 Route::get('busquedamovimientos', [Controllers\AdminController::class, 'busquedamovimientos'])->name('busquedamovimientos');
+Route::get('misnotificaciones', [Controllers\NotificacionesController::class, 'misnotificaciones'])->name('misnotificaciones');
 
 /*Acciones de Administradores*/
 Route::POST('asignacionexcel', [Controllers\StockController::class, 'import'])->name('asignacionexcel');

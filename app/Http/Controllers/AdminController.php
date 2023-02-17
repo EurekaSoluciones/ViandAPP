@@ -67,8 +67,7 @@ class AdminController extends Controller
         $articulos=Articulo::devolverArrForCombo();
         $comercios=Comercio::devolverArrActivosForCombo();
 
-
-        return view('admin.pedidogrupalcreate')
+         return view('admin.pedidogrupalcreate')
             ->with('personas',$empleados)
             ->with('articulos', $articulos)
             ->with('comercios',$comercios)  ;

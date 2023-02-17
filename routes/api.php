@@ -74,3 +74,9 @@ Route::post('personas/generarNuevoQr', [App\Http\Controllers\Api\PersonaControll
 
 Route::post('cambiarClave', [App\Http\Controllers\Api\LoginController::class, 'cambiarClave'])
     ->middleware('App\Http\Middleware\EureAuthApis');
+
+Route::post('personas/notificaciones', [App\Http\Controllers\Api\PersonaController::class, 'notificaciones'])
+    ->middleware('App\Http\Middleware\EureAuthApis');
+
+Route::post('personas/misConsumos', [App\Http\Controllers\Api\PersonaController::class, 'misconsumos'])
+    ->middleware('App\Http\Middleware\EureAuthApis');

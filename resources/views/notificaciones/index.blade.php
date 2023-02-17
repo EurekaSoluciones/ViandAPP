@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('template_title')
-    Personas
+    Notificaciones
 @endsection
 
 @section('content')
@@ -10,13 +10,13 @@
             <div class="row mb-2">
                 <div class="col-sm-11">
                     <h1>
-                        <i class="fas fa-user"></i>  Personas
+                        <i class="fas fa-user"></i>  Notificaciones
                     </h1>
                 </div><!-- /.col -->
                 @if(auth()->user()->perfil->id==1 || auth()->user()->perfil->id==2 )
                 <div class="box-tools text-right">
 
-                    <a  href="{{ route('personas.create') }}"  class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></a>
+                    <a  href="{{ route('notificaciones.create') }}"  class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></a>
 
                 </div>
                 @endif
@@ -33,49 +33,41 @@
                         </div>
                     @endif
 
-
+                    @if ($message = Session::get('error'))
+                        <div class="alert alert-danger">
+                            <p>{{ $message }}</p>
+                        </div>
+                    @endif
 
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form class="form-horizontal">
                             <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="apellido" class="col-sm-2 col-form-label">Apellido</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class='form-control' name="apellido" id='apellido' placeholder='Apellido' value={{$apellido}}>
+                                <div class="row">
+                                    <div class="col-sm-3 invoice-col">
+                                        <b>Fecha Desde</b><br>
 
-                                    </div>
-                                    <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class='form-control' name="nombre"  id='nombre' placeholder='Nombre' value={{$nombre}}>
-                                    </div>
-                                </div>
+                                        <div class="input-group date" id="fechahastadatetime" data-target-input="nearest">
 
-                                <div class="form-group row">
+                                            <input type="text" name="fechadesde" class ="form-control datetimepicker-input" placeholder ="Fecha Desde" id="fechahasta" data-target="#fechadesdedatetime">
+                                            <div class="input-group-append" data-target="#fechahastadatetime" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
 
-                                    <label for="dni" class="col-sm-2 col-form-label">DNI</label>
-
-                                    <div class="col-sm-4">
-                                        <input type="text" class='form-control' name="dni" id='dni' placeholder='DNI' value={{$dni}}>
-                                    </div>
-
-                                    <label for="cuit" class="col-sm-2 col-form-label">CUIT</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class='form-control' name="cuit" id='cuit' placeholder='CUIT' value={{$cuit}}>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="offset-2 col-sm-2">
-                                        <div class="form-check">
-                                            <input type="checkbox" class='form-check-input' name= id='ckActivos'  checked="">
-
-                                            <label class="form-check-label" for="ckActivos">Solo Activos</label>
                                         </div>
                                     </div>
+                                    <div class="col-sm-3 invoice-col">
+                                        <b>Fecha Hasta</b><br>
 
+                                        <div class="input-group date" id="fechahastadatetime" data-target-input="nearest">
+                                            <input type="text" name="fechahasta" class ="form-control datetimepicker-input" placeholder ="Fecha Hasta" id="fechahasta" data-target="#fechahastadatetime">
+                                            <div class="input-group-append" data-target="#fechahastadatetime" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
-
                                 <button type="submit" class="btn btn-info float-right">Buscar</button>
 
                             </div>
@@ -90,32 +82,29 @@
                             <table id="tabla" class="table table-striped table-hover dataTable">
                                 <thead class="thead">
                                     <tr>
-                                        <th>No</th>
-
-										<th class="sorting_asc">Apellido</th>
-										<th>Nombre</th>
-										<th>Dni</th>
-										<th>Cuit</th>
-										<th>Activo?</th>
-                                        <th>Fecha Baja</th>
+										<th class="sorting_desc">Fecha</th>
+                                        <th>Título</th>
+										<th>Descripcion</th>
+										<th>Ingresada Por</th>
+                                        <th>Alcance</th>
+                                        <th>Leido Por</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($personas as $persona)
+                                    @foreach ($notificaciones as $notificacion)
                                         <tr>
-                                            <td>{{ $persona->id }}</td>
-											<td>{{ $persona->apellido }}</td>
-											<td>{{ $persona->nombre }}</td>
-											<td>{{ $persona->dni }}</td>
-											<td>{{ $persona->cuit }}</td>
-											<td><input type="checkbox" name="esexterno" disabled="" {{ ($persona->activo) ? "checked" : "" }}></td>
-                                            <td>{{ ($persona->fechabaja!=null)?$persona->fechabaja->format('d-m-Y') :"" }}</td>
+                                            <td>{{\Carbon\Carbon::parse( $notificacion->fecha )->format('d/m/Y') }}</td>
+                                            <td>{{ $notificacion->titulo }}</td>
+											<td>{{ $notificacion->descripcion }}</td>
+											<td>{{ $notificacion->usuario->name }}</td>
+											<td>{{ count($notificacion->personas) }}</td>
+											<td>{{count($notificacion->personasqueleyeron)}}</td>
+
 											<td>
 
-                                                <form action="{{ route('personas.destroy',$persona->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-warning" href="{{ route('personas.show',$persona->id) }}" title="Info"><i class="fas fa-info-circle"></i> </a>
-                                                    <a class="btn btn-sm btn-info" href="{{ route('personas.edit',$persona->id) }}" title="Modificar"><i class="fas fa-pencil-alt"></i> </a>
+                                                <form action="{{ route('notificaciones.destroy',$notificacion->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-warning" href="{{ route('notificaciones.show',$notificacion->id) }}" title="Info"><i class="fas fa-info-circle"></i> </a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm" title="Borrar" ><i class="fas fa-trash" ></i> </button>
@@ -128,7 +117,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        {!! $personas->links() !!}
+                        {!! $notificaciones->links() !!}
                     </div>
 
                 </div>

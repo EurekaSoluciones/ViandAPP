@@ -211,13 +211,15 @@ class ComercioController extends Controller
         {
             $comercio=Comercio::devolverComercioxCuit($usuario->email);
             $cierres=CierreLote::devolverCierresDeLoteDeComercio($comercio->id, $fechaDesde);
+
         }
         else
         {
+            $comercios=Comercio::devolverArrForCombo();
             $cierres=CierreLote::devolverCierresDeLoteDeComercio($comercio==null?0:$comercio, $fechaDesde);
         }
-
         $comercios=Comercio::devolverArrForCombo();
+
         return view('comercios.cierresdelote')
             ->with('cierres', $cierres)
             ->with('comercio', $comercio)

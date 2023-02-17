@@ -64,6 +64,7 @@ class Persona extends Model
         return  $query ;
     }
 
+
     public static function devolverArrForCombo()
     {
         $personas=Persona::orderBy('apellido')->get()->pluck('full_name', 'id')->toArray();
@@ -99,6 +100,17 @@ class Persona extends Model
             ->whereDate( 'fechadesde', '<=', $fecha)
             ->whereDate( 'fechahasta', '>=', $fecha)
             ->orderBy('id','desc');
+    }
+
+    public function ultimosConsumos()
+    {
+        //DB::enableQueryLog();
+        return $this->hasMany(StockMovimiento::class, 'persona_id')
+            ->whereDate('fecha','>=', Carbon::now()->addMonth(-2))
+            ->where('tipomovimiento_id',2)
+            ->orderBy('id','desc');
+        //dd(DB::getQueryLog());
+        //return $consumos;
     }
 
 

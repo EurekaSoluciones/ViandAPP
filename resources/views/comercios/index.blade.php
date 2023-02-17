@@ -13,12 +13,13 @@
                         <i class="fas fa-store"></i>  Comercios
                     </h1>
                 </div><!-- /.col -->
+                @if(auth()->user()->perfil->id==1 || auth()->user()->perfil->id==2 )
                 <div class="box-tools text-right">
 
                     <a  href="{{ route('comercios.create') }}"  class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></a>
 
                 </div>
-
+                @endif
 
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->

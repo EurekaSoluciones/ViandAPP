@@ -334,15 +334,15 @@ class StockController extends Controller
         else
         {
             $disminucionOK=StockMovimiento::Disminuir($persona, $articulo, $fecha, $cantidad,  $data["observaciones"], $usuario, $stock);
-        }
 
-        if ($disminucionOK["exitoso"])
-        {
-            session()->flash('message' , 'Disminución registrada' );
-        }
-        else
-        {
-            session()->flash('error' , 'Ha ocurrido un error: '.$disminucionOK["error"] );
+            if ($disminucionOK["exitoso"])
+            {
+                session()->flash('message' , 'Disminución registrada' );
+            }
+            else
+            {
+                session()->flash('error' , 'Ha ocurrido un error: '.$disminucionOK["error"] );
+            }
         }
 
         $personas=Persona::devolverArrForCombo();

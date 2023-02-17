@@ -157,25 +157,12 @@
             $('.js-example-basic-multiple').select2();
 
             @if ( $errors->any())
-            @if(!empty(Session::get('seleccionadas')))
-             $('.js-example-basic-multiple').select2('val',[{!! Session::get('seleccionadas') !!}]);
-             $('.js-example-basic-multiple').select2().val([{!! Session::get('seleccionadas') !!}]).trigger('change');
+                @if(!empty(Session::get('seleccionadas')))
+                 $('.js-example-basic-multiple').select2('val',[{!! Session::get('seleccionadas') !!}]);
+                 $('.js-example-basic-multiple').select2().val([{!! Session::get('seleccionadas') !!}]).trigger('change');
 
+                @endif
             @endif
-            @endif
-
-
-
-
-                        // var personasseleccionadas=Session::get('seleccionadas');
-                        // alert (personasseleccionadas);
-            {{--    var selectedValues = seleccionadas.split(',');--}}
-            {{--    // selectedValues[0] = "302";--}}
-            {{--    // selectedValues[1] = "359";--}}
-            {{--    // selectedValues[2] = "358";--}}
-
-
-{{--            @endif--}}
         });
 
 

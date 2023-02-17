@@ -138,11 +138,12 @@
                                 <th>CUIT</th>
                                 <th>Apellido y Nombre</th>
                                 <th>Fecha</th>
-                                <th class="text-center">Tipo Mov.</th>
+                                <th>Tipo Mov.</th>
                                 <th class="text-center">CC</th>
                                 <th class="text-center">Situacion</th>
-                                <th class="text-right">Articulo</th>
-                                <th class="text-right">Comercio</th>
+                                <th>Articulo</th>
+                                <th>Comercio</th>
+                                <th>Ingresado Por</th>
                                 <th class="text-right">Cantidad</th>
 
                             </tr>
@@ -156,9 +157,10 @@
                                     <td class="sorting_asc">{{ $movimiento->tipomovimiento->descripcion }}</td>
                                     <td class="sorting_asc  text-center">{{ $movimiento->cc }}</td>
                                     <td class="sorting_asc  text-center">{{ $movimiento->situacion }}</td>
-                                    <td class="sorting_asc  text-right">{{ $movimiento->articulo->descripcion}}</td>
-                                    <td class="sorting_asc  text-right">{{ $movimiento->comercio!=null? $movimiento->comercio->nombrefantasia:"" }}</td>
-                                    <td class="sorting_asc  text-right">{{ $movimiento->cantidad }}</td>
+                                    <td class="sorting_asc">{{ $movimiento->articulo->descripcion}}</td>
+                                    <td class="sorting_asc">{{ $movimiento->comercio!=null? $movimiento->comercio->nombrefantasia:"" }}</td>
+                                    <td class="sorting_asc">{{$movimiento->usuario->name}}</td>
+                                    <td class="sorting_asc text-right">{{ $movimiento->cantidad }}</td>
 
                                 </tr>
                             @endforeach

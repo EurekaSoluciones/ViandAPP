@@ -71,6 +71,7 @@
 
                         <label for="comercio" class="col-form-label col-sm-2">Comercio</label>
                         <div class="col-sm-4">
+
                             <select class='js-example-basic-multiple w-100' name="comercios[]" multiple="multiple" >
 
                                 @foreach($comercios as  $key => $value)
