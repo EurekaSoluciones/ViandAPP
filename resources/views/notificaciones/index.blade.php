@@ -47,10 +47,10 @@
                                     <div class="col-sm-3 invoice-col">
                                         <b>Fecha Desde</b><br>
 
-                                        <div class="input-group date" id="fechahastadatetime" data-target-input="nearest">
+                                        <div class="input-group date" id="fechadesdedatetime" data-target-input="nearest">
 
                                             <input type="text" name="fechadesde" class ="form-control datetimepicker-input" placeholder ="Fecha Desde" id="fechahasta" data-target="#fechadesdedatetime">
-                                            <div class="input-group-append" data-target="#fechahastadatetime" data-toggle="datetimepicker">
+                                            <div class="input-group-append" data-target="#fechadesdedatetime" data-toggle="datetimepicker">
                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div>
 
@@ -135,6 +135,8 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             })
+            $('#fechadesdedatetime').datetimepicker({ locale: 'es' , format: 'DD/MM/YYYY'});
+            $('#fechahastadatetime').datetimepicker({ locale: 'es' , format: 'DD/MM/YYYY'});
 
 
             $('#tabla').DataTable({

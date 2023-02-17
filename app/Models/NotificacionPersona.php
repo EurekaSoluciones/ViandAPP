@@ -31,6 +31,9 @@ class NotificacionPersona extends Model
     {
 
         $notificaciones= NotificacionPersona::where('persona_id', $persona_id)
+
+            ->whereHas('notificacion', function($q){
+            $q->whereDate('fecha','>=', Carbon::now()->addMonth(-2));})
             ->orderBy('id', 'DESC')->get();
 
         return $notificaciones;
