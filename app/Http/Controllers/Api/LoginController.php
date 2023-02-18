@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\AdminGeneralController;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\ComercioResource;
+use App\Http\Resources\V1\NotificacionResource;
 use App\Http\Resources\v1\PedidoGrupalResource;
 use App\Http\Resources\v1\PersonaResource;
+use App\Http\Resources\v1\StockMovimientoResource;
 use App\Models\Comercio;
+use App\Models\NotificacionPersona;
 use App\Models\PedidoGrupal;
 use App\Models\Persona;
 use App\Models\User;
@@ -117,10 +120,18 @@ class LoginController extends Controller
             if (Hash::check($data['password'], $user->password)) {
                 $persona = Persona::devolverPersonaxDni($data['login']);
 
+                $notificaciones=NotificacionPersona::dePersona($persona->id);
+                $notificacionesNoLeidas=NotificacionPersona::noLeidasDePersona($persona->id);
+
+                $consumos=$persona->ultimosConsumos()->get();
+
                 return response()->json([
                     'token' => $user->createtoken($user->email)->plainTextToken,
                     'perfil' => $user->perfil_id,
                     'persona' => new PersonaResource($persona),
+                    'consumos'=>StockMovimientoResource::collection($consumos ),
+                    'notificaciones'=>NotificacionResource::collection($notificaciones),
+                    'hmnotificacionesnoleidas'=>count($notificacionesNoLeidas),
                     'message' => 'OK'
                 ], 200);
             }
