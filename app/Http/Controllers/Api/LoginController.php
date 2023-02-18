@@ -131,7 +131,7 @@ class LoginController extends Controller
                     'persona' => new PersonaResource($persona),
                     'consumos'=>StockMovimientoResource::collection($consumos ),
                     'notificaciones'=>NotificacionResource::collection($notificaciones),
-                    'hmnotificacionesnoleidas'=>count($notificacionesNoLeidas),
+                    'notificacionesnoleidas'=>count($notificacionesNoLeidas),
                     'message' => 'OK'
                 ], 200);
             }
