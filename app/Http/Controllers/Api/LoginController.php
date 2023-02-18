@@ -129,9 +129,9 @@ class LoginController extends Controller
                     'token' => $user->createtoken($user->email)->plainTextToken,
                     'perfil' => $user->perfil_id,
                     'persona' => new PersonaResource($persona),
-                    'consumos'=>StockMovimientoResource::collection($consumos ),
-                    'notificaciones'=>NotificacionResource::collection($notificaciones),
-                    'notificacionesnoleidas'=>count($notificacionesNoLeidas),
+                    'Consumos'=>StockMovimientoResource::collection($consumos ),
+                    'Notificaciones'=>['noleidas'=>count($notificacionesNoLeidas),
+                        'notificaciones'=>NotificacionResource::collection($notificaciones)],
                     'message' => 'OK'
                 ], 200);
             }

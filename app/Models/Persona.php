@@ -190,4 +190,21 @@ class Persona extends Model
         /*Y tengo que devolver el QR*/
         return $qr;
     }
+
+    /**
+     * Marca una notificación como leída
+     *
+     * @return string
+     */
+
+    public function confirmarLecturaNotificacion($notificacionId)
+    {
+
+        NotificacionPersona::update(['leido'=>1, 'fechalectura'=>new Carbon(now())])
+            ->where('notificacion_id', $notificacionId)
+            ->where('persona_id', $this->id);
+
+
+    }
+
 }

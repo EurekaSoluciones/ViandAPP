@@ -100,6 +100,34 @@ class PersonaController extends Controller
     }
 
     /**
+     * Genera un nuevo código QR para una persona
+     * @var $request -> debe venir solo el Token
+     */
+    public function marcarNotificacionLeida (Request $request)
+    {
+        $data=AdminGeneralController::devolverArrayDeRequestRawData($request);
+        $notificacionId=$data['notificacionId'];
+
+        $usuario= auth('sanctum')->user() ;
+
+        $persona=Persona::devolverPersonaxDni($usuario->email);
+
+        if ($persona!=null) {
+
+            $persona->confirmarLecturaNotificacion($notificacionId);
+
+            return response()->json(["Persona" => new PersonaResource($persona), 'message' => "OK"], 200);
+        }
+        else
+        {
+            return response()->json([
+                'message'=>'Persona no encontrada'], 400);
+        }
+
+    }
+
+
+    /**
      * Devuelve las notificaciones de una persona
      *
      * @param Request $request --> no tiene parametros. Solo token de autorizacion del comercio

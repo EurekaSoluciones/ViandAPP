@@ -16,8 +16,21 @@ class NotificacionController extends Controller
 
     public function index(Request $request)
     {
-        $fechadesde=Carbon::parse(strtotime(str_replace('/', '-', $request->get('fechadesde'))));
-        $fechahasta=Carbon::parse(strtotime(str_replace('/', '-', $request->get('fechahasta'))));
+
+        $fecha=$request->get('fechadesde');
+
+        if ($fecha==null)
+            $fechadesde=Carbon::now()->addMonth(-2);
+        else
+            $fechadesde =Carbon::parse(strtotime(str_replace('/', '-', $fecha)));
+
+        $fecha=$request->get('fechahasta');
+
+        if ($fecha==null)
+            $fechahasta=Carbon::now();
+        else
+            $fechahasta =Carbon::parse(strtotime(str_replace('/', '-', $fecha)));
+
 
         $notificaciones = Notificacion::desdefecha($fechadesde)
             ->hastafecha($fechahasta)
@@ -26,6 +39,8 @@ class NotificacionController extends Controller
         return view('notificaciones.index', compact('notificaciones'))
             ->with('titulo','Notificaciones')
             ->with('notificaciones', $notificaciones)
+            ->with('fechadesde', $fechadesde)
+            ->with('fechahasta', $fechahasta)
             ->with('i', (request()->input('page', 1) - 1) * $notificaciones->perPage());
     }
 

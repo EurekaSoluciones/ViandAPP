@@ -49,7 +49,7 @@
 
                                         <div class="input-group date" id="fechadesdedatetime" data-target-input="nearest">
 
-                                            <input type="text" name="fechadesde" class ="form-control datetimepicker-input" placeholder ="Fecha Desde" id="fechahasta" data-target="#fechadesdedatetime">
+                                            <input type="text" name="fechadesde" value="{{\Carbon\Carbon::parse( $fechadesde)->format('d/m/Y')}}" class ="form-control datetimepicker-input" placeholder ="Fecha Desde" id="fechahasta" data-target="#fechadesdedatetime">
                                             <div class="input-group-append" data-target="#fechadesdedatetime" data-toggle="datetimepicker">
                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div>
@@ -60,7 +60,7 @@
                                         <b>Fecha Hasta</b><br>
 
                                         <div class="input-group date" id="fechahastadatetime" data-target-input="nearest">
-                                            <input type="text" name="fechahasta" class ="form-control datetimepicker-input" placeholder ="Fecha Hasta" id="fechahasta" data-target="#fechahastadatetime">
+                                            <input type="text" name="fechahasta" value="{{\Carbon\Carbon::parse( $fechahasta)->format('d/m/Y')}}" class ="form-control datetimepicker-input" placeholder ="Fecha Hasta" id="fechahasta" data-target="#fechahastadatetime">
                                             <div class="input-group-append" data-target="#fechahastadatetime" data-toggle="datetimepicker">
                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div>
