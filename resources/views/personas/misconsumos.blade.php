@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('template_title')
-    Notificaciones
+    consumos
 @endsection
 
 @section('content')
@@ -10,16 +10,9 @@
             <div class="row mb-2">
                 <div class="col-sm-11">
                     <h1>
-                        <i class="fas fa-comment"></i>  Notificaciones
+                        <i class="fas fa-shopping-bag"></i>  Mis Consumos
                     </h1>
                 </div><!-- /.col -->
-                @if(auth()->user()->perfil->id==1 || auth()->user()->perfil->id==2 )
-                <div class="box-tools text-right">
-
-                    <a  href="{{ route('notificaciones.create') }}"  class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></a>
-
-                </div>
-                @endif
 
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -79,45 +72,47 @@
                         <div class="row">
                         </div>
                         <div class="table-responsive">
-                            <table id="tabla" class="table table-striped table-hover dataTable">
-                                <thead class="thead">
-                                    <tr>
-										<th class="sorting_desc">Fecha</th>
-                                        <th>Título</th>
-										<th>Descripcion</th>
-										<th>Ingresada Por</th>
-                                        <th>Alcance</th>
-                                        <th>Leido Por</th>
-                                        <th></th>
-                                    </tr>
+                            <table id="tabla" class="table table-striped table-hover dataTable" role="grid" aria-describedby="tabla_info">
+                                <thead>
+                                <tr role="row">
+                                    <th  class="text-center">Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Articulo</th>
+                                    <th>Comercio</th>
+                                    <th  class="text-center">Cantidad</th>
+                                    <th>Realizado por</th>
+                                    <th>Obs</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($notificaciones as $notificacion)
-                                        <tr>
-                                            <td>{{\Carbon\Carbon::parse( $notificacion->fecha )->format('d/m/Y') }}</td>
-                                            <td>{{ $notificacion->titulo }}</td>
-											<td>{{ $notificacion->descripcion }}</td>
-											<td>{{ $notificacion->usuario->name }}</td>
-											<td>{{ count($notificacion->personas) }}</td>
-											<td>{{count($notificacion->personasqueleyeron)}}</td>
+                                @foreach ($consumos as  $consumo)
+                                    <tr>
+                                        <td  class="text-center">{{\Carbon\Carbon::parse(  $consumo->fecha)->format('d/m/Y')}}</td>
+                                        <td>{{ $consumo->tipomovimiento->descripcion}}
+                                            @if ($consumo->tipomovimiento->operacion=="INC")
+                                                <i class="fas fa-plus-circle text-green"></i>
+                                            @else
+                                                <i class="fas fa-minus-circle text-red" ></i>
+                                            @endif
+                                        </td>
 
-											<td>
+                                        <td><i class='{{$consumo->articulo->icon}}'></i> {{$consumo->articulo->descripcion }}</td>
+                                        <td >@if ($consumo->comercio!=null){{ $consumo->comercio->nombrefantasia }} @endif</td>
+                                        <td class="text-center">{{ $consumo->cantidad }}</td>
+                                        <td>{{ $consumo->usuario->name }}</td>
+                                        <td>
 
-                                                <form action="{{ route('notificaciones.destroy',$notificacion->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-warning" href="{{ route('notificaciones.show',$notificacion->id) }}" title="Info"><i class="fas fa-info-circle"></i> </a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Borrar" ><i class="fas fa-trash" ></i> </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                            {{$consumo->observaciones}}
+
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="card-footer">
-                        {!! $notificaciones->links() !!}
+                        {!! $consumos->links() !!}
                     </div>
 
                 </div>

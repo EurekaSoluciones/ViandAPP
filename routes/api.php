@@ -78,5 +78,8 @@ Route::post('cambiarClave', [App\Http\Controllers\Api\LoginController::class, 'c
 Route::post('personas/notificaciones', [App\Http\Controllers\Api\PersonaController::class, 'notificaciones'])
     ->middleware('App\Http\Middleware\EureAuthApis');
 
+Route::post('personas/notificacionLeida', [App\Http\Controllers\Api\PersonaController::class, 'marcarNotificacionLeida'])
+    ->middleware('App\Http\Middleware\EureAuthApis');
+
 Route::post('personas/misConsumos', [App\Http\Controllers\Api\PersonaController::class, 'misconsumos'])
     ->middleware('App\Http\Middleware\EureAuthApis');

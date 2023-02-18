@@ -113,6 +113,18 @@ class Persona extends Model
         //return $consumos;
     }
 
+    public function consumos()
+    {
+        return $this->hasMany(StockMovimiento::class, 'persona_id')
+            ->where('tipomovimiento_id',2)
+            ->orderBy('id','desc');
+    }
+
+    public function notificaciones()
+    {
+        return $this->hasMany(NotificacionPersona::class, 'persona_id')
+            ->orderBy('id','desc');
+    }
 
     public function scopeApellido($query, $search)
     {
@@ -199,10 +211,12 @@ class Persona extends Model
 
     public function confirmarLecturaNotificacion($notificacionId)
     {
+        $personaId=$this->id;
+        $notificacion=NotificacionPersona::where('notificacion_id','=', $notificacionId)
+            ->where('persona_id', $personaId)
+            ->first() ;
 
-        NotificacionPersona::update(['leido'=>1, 'fechalectura'=>new Carbon(now())])
-            ->where('notificacion_id', $notificacionId)
-            ->where('persona_id', $this->id);
+        $notificacion->update(['leido'=>1, 'fechalectura'=>new Carbon(now())]);
 
 
     }

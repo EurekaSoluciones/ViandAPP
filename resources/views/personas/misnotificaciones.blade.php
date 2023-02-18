@@ -10,16 +10,9 @@
             <div class="row mb-2">
                 <div class="col-sm-11">
                     <h1>
-                        <i class="fas fa-comment"></i>  Notificaciones
+                        <i class="fas fa-comment"></i>  Mis Notificaciones
                     </h1>
                 </div><!-- /.col -->
-                @if(auth()->user()->perfil->id==1 || auth()->user()->perfil->id==2 )
-                <div class="box-tools text-right">
-
-                    <a  href="{{ route('notificaciones.create') }}"  class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></a>
-
-                </div>
-                @endif
 
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -86,30 +79,21 @@
                                         <th>Título</th>
 										<th>Descripcion</th>
 										<th>Ingresada Por</th>
-                                        <th>Alcance</th>
-                                        <th>Leido Por</th>
-                                        <th></th>
+                                        <th class="text-center">Leida?</th>
+                                        <th class="text-center">Fecha Lectura</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($notificaciones as $notificacion)
                                         <tr>
-                                            <td>{{\Carbon\Carbon::parse( $notificacion->fecha )->format('d/m/Y') }}</td>
-                                            <td>{{ $notificacion->titulo }}</td>
-											<td>{{ $notificacion->descripcion }}</td>
-											<td>{{ $notificacion->usuario->name }}</td>
-											<td>{{ count($notificacion->personas) }}</td>
-											<td>{{count($notificacion->personasqueleyeron)}}</td>
+                                            <td>{{\Carbon\Carbon::parse( $notificacion->notificacion->fecha )->format('d/m/Y') }}</td>
+                                            <td>{{ $notificacion->notificacion->titulo }}</td>
+											<td>{{ $notificacion->notificacion->descripcion }}</td>
+											<td>{{ $notificacion->notificacion->usuario->name }}</td>
+											<td class="text-center"><input type="checkbox" disabled="" {{ ($notificacion->leido) ? "checked" : "" }}></td>
+											<td class="text-center">{{$notificacion->fechalectura ==null?"":\Carbon\Carbon::parse($notificacion->fechalectura)->format('d/m/Y')}}</td>
 
-											<td>
-
-                                                <form action="{{ route('notificaciones.destroy',$notificacion->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-warning" href="{{ route('notificaciones.show',$notificacion->id) }}" title="Info"><i class="fas fa-info-circle"></i> </a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Borrar" ><i class="fas fa-trash" ></i> </button>
-                                                </form>
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

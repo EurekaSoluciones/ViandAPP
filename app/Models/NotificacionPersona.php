@@ -49,6 +49,29 @@ class NotificacionPersona extends Model
         return $notificaciones;
     }
 
+    public function scopeDePersona($query, $persona_id)
+    {
+         $query->where('persona_id', $persona_id);
+    }
+
+    public function scopeDesdeFecha($query, Carbon $fecha)
+    {
+        if ($fecha !=null)
+            $query= $query->whereHas('notificacion', function($q) use ($fecha)
+            {
+                $q->whereDate('fecha','>=', $fecha->startOfDay());});
+
+
+    }
+    public function scopeHastaFecha($query, Carbon $fecha)
+    {
+        if ($fecha !=null)
+            $query= $query->whereHas('notificacion', function($q) use ($fecha)
+            {
+                $q->whereDate('fecha','<=', $fecha->endOfDay());});
+
+    }
+
     public function getFechaLecturaAttribute($fecha)
     {
         if ($fecha==null)

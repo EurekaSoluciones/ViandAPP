@@ -181,4 +181,69 @@ class PersonaController extends Controller
         return $this->mostrarWelcome();
 
     }
+
+    public function misnotificaciones(Request $request)
+    {
+        $fecha=$request->get('fechadesde');
+
+        if ($fecha==null)
+            $fechadesde=Carbon::now()->addMonth(-2);
+        else
+            $fechadesde =Carbon::parse(strtotime(str_replace('/', '-', $fecha)));
+
+        $fecha=$request->get('fechahasta');
+
+        if ($fecha==null)
+            $fechahasta=Carbon::now();
+        else
+            $fechahasta =Carbon::parse(strtotime(str_replace('/', '-', $fecha)));
+
+        $usuario=auth()->user();
+        $persona=Persona::devolverPersonaxDni($usuario->email);
+
+        $notificaciones=$persona->notificaciones()
+            ->desdefecha($fechadesde)
+            ->hastafecha($fechahasta)
+            ->orderby('id','desc')->paginate();
+
+        return view('personas.misnotificaciones', compact('notificaciones'))
+            ->with('titulo','Notificaciones')
+            ->with('notificaciones', $notificaciones)
+            ->with('fechadesde', $fechadesde)
+            ->with('fechahasta', $fechahasta)
+            ->with('i', (request()->input('page', 1) - 1) * $notificaciones->perPage());
+    }
+
+    public function misconsumos(Request $request)
+    {
+        $fecha=$request->get('fechadesde');
+
+        if ($fecha==null)
+            $fechadesde=Carbon::now()->addMonth(-2);
+        else
+            $fechadesde =Carbon::parse(strtotime(str_replace('/', '-', $fecha)));
+
+        $fecha=$request->get('fechahasta');
+
+        if ($fecha==null)
+            $fechahasta=Carbon::now();
+        else
+            $fechahasta =Carbon::parse(strtotime(str_replace('/', '-', $fecha)));
+
+        $usuario=auth()->user();
+        $persona=Persona::devolverPersonaxDni($usuario->email);
+
+        $consumos=$persona->consumos()
+            ->desdefecha($fechadesde)
+            ->hastafecha($fechahasta)
+            ->orderby('id','desc')->paginate();
+
+        return view('personas.misconsumos', compact('consumos'))
+            ->with('titulo','Consumos')
+            ->with('consumos', $consumos)
+            ->with('fechadesde', $fechadesde)
+            ->with('fechahasta', $fechahasta)
+            ->with('i', (request()->input('page', 1) - 1) * $consumos->perPage());
+    }
+
 }

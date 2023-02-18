@@ -379,6 +379,13 @@ return [
             'label_color' => 'success',
         ],
         [
+            'text'        => 'Mis Consumos',
+            'route'       => 'misconsumos',
+            'icon'        => 'fas fa-shopping-bag',
+            'can'  => ['EsPersona'],
+            'label_color' => 'success',
+        ],
+        [
             'header' => 'Reportes',
             'can'  => ['EsAdmin'],
         ],

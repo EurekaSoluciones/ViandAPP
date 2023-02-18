@@ -44,21 +44,6 @@ class NotificacionController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * $notificaciones->perPage());
     }
 
-    public function misnotificaciones(Request $request)
-    {
-        $fechadesde=$request->get('fechadesde');
-        $fechahasta=$request->get('fechahasta');
-
-        $notificaciones = Notificacion::desdefecha($fechadesde)
-            ->hastafecha($fechahasta)
-
-            ->orderby('fecha','desc')->paginate();
-
-        return view('notificaciones.index', compact('notificaciones'))
-            ->with('titulo','Notificaciones')
-            ->with('notificaciones', $notificaciones)
-            ->with('i', (request()->input('page', 1) - 1) * $notificaciones->perPage());
-    }
 
     public function create()
     {

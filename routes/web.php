@@ -57,7 +57,8 @@ Route::get('reportes', [Controllers\AdminController::class, 'reportes'])->name('
 Route::get('reportesdetalleconsumos', [Controllers\AdminController::class, 'reportesdetalleconsumos'])->name('reportesdetalleconsumos');
 Route::get('exceldetalleconsumos', [Controllers\AdminController::class, 'excelDetalleConsumos'])->name('excelDetalleConsumos');
 Route::get('busquedamovimientos', [Controllers\AdminController::class, 'busquedamovimientos'])->name('busquedamovimientos');
-Route::get('misnotificaciones', [Controllers\NotificacionesController::class, 'misnotificaciones'])->name('misnotificaciones');
+Route::get('misnotificaciones', [Controllers\PersonaController::class, 'misnotificaciones'])->name('misnotificaciones');
+Route::get('misconsumos', [Controllers\PersonaController::class, 'misconsumos'])->name('misconsumos');
 
 /*Acciones de Administradores*/
 Route::POST('asignacionexcel', [Controllers\StockController::class, 'import'])->name('asignacionexcel');

@@ -116,7 +116,7 @@ class PersonaController extends Controller
 
             $persona->confirmarLecturaNotificacion($notificacionId);
 
-            return response()->json(["Persona" => new PersonaResource($persona), 'message' => "OK"], 200);
+            return response()->json(['message' => "OK"], 200);
         }
         else
         {
