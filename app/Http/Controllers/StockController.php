@@ -111,9 +111,12 @@ class StockController extends Controller
 
     public function confirmarImportacion(Request $request)
     {
+
+
         /*Tengo que leer la tabla con los datos y generar el stock en cada persona*/
         /*Antes tengo que verificar que esa persona exista
         Si no existe, lo creo como persona y como usuario*/
+
         $data=$request->all();
 
         $fechaDesde= Carbon::parse(strtotime(str_replace('/', '-', $data['fechadesde'])));

@@ -133,6 +133,7 @@
                                     @foreach ($persona->ultimosmovimientos as  $movimiento)
                                         <tr>
                                             <td  class="text-center">{{\Carbon\Carbon::parse(  $movimiento->fecha)->format('d/m/Y')}}</td>
+
                                             <td>{{ $movimiento->tipomovimiento->descripcion}}
                                                 @if ($movimiento->tipomovimiento->operacion=="INC")
                                                     <i class="fas fa-plus-circle text-green"></i>

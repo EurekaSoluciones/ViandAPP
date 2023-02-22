@@ -138,6 +138,14 @@ class StockMovimiento extends Model
 
     public function Asignar($persona, $articulo, $fechadesde, $fechahasta, $cantidad, $cc, $situacion, $observaciones, $usuario)
     {
+
+        /*Voy a chequear si ya existe esa asignación, en cuyo caso voy a sumar a la existente*/
+        $asignacionExistente=Stock::whereDate( 'fechadesde', $fechadesde)
+            ->whereDate( 'fechahasta', $fechahasta)
+            ->where('persona_id',$persona->id)
+            ->where('articulo_id',$articulo->id)
+            ->first();
+
         try
         {
             DB::beginTransaction();
@@ -155,15 +163,23 @@ class StockMovimiento extends Model
                 'tipomovimiento_id'=>config('global.TM_Asignacion'),
                 'observaciones'=>$observaciones]);
 
-            Stock::create(
-                ['articulo_id'=>$articulo->id,
-                'persona_id'=>$persona->id,
-                'fechadesde'=>$fechadesde,
-                'fechahasta'=>$fechahasta,
-                'situacion'=>$situacion,
-                'cc'=>$cc,
-                'stock'=>$cantidad,
-                'saldo'=>$cantidad]);
+            if ($asignacionExistente!=null)
+            {
+                $asignacionExistente->update(['stock'=> $asignacionExistente->stock + $cantidad,
+                    'saldo'=>$asignacionExistente->saldo + $cantidad]);
+            }
+            else
+            {
+                Stock::create(
+                    ['articulo_id'=>$articulo->id,
+                    'persona_id'=>$persona->id,
+                    'fechadesde'=>$fechadesde,
+                    'fechahasta'=>$fechahasta,
+                    'situacion'=>$situacion,
+                    'cc'=>$cc,
+                    'stock'=>$cantidad,
+                    'saldo'=>$cantidad]);
+            }
             DB::commit();
 
             return ["exitoso"=>true, "error"=>"", "movimiento_id"=>$movimiento->id];
