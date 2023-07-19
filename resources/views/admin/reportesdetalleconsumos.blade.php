@@ -117,37 +117,51 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="tabla" class="table table-striped table-hover dataTable">
-                            <thead class="thead">
-                            <tr>
-                                <th>DNI</th>
-                                <th>Apellido y Nombre</th>
-                                <th class="text-center">CC</th>
-                                <th class="text-center">Situacion</th>
-                                <th>Comercio</th>
-                                <th class="text-right">Desayunos</th>
-                                <th class="text-right">Viandas</th>
-                                <th class="text-right">Total</th>
+                    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
 
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($movimientos as   $movimiento)
-                                <tr>
-                                    <td class="sorting_asc">{{ $movimiento->dni }}</td>
-                                    <td class="sorting_asc">{{ $movimiento->persona }}</td>
-                                    <td class="sorting_asc  text-center">{{ $movimiento->cc }}</td>
-                                    <td class="sorting_asc  text-center">{{ $movimiento->situacion }}</td>
-                                    <td class="sorting_asc ">{{ $movimiento->nombrefantasia }}</td>
-                                    <td class="sorting_asc  text-right">{{ $movimiento->desayunos}}</td>
-                                    <td class="sorting_asc  text-right">{{ $movimiento->viandas }}</td>
-                                    <td class="sorting_asc  text-right">{{ $movimiento->viandas + $movimiento->desayunos }}</td>
+                        <div id="tabla_wrapper" class="table-responsive">
+                            <div class="table-responsive">
+                                <table id="tabla" class="table table-striped table-hover dataTable">
+                                    <thead class="thead">
+                                    <tr>
+                                        <th>DNI</th>
+                                        <th>Apellido y Nombre</th>
+                                        <th class="text-center">CC</th>
+                                        <th class="text-center">Situacion</th>
+                                        <th>Comercio</th>
+                                        <th class="text-right">Desayunos</th>
+                                        <th class="text-right">Viandas</th>
+                                        <th class="text-right">Total</th>
 
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($movimientos as   $movimiento)
+                                        <tr>
+                                            <td class="sorting_asc">{{ $movimiento->dni }}</td>
+                                            <td class="sorting_asc">{{ $movimiento->persona }}</td>
+                                            <td class="sorting_asc  text-center">{{ $movimiento->cc }}</td>
+                                            <td class="sorting_asc  text-center">{{ $movimiento->situacion }}</td>
+                                            <td class="sorting_asc ">{{ $movimiento->nombrefantasia }}</td>
+                                            <td class="sorting_asc  text-right">{{ $movimiento->desayunos}}</td>
+                                            <td class="sorting_asc  text-right">{{ $movimiento->viandas }}</td>
+                                            <td class="sorting_asc  text-right">{{ $movimiento->viandas + $movimiento->desayunos }}</td>
+
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="dt-buttons btn-group flex-wrap">
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <!-- /.card-body -->
@@ -200,6 +214,36 @@
             $('.js-example-basic-multiple').select2('val', [{!! Session::get('comercios_seleccionados') !!}]);
             $('.js-example-basic-multiple').select2().val([{!! Session::get('comercios_seleccionados') !!}]).trigger('change');
             @endif
+
+
+            $('.table').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false,
+                'lengthMenu': [ [25, 50, 100,-1], [25, 50, 100, 'Todos'] ],
+                'language': {
+                    'search':         'Buscar:',
+                    'lengthMenu': 'Mostrar _MENU_ registros por página',
+                    'zeroRecords': 'No existen registros',
+                    'info': 'Mostrando Página _PAGE_ de _PAGES_',
+                    'infoEmpty': 'No hay registros disponibles',
+                    'infoFiltered': '(filtrando desde _MAX_ registros totales)',
+                    'paginate': {
+                        'first':      'Primero',
+                        'last':       'Ultimo',
+                        'next':       'Siguiente',
+                        'previous':   'Anterior'
+                    },
+                },
+
+                'buttons': [
+                    "copy", "csv", "excel", "pdf",
+
+                ]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
         });
 

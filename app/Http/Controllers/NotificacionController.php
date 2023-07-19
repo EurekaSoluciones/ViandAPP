@@ -34,14 +34,13 @@ class NotificacionController extends Controller
 
         $notificaciones = Notificacion::desdefecha($fechadesde)
             ->hastafecha($fechahasta)
-            ->orderby('fecha','desc')->paginate();
+            ->orderby('fecha','desc')->get();
 
         return view('notificaciones.index', compact('notificaciones'))
             ->with('titulo','Notificaciones')
             ->with('notificaciones', $notificaciones)
             ->with('fechadesde', $fechadesde)
-            ->with('fechahasta', $fechahasta)
-            ->with('i', (request()->input('page', 1) - 1) * $notificaciones->perPage());
+            ->with('fechahasta', $fechahasta);
     }
 
 

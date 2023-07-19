@@ -489,28 +489,53 @@ return [
         'Datatables' => [
             'active' => true,
             'files' => [
+
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
-                    'defer' => true,
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                    'location' => 'https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js',
                     'defer' => true,
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                    'location' => 'https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css',
                     'defer' => true,
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css',
+                    'location' => 'https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css',
+                    'defer' => true,
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js',
+                    'defer' => true,
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js',
+                    'defer' => true,
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js',
+                    'defer' => true,
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/pdfmake.min.js',
+                    'defer' => true,
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/vfs_fonts.js',
                     'defer' => true,
                 ],
 

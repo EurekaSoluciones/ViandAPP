@@ -83,10 +83,11 @@
 
 
                 <div class="card-body">
-                    <div class="row">
-                    </div>
+                    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
 
-                        <div class="table-responsive">
+                        <div id="tabla_wrapper" class="table-responsive">
+
+                            <div class="table-responsive">
                             <table id="tabla" class="table table-striped table-hover dataTable">
                             <thead class="thead">
                             <tr>
@@ -123,7 +124,16 @@
                             </tbody>
                         </table>
                         </div>
+                        </div>
 
+                        <div class="row mt-2">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="dt-buttons btn-group flex-wrap">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
     </div>
@@ -151,23 +161,6 @@
 
 
 
-            $('#tabla').DataTable({
-                'paging'      : false,
-                'lengthChange': false,
-                'searching'   : true,
-                'ordering'    : true,
-                'info'        : false,
-                'autoWidth'   : false,
-                'language': {
-                    'lengthMenu': 'Mostrar _MENU_ registros por página',
-                    'zeroRecords': 'No existen registros',
-                    'info': 'Mostrando Página _PAGE_ de _PAGES_',
-                    'infoEmpty': 'No hay registros disponibles',
-                    'infoFiltered': '(filtrando desde _MAX_ registros totales)',
-                    'search':'Buscar en la lista'
-                },
-
-            });
         })
 
 
@@ -175,9 +168,37 @@
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
 
-            // if ($('#fechaHasta').val()=="")
-            //     $('#fechaHasta').val(new Date().toLocaleDateString());
+            $('.table').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false,
+                'lengthMenu': [ [25, 50, 100,-1], [25, 50, 100, 'Todos'] ],
+                'fixedHeader': true,
+                'autoWidth': false,
 
+                'language': {
+                    'search':         'Buscar:',
+                    'lengthMenu': 'Mostrar _MENU_ registros por página',
+                    'zeroRecords': 'No existen registros',
+                    'info': 'Mostrando Página _PAGE_ de _PAGES_',
+                    'infoEmpty': 'No hay registros disponibles',
+                    'infoFiltered': '(filtrando desde _MAX_ registros totales)',
+                    'paginate': {
+                        'first':      'Primero',
+                        'last':       'Ultimo',
+                        'next':       'Siguiente',
+                        'previous':   'Anterior'
+                    },
+                },
+
+                'buttons': [
+                    "copy", "csv", "excel", "pdf",
+
+                ]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
 
         @if(Session::has('message'))

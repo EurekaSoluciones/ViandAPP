@@ -28,14 +28,13 @@ class ComercioController extends Controller
             ->nombrefantasia($nombrefantasia)
             ->cuit($cuit)
             ->soloactivos($soloActivos)
-            ->orderby('razonsocial')->orderby('nombrefantasia')->paginate();
+            ->orderby('razonsocial')->orderby('nombrefantasia')->get();
 
         return view('comercios.index', compact('comercios'))
             ->with('razonsocial', $razonsocial)
             ->with('nombrefantasia', $nombrefantasia)
             ->with('cuit', $cuit)
-            ->with('soloactivos', $soloActivos)
-            ->with('i', (request()->input('page', 1) - 1) * $comercios->perPage());
+            ->with('soloactivos', $soloActivos);
     }
 
     /**

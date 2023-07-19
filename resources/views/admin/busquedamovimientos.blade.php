@@ -131,41 +131,55 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="tabla" class="table table-striped table-hover dataTable">
-                            <thead class="thead">
-                            <tr>
-                                <th>CUIT</th>
-                                <th>Apellido y Nombre</th>
-                                <th>Fecha</th>
-                                <th>Tipo Mov.</th>
-                                <th class="text-center">CC</th>
-                                <th class="text-center">Situacion</th>
-                                <th>Articulo</th>
-                                <th>Comercio</th>
-                                <th>Ingresado Por</th>
-                                <th class="text-right">Cantidad</th>
+                    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
 
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($movimientos as   $movimiento)
-                                <tr>
-                                    <td class="sorting_asc">{{ $movimiento->persona->cuit }}</td>
-                                    <td class="sorting_asc">{{ $movimiento->persona->fullname }}</td>
-                                    <td class="sorting_asc">{{ $movimiento->fecha->format('d/m/Y')}}</td>
-                                    <td class="sorting_asc">{{ $movimiento->tipomovimiento->descripcion }}</td>
-                                    <td class="sorting_asc  text-center">{{ $movimiento->cc }}</td>
-                                    <td class="sorting_asc  text-center">{{ $movimiento->situacion }}</td>
-                                    <td class="sorting_asc">{{ $movimiento->articulo->descripcion}}</td>
-                                    <td class="sorting_asc">{{ $movimiento->comercio!=null? $movimiento->comercio->nombrefantasia:"" }}</td>
-                                    <td class="sorting_asc">{{$movimiento->usuario->name}}</td>
-                                    <td class="sorting_asc text-right">{{ $movimiento->cantidad }}</td>
+                        <div id="tabla_wrapper" class="table-responsive">
+                            <div class="table-responsive">
+                                <table id="tabla" class="table table-striped table-hover dataTable">
+                                    <thead class="thead">
+                                    <tr>
+                                        <th>CUIT</th>
+                                        <th>Apellido y Nombre</th>
+                                        <th>Fecha</th>
+                                        <th>Tipo Mov.</th>
+                                        <th class="text-center">CC</th>
+                                        <th class="text-center">Situacion</th>
+                                        <th>Articulo</th>
+                                        <th>Comercio</th>
+                                        <th>Ingresado Por</th>
+                                        <th class="text-right">Cantidad</th>
 
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($movimientos as   $movimiento)
+                                        <tr>
+                                            <td class="sorting_asc">{{ $movimiento->persona->cuit }}</td>
+                                            <td class="sorting_asc">{{ $movimiento->persona->fullname }}</td>
+                                            <td class="sorting_asc">{{ $movimiento->fecha->format('d/m/Y')}}</td>
+                                            <td class="sorting_asc">{{ $movimiento->tipomovimiento->descripcion }}</td>
+                                            <td class="sorting_asc  text-center">{{ $movimiento->cc }}</td>
+                                            <td class="sorting_asc  text-center">{{ $movimiento->situacion }}</td>
+                                            <td class="sorting_asc">{{ $movimiento->articulo->descripcion}}</td>
+                                            <td class="sorting_asc">{{ $movimiento->comercio!=null? $movimiento->comercio->nombrefantasia:"" }}</td>
+                                            <td class="sorting_asc">{{$movimiento->usuario->name}}</td>
+                                            <td class="sorting_asc text-right">{{ $movimiento->cantidad }}</td>
+
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="dt-buttons btn-group flex-wrap">
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <!-- /.card-body -->
@@ -230,7 +244,40 @@
                 $('.js-example-basic-multiple-tipomovimientos').select2('val', [{!! Session::get('tipomovimientos_seleccionados') !!}]);
                 $('.js-example-basic-multiple-tipomovimientos').select2().val([{!! Session::get('tipomovimientos_seleccionados') !!}]).trigger('change');
             @endif
-        })
+
+            $('.table').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false,
+                'lengthMenu': [ [25, 50, 100,-1], [25, 50, 100, 'Todos'] ],
+                'fixedHeader': true,
+                'autoWidth': false,
+
+                'language': {
+                    'search':         'Buscar:',
+                    'lengthMenu': 'Mostrar _MENU_ registros por página',
+                    'zeroRecords': 'No existen registros',
+                    'info': 'Mostrando Página _PAGE_ de _PAGES_',
+                    'infoEmpty': 'No hay registros disponibles',
+                    'infoFiltered': '(filtrando desde _MAX_ registros totales)',
+                    'paginate': {
+                        'first':      'Primero',
+                        'last':       'Ultimo',
+                        'next':       'Siguiente',
+                        'previous':   'Anterior'
+                    },
+                },
+
+                'buttons': [
+                    "copy", "csv", "excel", "pdf",
+
+                ]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        });
+
 
         @if(Session::has('message'))
             toastr.options =

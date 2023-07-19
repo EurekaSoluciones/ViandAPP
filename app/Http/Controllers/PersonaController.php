@@ -26,15 +26,14 @@ class PersonaController extends Controller
             ->dni($dni)
             ->cuit($cuit)
             ->soloactivos($soloActivos)
-            ->orderby('apellido')->paginate();
+            ->orderby('apellido')->get();;
 
         return view('personas.index', compact('personas'))
             ->with('apellido', $apellido)
             ->with('nombre', $nombre)
             ->with('dni', $dni)
             ->with('cuit', $cuit)
-            ->with('soloactivos', $soloActivos)
-            ->with('i', (request()->input('page', 1) - 1) * $personas->perPage());
+            ->with('soloactivos', $soloActivos);
     }
 
     /**

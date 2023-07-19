@@ -84,52 +84,62 @@
                         </form>
 
                     <div class="card-body">
-                        <div class="row">
-                        </div>
-                        <div class="table-responsive">
-                            <table id="tabla" class="table table-striped table-hover dataTable">
-                                <thead class="thead">
-                                    <tr>
-                                        <th>No</th>
+                        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
 
-										<th class="sorting_asc">Apellido</th>
-										<th>Nombre</th>
-										<th>Dni</th>
-										<th>Cuit</th>
-										<th>Activo?</th>
-                                        <th>Fecha Baja</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($personas as $persona)
-                                        <tr>
-                                            <td>{{ $persona->id }}</td>
-											<td>{{ $persona->apellido }}</td>
-											<td>{{ $persona->nombre }}</td>
-											<td>{{ $persona->dni }}</td>
-											<td>{{ $persona->cuit }}</td>
-											<td><input type="checkbox" name="esexterno" disabled="" {{ ($persona->activo) ? "checked" : "" }}></td>
-                                            <td>{{ ($persona->fechabaja!=null)?$persona->fechabaja->format('d-m-Y') :"" }}</td>
-											<td>
+                            <div id="tabla_wrapper" class="table-responsive">
+                                <div class="table-responsive">
+                                    <table id="tabla" class="table table-striped table-hover dataTable">
+                                        <thead class="thead">
+                                            <tr>
+                                                <th>No</th>
 
-                                                <form action="{{ route('personas.destroy',$persona->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-warning" href="{{ route('personas.show',$persona->id) }}" title="Info"><i class="fas fa-info-circle"></i> </a>
-                                                    <a class="btn btn-sm btn-info" href="{{ route('personas.edit',$persona->id) }}" title="Modificar"><i class="fas fa-pencil-alt"></i> </a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Borrar" ><i class="fas fa-trash" ></i> </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                                <th class="sorting_asc">Apellido</th>
+                                                <th>Nombre</th>
+                                                <th>Dni</th>
+                                                <th>Cuit</th>
+                                                <th>Activo?</th>
+                                                <th>Fecha Baja</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($personas as $persona)
+                                                <tr>
+                                                    <td>{{ $persona->id }}</td>
+                                                    <td>{{ $persona->apellido }}</td>
+                                                    <td>{{ $persona->nombre }}</td>
+                                                    <td>{{ $persona->dni }}</td>
+                                                    <td>{{ $persona->cuit }}</td>
+                                                    <td><input type="checkbox" name="esexterno" disabled="" {{ ($persona->activo) ? "checked" : "" }}></td>
+                                                    <td>{{ ($persona->fechabaja!=null)?$persona->fechabaja->format('d-m-Y') :"" }}</td>
+                                                    <td>
+
+                                                        <form action="{{ route('personas.destroy',$persona->id) }}" method="POST">
+                                                            <a class="btn btn-sm btn-warning" href="{{ route('personas.show',$persona->id) }}" title="Info"><i class="fas fa-info-circle"></i> </a>
+                                                            <a class="btn btn-sm btn-info" href="{{ route('personas.edit',$persona->id) }}" title="Modificar"><i class="fas fa-pencil-alt"></i> </a>
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm" title="Borrar" ><i class="fas fa-trash" ></i> </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="dt-buttons btn-group flex-wrap">
+                                    </div>
+
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                    <div class="card-footer">
-                        {!! $personas->links() !!}
-                    </div>
+
 
                 </div>
 
@@ -148,27 +158,48 @@
             })
 
 
-            $('#tabla').DataTable({
-                'paging'      : false,
-                'lengthChange': false,
-                'searching'   : false,
-                'ordering'    : true,
-                'info'        : false,
-                'autoWidth'   : false,
-                'language': {
-                    'lengthMenu': 'Mostrar _MENU_ registros por página',
-                    'zeroRecords': 'No existen registros',
-                    'info': 'Mostrando Página _PAGE_ de _PAGES_',
-                    'infoEmpty': 'No hay registros disponibles',
-                    'infoFiltered': '(filtrando desde _MAX_ registros totales)',
-                },
-            })
 
 
         })
 
         $(document).ready(function() {
-            $('.js-example-basic-single').select2();
+
+            $('.js-example-basic-single').select2({
+                theme: 'bootstrap4',
+                width: '100%'
+            });
+
+            $('.table').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false,
+                'lengthMenu': [ [25, 50, 100,-1], [25, 50, 100, 'Todos'] ],
+                'fixedHeader': true,
+                'autoWidth': false,
+
+                'language': {
+                    'search':         'Buscar:',
+                    'lengthMenu': 'Mostrar _MENU_ registros por página',
+                    'zeroRecords': 'No existen registros',
+                    'info': 'Mostrando Página _PAGE_ de _PAGES_',
+                    'infoEmpty': 'No hay registros disponibles',
+                    'infoFiltered': '(filtrando desde _MAX_ registros totales)',
+                    'paginate': {
+                        'first':      'Primero',
+                        'last':       'Ultimo',
+                        'next':       'Siguiente',
+                        'previous':   'Anterior'
+                    },
+                },
+
+                'buttons': [
+                    "copy", "csv", "excel", "pdf",
+
+                ]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
 
         @if(Session::has('message'))

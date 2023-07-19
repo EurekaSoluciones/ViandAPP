@@ -20,7 +20,7 @@ class UserController extends Controller
         $usuarios = User::nombre($nombre)
             ->login($login)
             ->perfil($perfil)
-            ->orderby('name')->paginate();
+            ->orderby('name')->get();
 
         $perfiles=Perfil::devolverArrForCombo();
 
@@ -29,8 +29,7 @@ class UserController extends Controller
                 ->with('nombre', $nombre)
                 ->with('login', $login)
                 ->with('perfil', $perfil)
-                ->with('perfiles', $perfiles)
-                ->with('i', (request()->input('page', 1) - 1) * $usuarios->perPage());
+                ->with('perfiles', $perfiles);
     }
 
     public function create()
