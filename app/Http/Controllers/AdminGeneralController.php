@@ -21,7 +21,7 @@ class AdminGeneralController extends Controller
         return response($arrDatos);
     }
 
-    public function devolverArrayDeRequestRawData(Request  $request)
+    public static function devolverArrayDeRequestRawData(Request  $request)
     {
         $content = $request->getContent();
 
