@@ -120,8 +120,6 @@ class LoginController extends Controller
             if (Hash::check($data['password'], $user->password)) {
                 $persona = Persona::devolverPersonaxDni($data['login']);
 
-                dd($persona);
-
                 $notificaciones= NotificacionPersona::dePersona($persona->id);
                 $notificacionesNoLeidas= NotificacionPersona::noLeidasDePersona($persona->id);
 
