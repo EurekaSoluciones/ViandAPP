@@ -27,7 +27,7 @@ class NotificacionPersona extends Model
         return $this->belongsTo('App\Models\Persona');
     }
 
-    public function dePersona($persona_id)
+    public static function dePersona($persona_id)
     {
 
         $notificaciones= NotificacionPersona::where('persona_id', $persona_id)

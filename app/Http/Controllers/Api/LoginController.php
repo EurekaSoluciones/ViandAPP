@@ -6,9 +6,9 @@ use App\Http\Controllers\AdminGeneralController;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\ComercioResource;
 use App\Http\Resources\V1\NotificacionResource;
-use App\Http\Resources\v1\PedidoGrupalResource;
-use App\Http\Resources\v1\PersonaResource;
-use App\Http\Resources\v1\StockMovimientoResource;
+use App\Http\Resources\V1\PedidoGrupalResource;
+use App\Http\Resources\V1\PersonaResource;
+use App\Http\Resources\V1\StockMovimientoResource;
 use App\Models\Comercio;
 use App\Models\NotificacionPersona;
 use App\Models\PedidoGrupal;
@@ -120,8 +120,10 @@ class LoginController extends Controller
             if (Hash::check($data['password'], $user->password)) {
                 $persona = Persona::devolverPersonaxDni($data['login']);
 
-                $notificaciones=NotificacionPersona::dePersona($persona->id);
-                $notificacionesNoLeidas=NotificacionPersona::noLeidasDePersona($persona->id);
+                dd($persona);
+
+                $notificaciones= NotificacionPersona::dePersona($persona->id);
+                $notificacionesNoLeidas= NotificacionPersona::noLeidasDePersona($persona->id);
 
                 $consumos=$persona->ultimosConsumos()->get();
 
