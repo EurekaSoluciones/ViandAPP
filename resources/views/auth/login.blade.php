@@ -140,7 +140,8 @@
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <input class="form-control" type="password" name="password" placeholder="Contraseña" required autocomplete="current-password">
+                            <input class="form-control" type="password" name="password" placeholder="Contraseña" required autocomplete="off">
+{{--                            por el escaneo de seguridad--}}
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>
