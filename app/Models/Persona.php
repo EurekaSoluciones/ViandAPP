@@ -33,7 +33,7 @@ class Persona extends Model
 
     public function getFullNameAttribute()
     {
-        return $this->apellido . ' ' . $this->nombre;
+        return $this->apellido . ' ' . $this->nombre . ' - '. $this->dni ;
     }
 
     public static function  devolverPersonaxDni($dni)

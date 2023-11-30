@@ -347,14 +347,14 @@ return [
             'text'        => 'Aumentar',
             'route'       => 'aumentarstock',
             'icon'        => 'fas fa-plus',
-            'can'  => ['EsAdmin','EsOperador'],
+            'can'  => ['EsAdmin'],
             'label_color' => 'success',
         ],
         [
             'text'        => 'Disminuir',
             'route'       => 'disminuirstock',
             'icon'        => 'fas fa-minus',
-            'can'  => ['EsAdmin','EsOperador'],
+            'can'  => ['EsAdmin'],
             'label_color' => 'success',
         ],
         [
