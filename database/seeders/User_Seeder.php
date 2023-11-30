@@ -14,10 +14,8 @@ class User_Seeder extends Seeder
      */
     public function run()
     {
-        $valores=["22664811|Claudia Carrasco|1",
-            "24784660|Daniel Dolz|2",
-            "23494449|Fabian Parada|3",
-            "25255369|Marcela Carrasco|4" ];
+        $valores=["30568457451|ADMINISTRACION SACDE|1",
+            "30710398433|EUREKA|1"];
 
 
 
