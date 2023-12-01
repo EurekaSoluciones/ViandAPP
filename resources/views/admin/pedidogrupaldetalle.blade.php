@@ -57,7 +57,7 @@
                                 <br>
                                 <strong> Fecha Rechazo: </strong> {{\Carbon\Carbon::parse( $pedido->fecharechazo )->format('d/m/Y')}}
                                 <br>
-                                <strong> Recahazado Por:  </strong>{{ $pedido->usuariorechaza->name}}
+                                <strong> Rechazado Por:  </strong>{{ $pedido->usuariorechaza->name}}
                                 <br>
                             @else
                                 <i class="{{$pedido->estadoclass}}"></i><span class="right badge badge-warning ml-2"> GENERADO</span>

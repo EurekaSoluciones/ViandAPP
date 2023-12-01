@@ -51,6 +51,11 @@ class PedidoGrupal extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function usuariorechaza()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
     public function devolverUltimosPedidosgrupales()
     {
 

@@ -334,7 +334,7 @@ return [
             'route'       => 'cierresdelote',
             'icon'        => 'fas fa-clipboard-check mr-1',
             'label_color' => 'success',
-            'can'  => ['EsComercio','EsAdmin', 'EsOperador'],
+            'can'  => ['EsComercio','EsAdmin'],
         ],
         [
             'text'        => 'Cerrar Lote',
@@ -368,7 +368,7 @@ return [
             'text'        => 'Notificaciones',
             'route'       => 'notificaciones.index',
             'icon'        => 'fas fa-comment',
-            'can'  => ['EsAdmin','EsOperador'],
+            'can'  => ['EsAdmin'],
             'label_color' => 'success',
         ],
         [
@@ -408,7 +408,7 @@ return [
             'route'       => 'busquedamovimientos',
             'icon'        => 'fas fa-search',
             'label_color' => 'success',
-            'can'  => ['EsAdmin','EsOperador'],
+            'can'  => ['EsAdmin'],
         ],
         [
             'header' => 'Configuracion',
