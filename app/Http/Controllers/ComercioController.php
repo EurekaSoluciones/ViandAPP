@@ -315,7 +315,7 @@ class ComercioController extends Controller
 
         $ultimosLotes= $comercio->cierreslote()->orderBy('id','DESC')->take(10)->get();
 
-        $consumosPendientess= $comercio->devolverConsumosPendientesDeLiquidar($fecha, $comercio->id );
+        $consumosPendientess= $comercio->devolverConsumosPendientesDeLiquidar($fecha, $comercio->id )->sum('cantidad');
         $pedidosGrupales=$comercio->pedidosgrupales()->orderBy('id','DESC')->take(10)->get();
         ;
 

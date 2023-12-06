@@ -53,7 +53,7 @@
         <div class="col-12 col-sm-6 col-md-4">
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>{{count($consumosPendientes)}}</h3>
+                    <h3>{{$consumosPendientes}}</h3>
 
                     <p>Consumos Pendientes de Liquidar</p>
                 </div>
