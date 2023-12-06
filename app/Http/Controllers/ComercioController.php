@@ -299,19 +299,19 @@ class ComercioController extends Controller
 
         $fecha= \Illuminate\Support\Carbon::now();
 
-        $desayunos=count(StockMovimiento::whereMonth('fecha', $fecha->month)
+        $desayunos=StockMovimiento::whereMonth('fecha', $fecha->month)
             ->whereYear('fecha', $fecha->year)
             ->where('tipomovimiento_id', config('global.TM_Consumo'))
             ->where('comercio_id',$comercio->id)
             ->where('estado','!=',"ANULADO")
-            ->where('articulo_id',config('global.ART_Desayuno'))->get());
+            ->where('articulo_id',config('global.ART_Desayuno'))->get()->sum('cantidad');
 
-        $viandas=count(StockMovimiento::whereMonth('fecha', $fecha->month)
+        $viandas=StockMovimiento::whereMonth('fecha', $fecha->month)
             ->whereYear('fecha', $fecha->year)
             ->where('tipomovimiento_id', config('global.TM_Consumo'))
             ->where('comercio_id',$comercio->id)
             ->where('estado','!=',"ANULADO")
-            ->where('articulo_id',config('global.ART_Vianda'))->get());
+            ->where('articulo_id',config('global.ART_Vianda'))->get()->sum('cantidad');
 
         $ultimosLotes= $comercio->cierreslote()->orderBy('id','DESC')->take(10)->get();
 

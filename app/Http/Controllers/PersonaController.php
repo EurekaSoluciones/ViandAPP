@@ -144,19 +144,19 @@ class PersonaController extends Controller
         $fecha= \Illuminate\Support\Carbon::now();
 
         $comercios=count(Comercio:: where('activo', true)->get());
-        $desayunos=count(StockMovimiento::whereMonth('fecha', $fecha->month)
+        $desayunos=StockMovimiento::whereMonth('fecha', $fecha->month)
             ->whereYear('fecha', $fecha->year)
             ->where('tipomovimiento_id', config('global.TM_Consumo'))
             ->where('persona_id',$persona->id)
             ->where('estado','!=',"ANULADO")
-            ->where('articulo_id',config('global.ART_Desayuno'))->get());
+            ->where('articulo_id',config('global.ART_Desayuno'))->get()->sum('cantidad');
 
-        $viandas=count(StockMovimiento::whereMonth('fecha', $fecha->month)
+        $viandas=StockMovimiento::whereMonth('fecha', $fecha->month)
             ->whereYear('fecha', $fecha->year)
             ->where('tipomovimiento_id', config('global.TM_Consumo'))
             ->where('persona_id',$persona->id)
             ->where('estado','!=',"ANULADO")
-            ->where('articulo_id',config('global.ART_Vianda'))->get());
+            ->where('articulo_id',config('global.ART_Vianda'))->get()->sum('cantidad');
 
         return view('personas.welcome')
             ->with('persona', $persona)
