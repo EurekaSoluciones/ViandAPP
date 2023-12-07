@@ -46,7 +46,7 @@ class CierreLote extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function devolverCierresDeLoteSinVisar()
+    public static function devolverCierresDeLoteSinVisar()
     {
 
         $cierres= CierreLote::where('visado',0)
@@ -56,7 +56,7 @@ class CierreLote extends Model
         return $cierres;
     }
 
-    public function devolverCierresDeLoteDeComercio($comercio_id, $fechaDesde)
+    public static function devolverCierresDeLoteDeComercio($comercio_id, $fechaDesde)
     {
 
         $cierres= CierreLote::where('comercio_id',($comercio_id==0?">":"="), $comercio_id)
@@ -67,7 +67,7 @@ class CierreLote extends Model
         return $cierres;
     }
 
-    public function devolverCierresDeLote( $fechaDesde)
+    public static function devolverCierresDeLote( $fechaDesde)
     {
 
         $cierres= CierreLote::whereDate('fecha',">=", $fechaDesde)

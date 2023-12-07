@@ -67,7 +67,7 @@
                                 <option disabled value="0" hidden {{$comercio==null?"selected":""}}>Seleccione Comercio...</option>
                                 @foreach($comercios as  $key => $value)
 
-                                    <option  value="{{ $key }}" {{$comercio!=null?$comercio->id ==$key?"selected":"":""}}> {{ $value }}  </option>
+                                    <option  value="{{ $key }}" {{$comercio!=null?$comercio->id == $key?"selected":"":""}}> {{ $value }}  </option>
                                 @endforeach
                             </select>
                         @endif

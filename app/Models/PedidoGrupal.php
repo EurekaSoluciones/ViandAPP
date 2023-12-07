@@ -56,7 +56,7 @@ class PedidoGrupal extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function devolverUltimosPedidosgrupales()
+    public static function devolverUltimosPedidosgrupales()
     {
 
         $pedidos= PedidoGrupal::
@@ -67,7 +67,7 @@ class PedidoGrupal extends Model
         return $pedidos;
     }
 
-    public function devolverPedidosgrupales($comercio)
+    public static  function devolverPedidosgrupales($comercio)
     {
 
         $pedidos= PedidoGrupal::where('estado', 'GENERADO')

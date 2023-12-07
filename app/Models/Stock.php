@@ -48,7 +48,7 @@ class Stock extends Model
 //        //dd(DB::getQueryLog());
 //    }
 
-    public function devolverStock($persona_id, $fecha, $articulo_id)
+    public static function devolverStock($persona_id, $fecha, $articulo_id)
     {
        // DB::enableQueryLog();
         $stock= Stock::where('persona_id', $persona_id)
@@ -59,7 +59,7 @@ class Stock extends Model
         return $stock;
     }
 
-    public function devolverStockActual($persona_id)
+    public static function devolverStockActual($persona_id)
     {
         $fecha=Carbon::now();
         //DB::enableQueryLog();
@@ -71,7 +71,7 @@ class Stock extends Model
         return $stock;
     }
 
-    public function devolverStockActualParaComercio($persona_id)
+    public static function devolverStockActualParaComercio($persona_id)
     {
         $fecha=Carbon::now();
         //DB::enableQueryLog();
@@ -98,7 +98,7 @@ class Stock extends Model
         return $stock;
     }
 
-    public function devolverStockdePersona($persona_id, $fecha)
+    public static function devolverStockdePersona($persona_id, $fecha)
     {
         //DB::enableQueryLog();
 
