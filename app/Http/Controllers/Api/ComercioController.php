@@ -120,19 +120,21 @@ class ComercioController extends Controller
         $usuario= auth('sanctum')->user() ;
         $comercio=Comercio::devolverComercioxCuit($usuario->email);
 
-        $stock=Stock::devolverStock( $persona->id, $fecha, $articulo->id);
+       // $stock=Stock::devolverStock( $persona->id, $fecha, $articulo->id);
 
-        $cantidad=(int) $data["cantidad"];
+        $cantidadAConsumir=(int) $data["cantidad"];
+        $cantidadEnStock=Stock::devolverCantidadEnStockParaConsumo( $persona->id, $fecha, $articulo->id);
+        $stock=Stock::devolverStockParaConsumo($persona->id, $fecha, $articulo->id);
 
-        if ($stock ==null)
+        if ($stock==null)
         {
             return response()->json(["exitoso"=>false, "consumo"=>null, 'message'=>"Error: No existe Disponible para esta persona"], 200);
         }
         else
         {
-            if ($stock->saldo >=$cantidad)
+            if ($cantidadEnStock >=$cantidadAConsumir)
             {
-                $consumoOK=StockMovimiento::Consumir($persona, $articulo, $fecha, $cantidad, $comercio,"Consumo via APP", $usuario, $stock, true);
+                $consumoOK=StockMovimiento::Consumir($persona, $articulo, $fecha, $cantidadAConsumir, $comercio,"Consumo via APP", $stock, $usuario, $stock, true);
                 if ($consumoOK["exitoso"])
                     return response()->json(["exitoso"=>$consumoOK["exitoso"], "consumo"=>new StockMovimientoResource($consumoOK["movimiento"]), 'message'=>"Consumo Registrado"], 200);
                 else

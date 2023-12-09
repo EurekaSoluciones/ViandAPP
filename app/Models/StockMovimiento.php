@@ -192,9 +192,9 @@ class StockMovimiento extends Model
 
     }
 
-    public function Consumir($persona, $articulo, $fecha, $cantidad, $comercio, $observaciones, $usuario, $stock, $consumoPorQr)
+    public static function Consumir($persona, $articulo, $fecha, $cantidad, $comercio, $observaciones, $stock, $usuario, $consumoPorQr)
     {
-
+        $saldo=$cantidad;
         /*Tengo que buscar si hay stock disponible*/
         try
         {
@@ -216,7 +216,24 @@ class StockMovimiento extends Model
                 'observaciones'=>$observaciones,
                 'qr'=>$consumoPorQr?$persona->qr:null]);
 
-            $stock->update(['saldo'=>$stock->saldo-$cantidad]);
+            /*Esto lo tuve que cambiar, porque puede haber varios registros de stock, asi que tengo que ir bajando lo que pueda de cada uno*/
+            $stocks=Stock::devolverStockTodosParaConsumo($persona->id, $fecha, $articulo->id);
+            foreach ($stocks as $stock)
+            {
+              if ($saldo ==0)
+                break;
+
+              if ($stock->saldo >=$saldo)
+              {
+                $stock->update(['saldo'=>$stock->saldo-$saldo]);
+                $saldo=0;
+              }
+              else
+              {
+                $saldo=$saldo - $stock->saldo;
+                $stock->update(['saldo'=>0]);
+              }
+            }
 
             DB::commit();
             return ["exitoso"=>true, "error"=>"", "movimiento"=>$movimiento];
@@ -228,7 +245,7 @@ class StockMovimiento extends Model
         }
     }
 
-    public function AnularConsumo($consumo,$usuario, $observaciones)
+    public static function AnularConsumo($consumo,$usuario, $observaciones)
     {
 
         $stock=Stock::devolverStock($consumo->persona->id, $consumo->fecha, $consumo->articulo->id);
@@ -280,7 +297,7 @@ class StockMovimiento extends Model
         }
     }
 
-    public function Aumentar($persona, $articulo, $fecha, $cantidad,  $observaciones, $usuario, $stock, $cc, $situacion)
+    public static function Aumentar($persona, $articulo, $fecha, $cantidad,  $observaciones, $usuario, $stock, $cc, $situacion)
     {
         try
         {
@@ -325,7 +342,7 @@ class StockMovimiento extends Model
 
     }
 
-    public function Disminuir($persona, $articulo, $fecha, $cantidad, $observaciones, $usuario, $stock)
+    public static function Disminuir($persona, $articulo, $fecha, $cantidad, $observaciones, $usuario, $stock)
     {
 
         /*Tengo que buscar si hay stock disponible*/
@@ -357,7 +374,7 @@ class StockMovimiento extends Model
         }
     }
 
-    public function Vencer($persona, $articulo, $fecha, $observaciones, $usuario, $stock)
+    public static function Vencer($persona, $articulo, $fecha, $observaciones, $usuario, $stock)
     {
 
         try
@@ -388,7 +405,7 @@ class StockMovimiento extends Model
         }
     }
 
-    public function devolverReportexCC(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
+    public static function devolverReportexCC(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
     {
 
         $movimientos = StockMovimiento::select('cc', DB::raw('SUM(case when articulo_id=1 then cantidad ELSE 0 END) AS desayunos'),
@@ -404,7 +421,7 @@ class StockMovimiento extends Model
         return $movimientos;
     }
 
-    public function devolverReportexSituacion(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
+    public static function devolverReportexSituacion(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
     {
 
         $movimientos = StockMovimiento::select('situacion', DB::raw('SUM(case when articulo_id=1 then cantidad ELSE 0 END) AS desayunos'),
@@ -420,7 +437,7 @@ class StockMovimiento extends Model
         return $movimientos;
     }
 
-    public function devolverReportexComercio(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
+    public static function devolverReportexComercio(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
     {
 
         $movimientos = StockMovimiento::select('comercios.nombrefantasia as comercio', DB::raw('SUM(case when articulo_id=1 then cantidad ELSE 0 END) AS desayunos'),
@@ -437,7 +454,7 @@ class StockMovimiento extends Model
         return $movimientos;
     }
 
-    public function devolverReportexPersona(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
+    public static function devolverReportexPersona(Carbon $fechaDesde, Carbon $fechaHasta, $comercio_id, $persona_id)
     {
 
         $movimientos = StockMovimiento::select(DB::raw("CONCAT(personas.apellido,' ',personas.nombre)  AS persona"),
@@ -455,7 +472,7 @@ class StockMovimiento extends Model
         return $movimientos;
     }
 
-    public function devolverDetalleConsumoxPersona(Carbon $fechaDesde, Carbon $fechaHasta, $comercios, $persona_id)
+    public static function devolverDetalleConsumoxPersona(Carbon $fechaDesde, Carbon $fechaHasta, $comercios, $persona_id)
     {
 
         $movimientos = StockMovimiento::select(
@@ -479,7 +496,7 @@ class StockMovimiento extends Model
         return $movimientos;
     }
 
-    public function devolverMovimientos(Carbon $fechaDesde, Carbon $fechaHasta, $comercios, $personas, $tipomovimientos)
+    public static function devolverMovimientos(Carbon $fechaDesde, Carbon $fechaHasta, $comercios, $personas, $tipomovimientos)
     {
 
         $movimientos = StockMovimiento::deComercios($comercios)

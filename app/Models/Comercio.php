@@ -177,9 +177,12 @@ class Comercio extends Model
             {
                 $persona=$item->persona()->first();
                 $articulo=$item->articulo()->first();
-                $stock=Stock::devolverStock($persona->id, $fecha,  $articulo->id);
 
-                $consumoOK=StockMovimiento::Consumir($persona,$articulo, $fecha, $item->cantidad, $this,"Consumo de Pedido Grupal Nro: ". $pedido->id, $usuario, $stock, false);
+                $cantidadAConsumir=(int) $item->cantidad;
+                $cantidadEnStock=Stock::devolverCantidadEnStockParaConsumo( $persona->id, $fecha, $articulo->id);
+                $stock=Stock::devolverStockParaConsumo($persona->id, $fecha, $articulo->id);
+
+                $consumoOK=StockMovimiento::Consumir($persona,$articulo, $fecha, $cantidadAConsumir, $this,"Consumo de Pedido Grupal Nro: ". $pedido->id, $stock, $usuario, false);
             }
 
             DB::commit();

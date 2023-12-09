@@ -59,6 +59,46 @@ class Stock extends Model
         return $stock;
     }
 
+  public static function devolverStockParaConsumo($persona_id, $fecha, $articulo_id)
+  {
+    // DB::enableQueryLog();
+    $stock= Stock::where('persona_id', $persona_id)
+      ->where('articulo_id',$articulo_id)
+      ->where('saldo','>',0)
+      ->whereDate( 'fechadesde', '<=', $fecha)
+      ->whereDate( 'fechahasta', '>=', $fecha)
+      ->orderBy('fechadesde', 'asc')
+      ->first() ;
+    //dd(DB::getQueryLog());
+    return $stock;
+  }
+
+  public static function devolverStockTodosParaConsumo($persona_id, $fecha, $articulo_id)
+  {
+    // DB::enableQueryLog();
+    $stock= Stock::where('persona_id', $persona_id)
+      ->where('articulo_id',$articulo_id)
+      ->where('saldo','>',0)
+      ->whereDate( 'fechadesde', '<=', $fecha)
+      ->whereDate( 'fechahasta', '>=', $fecha)
+      ->orderBy('fechadesde', 'asc')
+      ->get() ;
+    //dd(DB::getQueryLog());
+    return $stock;
+  }
+
+  public static function devolverCantidadEnStockParaConsumo($persona_id, $fecha, $articulo_id)
+  {
+    // DB::enableQueryLog();
+    $stock= Stock::where('persona_id', $persona_id)
+      ->where('articulo_id',$articulo_id)
+      ->where('saldo','>',0)
+      ->whereDate( 'fechadesde', '<=', $fecha)
+      ->whereDate( 'fechahasta', '>=', $fecha)->get()->sum('saldo');
+    //dd(DB::getQueryLog());
+    return $stock;
+  }
+
     public static function devolverStockActual($persona_id)
     {
         $fecha=Carbon::now();

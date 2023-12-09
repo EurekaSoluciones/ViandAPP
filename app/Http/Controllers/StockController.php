@@ -203,9 +203,9 @@ class StockController extends Controller
         $comercio=Comercio::devolverComercioxId($data["comercio"]);
         $usuario=auth()->user();
 
-        $stock=Stock::devolverStock( $data["persona"], $fecha, $data["articulo"]);
-
-        $cantidad=(int) $data["cantidad"];
+        $cantidadAConsumir=(int) $data["cantidad"];
+        $cantidadEnStock=Stock::devolverCantidadEnStockParaConsumo( $data["persona"], $fecha, $data["articulo"]);
+        $stock=Stock::devolverStockParaConsumo($data["persona"], $fecha, $data["articulo"]);
 
         if ($stock ==null)
         {
@@ -214,9 +214,9 @@ class StockController extends Controller
         }
         else
         {
-            if ($stock->saldo >=$cantidad)
+            if ($cantidadEnStock >=$cantidadAConsumir)
             {
-                $consumoOK=StockMovimiento::Consumir($persona, $articulo, $fecha, $cantidad, $comercio, $data["observaciones"], $usuario, $stock, false);
+                $consumoOK=StockMovimiento::Consumir($persona, $articulo, $fecha, $cantidadAConsumir, $comercio, $data["observaciones"],  $stock, $usuario,false);
                 if ($consumoOK["exitoso"])
                 {
                     session()->flash('message' , 'Consumo registrado' );
