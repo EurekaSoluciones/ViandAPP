@@ -54,7 +54,7 @@ class ComercioController extends Controller
      * @param Request $request --> debe tener: "fecha" como raw data y el token del comercio
      * @return \Illuminate\Http\Response
      */
-    public function consumosPendientesDeRendir (Request $request)
+    public static function consumosPendientesDeRendir (Request $request)
     {
         //por las dudas que venga mal formado el request
         try {

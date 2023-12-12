@@ -59,7 +59,7 @@ class Comercio extends Model
         return $this->hasMany(PedidoGrupal::class, 'comercio_id')->orderBy('id','DESC');
     }
 
-    public function devolverConsumosPendientesDeLiquidar($fecha, $comercioId)
+    public static function devolverConsumosPendientesDeLiquidar($fecha, $comercioId)
     {
         //DB::enableQueryLog();
         $fechaParaAnulados= Carbon::now()->addDays(-15);
