@@ -344,7 +344,7 @@ class StockMovimiento extends Model
 
     public static function Disminuir($persona, $articulo, $fecha, $cantidad, $observaciones, $usuario, $stock)
     {
-
+        $saldo=$cantidad;
         /*Tengo que buscar si hay stock disponible*/
         try
         {
@@ -363,7 +363,25 @@ class StockMovimiento extends Model
                 'tipomovimiento_id'=>config('global.TM_Baja'),
                 'observaciones'=>$observaciones]);
 
-            $stock->update(['saldo'=>$stock->saldo-$cantidad]);
+            $stocks=Stock::devolverStockTodosParaConsumo($persona->id, $fecha, $articulo->id);
+            foreach ($stocks as $stock)
+            {
+              if ($saldo ==0)
+                break;
+
+              if ($stock->saldo >=$saldo)
+              {
+                $stock->update(['saldo'=>$stock->saldo-$saldo]);
+                $saldo=0;
+              }
+              else
+              {
+                $saldo=$saldo - $stock->saldo;
+                $stock->update(['saldo'=>0]);
+              }
+            }
+
+
             DB::commit();
             return ["exitoso"=>true, "error"=>"", "movimiento_id"=>$movimiento->id];
         }

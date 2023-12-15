@@ -325,27 +325,39 @@ class StockController extends Controller
         $articulo=Articulo::devolverArticuloxId($data["articulo"]);
         $usuario=auth()->user();
 
-        $stock=Stock::devolverStock( $data["persona"], $fecha, $data["articulo"]);
 
-        $cantidad=(int) $data["cantidad"];
+        $cantidadADisminuir=(int) $data["cantidad"];
+        $cantidadEnStock=Stock::devolverCantidadEnStockParaConsumo( $data["persona"], $fecha, $data["articulo"]);
+        $stock=Stock::devolverStockParaConsumo($data["persona"], $fecha, $data["articulo"]);
 
         /*Si no encontré stock, no puedo disminuir*/
         if ($stock == null)
         {
             session()->flash('error' , 'No hay stock disponible para disminuir' );
+            return back();
         }
         else
         {
-            $disminucionOK=StockMovimiento::Disminuir($persona, $articulo, $fecha, $cantidad,  $data["observaciones"], $usuario, $stock);
+          if ($cantidadEnStock >=$cantidadADisminuir)
+          {
+
+            $disminucionOK = StockMovimiento::Disminuir($persona, $articulo, $fecha, $cantidadADisminuir, $data["observaciones"], $usuario, $stock);
 
             if ($disminucionOK["exitoso"])
             {
-                session()->flash('message' , 'Disminución registrada' );
+              session()->flash('message', 'Disminución registrada');
             }
             else
             {
-                session()->flash('error' , 'Ha ocurrido un error: '.$disminucionOK["error"] );
+              session()->flash('error', 'Ha ocurrido un error: ' . $disminucionOK["error"]);
             }
+          }
+          else
+          {
+            session()->flash('error' , 'Stock insuficiente. Stock actual: '.$stock->cantidad );
+            return back();
+
+          }
         }
 
         $personas=Persona::devolverArrForCombo();
