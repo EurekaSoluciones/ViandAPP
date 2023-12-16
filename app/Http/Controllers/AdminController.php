@@ -222,7 +222,9 @@ class AdminController extends Controller
         $personaSinStock=null;
         foreach ($personas as $value)
         {
-            $stock=Stock::devolverStock($value, $fecha,$articulo_id);
+
+//            $stock=Stock::devolverStock($value, $fecha,$articulo_id);
+            $stock=Stock::devolverCantidadEnStockParaConsumo( $value, $fecha, $articulo_id);
             if ($stock==null)
             {
                 $stockSuficiente=false;
@@ -231,7 +233,7 @@ class AdminController extends Controller
             }
             else
             {
-                if ($stock->saldo<$cantidad)
+                if ($stock<$cantidad)
                 {
                     $stockSuficiente=false;
                     $personaSinStock=Persona::devolverPersonaxId($value);

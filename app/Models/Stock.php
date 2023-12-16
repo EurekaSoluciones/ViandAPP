@@ -143,6 +143,7 @@ class Stock extends Model
         //DB::enableQueryLog();
 
         $stock= Stock::where('persona_id', $persona_id)
+            ->where('saldo',">", 0)
             ->whereDate( 'fechadesde', '<=', $fecha)
             ->whereDate( 'fechahasta', '>=',$fecha)->get();
 
